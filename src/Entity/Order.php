@@ -44,12 +44,21 @@ class Order
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateOrder = null;
 
-    #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'orders')]
-    private Collection $products;
+    #[ORM\OneToOne(inversedBy: 'commande', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Invoice $invoice = null;
+
+    #[ORM\OneToMany(mappedBy: 'commande', targetEntity: Reference::class)]
+    private Collection $archives;
+
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Basket $basket = null;
 
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->archives = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -165,26 +174,56 @@ class Order
         return $this;
     }
 
-    /**
-     * @return Collection<int, Product>
-     */
-    public function getProducts(): Collection
+    public function getInvoice(): ?Invoice
     {
-        return $this->products;
+        return $this->invoice;
     }
 
-    public function addProduct(Product $product): static
+    public function setInvoice(Invoice $invoice): static
     {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
+        $this->invoice = $invoice;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reference>
+     */
+    public function getArchives(): Collection
+    {
+        return $this->archives;
+    }
+
+    public function addArchive(Reference $archive): static
+    {
+        if (!$this->archives->contains($archive)) {
+            $this->archives->add($archive);
+            $archive->setCommande($this);
         }
 
         return $this;
     }
 
-    public function removeProduct(Product $product): static
+    public function removeArchive(Reference $archive): static
     {
-        $this->products->removeElement($product);
+        if ($this->archives->removeElement($archive)) {
+            // set the owning side to null (unless already changed)
+            if ($archive->getCommande() === $this) {
+                $archive->setCommande(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getBasket(): ?Basket
+    {
+        return $this->basket;
+    }
+
+    public function setBasket(?Basket $basket): static
+    {
+        $this->basket = $basket;
 
         return $this;
     }

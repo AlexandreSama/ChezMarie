@@ -41,13 +41,17 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
-    #[ORM\ManyToMany(targetEntity: Order::class, mappedBy: 'products')]
-    private Collection $orders;
+    #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'products')]
+    private Collection $ingredients;
+
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?Basket $basket = null;
 
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->ingredients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,28 +174,40 @@ class Product
     }
 
     /**
-     * @return Collection<int, Order>
+     * @return Collection<int, Ingredient>
      */
-    public function getOrders(): Collection
+    public function getIngredients(): Collection
     {
-        return $this->orders;
+        return $this->ingredients;
     }
 
-    public function addOrder(Order $order): static
+    public function addIngredient(Ingredient $ingredient): static
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders->add($order);
-            $order->addProduct($this);
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients->add($ingredient);
+            $ingredient->addProduct($this);
         }
 
         return $this;
     }
 
-    public function removeOrder(Order $order): static
+    public function removeIngredient(Ingredient $ingredient): static
     {
-        if ($this->orders->removeElement($order)) {
-            $order->removeProduct($this);
+        if ($this->ingredients->removeElement($ingredient)) {
+            $ingredient->removeProduct($this);
         }
+
+        return $this;
+    }
+
+    public function getBasket(): ?Basket
+    {
+        return $this->basket;
+    }
+
+    public function setBasket(?Basket $basket): static
+    {
+        $this->basket = $basket;
 
         return $this;
     }
