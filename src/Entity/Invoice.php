@@ -15,7 +15,7 @@ class Invoice
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(mappedBy: 'invoice', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'invoice')]
     private ?Order $commande = null;
 
     #[ORM\OneToMany(mappedBy: 'invoice', targetEntity: Reference::class)]

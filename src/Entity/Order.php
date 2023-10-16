@@ -44,7 +44,7 @@ class Order
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateOrder = null;
 
-    #[ORM\OneToOne(inversedBy: 'commande', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'commande')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Invoice $invoice = null;
 
