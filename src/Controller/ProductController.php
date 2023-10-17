@@ -18,14 +18,16 @@ class ProductController extends AbstractController
         $allProducts = [];
 
         foreach ($categories as $category) {
-            $products = $category->getProducts();
-            array_push($allProducts, $products);
+            foreach ($category->getProducts() as $product) {
+                array_push($allProducts, $product);
+            }
         }
 
-        dd($allProducts);
         return $this->render('product/index.html.twig', [
             'controller_name' => 'ProductController',
-            'themes' => $themeRepository->findAll()
+            'themes' => $themeRepository->findAll(),
+            'categories' => $categories,
+            'products' => $allProducts
         ]);
     }
 }

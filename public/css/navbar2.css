@@ -1,0 +1,36 @@
+@font-face{
+    font-family : 'Abel';
+    src : url('../fonts/Abel-Regular.ttf') format('truetype');
+}
+*{
+    font-family: 'Abel';
+}
+
+i{
+    color: black;
+}
+header{
+    display: flex;
+    justify-content: center;
+    height: 10%;
+    z-index: 1;
+    position: relative;
+}
+.navbar{
+    width: 55%;
+    border: none;
+}
+.navbar-nav{
+    margin-right: 70%;
+}
+.holder{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.hold{
+    display: flex;
+    justify-content: space-between;
+    width: 15%;
+    align-items: center;
+}
