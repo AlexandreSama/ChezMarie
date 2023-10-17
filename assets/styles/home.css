@@ -12,3 +12,16 @@
 .sliderImg{
     filter: brightness(0.5);
 }
+.textMain, .titleMain{
+    position: absolute;
+    z-index: 1;
+    color: white;
+}
+.textMain{
+    right: 37%;
+    top: 40%;
+}
+.titleMain{
+    right: 40%;
+    top: 35%;
+}

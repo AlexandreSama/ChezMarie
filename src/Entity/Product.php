@@ -47,11 +47,14 @@ class Product
     #[ORM\ManyToOne(inversedBy: 'products')]
     private ?Basket $basket = null;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Commentary::class, orphanRemoval: true)]
+    private Collection $commentaries;
+
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
-        $this->orders = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
+        $this->commentaries = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -208,6 +211,36 @@ class Product
     public function setBasket(?Basket $basket): static
     {
         $this->basket = $basket;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentary>
+     */
+    public function getCommentaries(): Collection
+    {
+        return $this->commentaries;
+    }
+
+    public function addCommentary(Commentary $commentary): static
+    {
+        if (!$this->commentaries->contains($commentary)) {
+            $this->commentaries->add($commentary);
+            $commentary->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentary(Commentary $commentary): static
+    {
+        if ($this->commentaries->removeElement($commentary)) {
+            // set the owning side to null (unless already changed)
+            if ($commentary->getProduct() === $this) {
+                $commentary->setProduct(null);
+            }
+        }
 
         return $this;
     }
