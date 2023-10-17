@@ -1,0 +1,38 @@
+<div class="flex-column flex-shrink-0 p-3 text-white bg-dark sidebar" id="sidebar">
+    <ul class="nav nav-pills flex-column mb-auto" id="nav">
+        <li class="nav-item">
+            <a href="#" class="nav-link active" aria-current="page">
+                <svg class="bi me-2" width="16" height="16">
+                    <use xlink:href="#home"></use>
+                </svg>
+                Accueil
+            </a>
+        </li>
+        {% for theme in themes %}
+        <li>
+            <a href="{{path('app_product', {themeid: theme.id})}}" class="nav-link text-white">
+                <svg class="bi me-2" width="16" height="16">
+                    <use xlink:href="#speedometer2"></use>
+                </svg>
+                Côté {{theme.themeName}}
+            </a>
+        </li>
+        {% endfor %}
+        <li>
+            <a href="#" class="nav-link text-white">
+                <svg class="bi me-2" width="16" height="16">
+                    <use xlink:href="#grid"></use>
+                </svg>
+                A propos de nous
+            </a>
+        </li>
+        <li>
+            <a href="#" class="nav-link text-white">
+                <svg class="bi me-2" width="16" height="16">
+                    <use xlink:href="#people-circle"></use>
+                </svg>
+                Contact
+            </a>
+        </li>
+    </ul>
+</div>

@@ -6,9 +6,26 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.css';
+import './styles/bootstrap.css';
+import './styles/navbar.css';
+import './styles/sidebar.css';
+import './styles/main.css';
+import './styles/home.css';
 
 // start the Stimulus application
 import './bootstrap';
+import $ from 'jquery';
 require('bootstrap');
 
+
+document.getElementById('sidebarBtn').addEventListener('click', () => {
+    console.log('clicked')
+    let sidebar = document.getElementById('sidebar')
+    let list = document.getElementById('nav')
+    if(sidebar.style.width == '0%' || sidebar.style.width.length == 0){
+        sidebar.style.width = '15%'
+    }else{
+        sidebar.style.width = '0%'
+        sidebar.style.overflow = 'hidden'
+    }
+})

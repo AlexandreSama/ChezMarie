@@ -36,6 +36,16 @@ class ThemeRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+    public function findByID($themeid): ?Theme
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.id = :val')
+            ->setParameter('val', $themeid)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
 //    public function findOneBySomeField($value): ?Theme
 //    {
 //        return $this->createQueryBuilder('t')
