@@ -34,3 +34,12 @@ header{
     width: 15%;
     align-items: center;
 }
+
+#searchInput{
+    width: 0%;
+    padding: 0;
+    border: none;
+    transition: all .35s cubic-bezier(.46,.01,.32,1);
+    position: absolute;
+    right: 15%;
+}

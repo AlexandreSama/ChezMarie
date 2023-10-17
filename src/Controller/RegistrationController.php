@@ -43,7 +43,7 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $user->setRoles(['ROLE_GERANT']);
+            // $user->setRoles(['ROLE_GERANT']);
 
             $entityManager->persist($user);
             $entityManager->flush();

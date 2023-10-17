@@ -19,13 +19,25 @@ import $ from 'jquery';
 require('bootstrap');
 
 
+document.getElementById('searchBar').addEventListener('mouseenter', () => {
+    let searchInput = document.getElementById('searchInput')
+    searchInput.style.width = '25%'
+})
+
+document.getElementById('searchBar').addEventListener('mouseleave', () => {
+    let searchInput = document.getElementById('searchInput')
+    searchInput.style.width = '0%'
+})
+
 document.getElementById('sidebarBtn').addEventListener('click', () => {
-    console.log('clicked')
+
     let sidebar = document.getElementById('sidebar')
-    let list = document.getElementById('nav')
+
     if(sidebar.style.width == '0%' || sidebar.style.width.length == 0){
+
         sidebar.style.width = '15%'
     }else{
+
         sidebar.style.width = '0%'
         sidebar.style.overflow = 'hidden'
     }
