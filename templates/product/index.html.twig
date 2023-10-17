@@ -4,12 +4,13 @@
 {% block body %}
 <div class="row d-flex justify-content-center h-100">
     <div class="col-10 d-flex flex-wrap h-100">
-        {% for product in products %}
+        {% for entry in entries %}
         <div class="card" style="width: 18rem;">
             <img class="card-img-top" src="..." alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title">{{product.name}}</h5>
-                <p class="card-text">{{product.description}}</p>
+                <h5 class="card-title">{{entry.product.name}}</h5>
+                <p class="card-text">{{entry.product.description}}</p>
+                <p class="card-text">Note : {{entry.avg_rating}}/5</p>
                 <a href="#" class="btn btn-primary">Voir le produit</a>
             </div>
         </div>
