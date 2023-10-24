@@ -47,16 +47,18 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/product/{themeid}/{id}', name: 'show_product')]
-    public function show_product(Product $product, $themeid, ThemeRepository $themeRepository): Response
+    #[Route('/product/{themeid}/{productid}', name: 'show_product')]
+    public function show_product($themeid, $productid, ThemeRepository $themeRepository, ProductRepository $productRepository): Response
     {
 
+        $product = $productRepository->findBy(['id' => $productid]);
         $theme = $themeRepository->findByID($themeid);
 
         return $this->render('product/show.html.twig', [
             'controller_name' => 'ProductController',
             'themes' => $themeRepository->findAll(),
-            'product' => $product
+            'product' => $product,
+            'theme' => $theme
         ]);
     }
 }

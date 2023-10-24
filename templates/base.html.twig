@@ -22,13 +22,15 @@
 
 <body style="height: 100%;">
     <header>
-        {{include('shared/sidebar.html.twig')}}
+        {% if controller_name != 'SecurityController' and controller_name != 'RegistrationController' %}
+        {{ include('shared/sidebar.html.twig') }}
+        {% endif %}
         {{include('shared/navbar.html.twig')}}
     </header>
-    <div class="container-fluid main">
+    <main class="container-fluid main">
         {% block body %}
         {% endblock %}
-    </div>
+    </main>
 </body>
 
 </html>

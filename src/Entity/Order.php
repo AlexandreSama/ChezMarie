@@ -59,7 +59,6 @@ class Order
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
         $this->archives = new ArrayCollection();
     }
 

@@ -3,7 +3,7 @@
 
 {% block body %}
 <div class="row d-flex justify-content-center h-100">
-    <div class="col-10 d-flex flex-wrap h-100">
+    <div class="col-10 d-flex flex-wrap h-100 justify-content-center">
         {% for entry in entries %}
         <div class="card" style="width: 18rem;">
             <img class="card-img-top" src="..." alt="Card image cap">
@@ -11,7 +11,7 @@
                 <h5 class="card-title">{{entry.product.name}}</h5>
                 <p class="card-text">{{entry.product.description}}</p>
                 <p class="card-text">Note : {{entry.avg_rating}}/5</p>
-                <a href="#" class="btn btn-primary">Voir le produit</a>
+                <a href="{{path('show_product', {themeid: themeid, productid: entry.product.id})}}" class="btn btn-primary">Voir le produit</a>
             </div>
         </div>
         {% endfor %}
