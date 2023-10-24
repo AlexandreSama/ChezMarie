@@ -22,8 +22,12 @@
 
 <body style="height: 100%;">
     <header>
-        {% if controller_name != 'SecurityController' and controller_name != 'RegistrationController' %}
+        {% if controller_name != 'SecurityController' and controller_name != 'RegistrationController'%}
+        {% if controller_name == 'DashboardController' %}
+        {{ include('shared/sidebar2.html.twig') }}
+        {% else %}
         {{ include('shared/sidebar.html.twig') }}
+        {% endif %}
         {% endif %}
         {{include('shared/navbar.html.twig')}}
     </header>

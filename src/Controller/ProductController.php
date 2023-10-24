@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Repository\CategoryRepository;
 use App\Repository\CommentaryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ThemeRepository;
@@ -44,6 +45,22 @@ class ProductController extends AbstractController
             'categories' => $categories,
             'themeid' => $themeid,
             'entries' => $productsWithRatings
+        ]);
+    }
+
+    #[Route('/product/{themeid}/{categoryid}/{productid}', name: 'list_product_category')]
+    public function list_product_category($themeid, $categoryid, $productid, CategoryRepository $categoryRepository, ThemeRepository $themeRepository, ProductRepository $productRepository): Response
+    {
+        $category = $categoryRepository->findBy(['id' => $categoryid]);
+        $product = $productRepository->findBy(['id' => $productid]);
+        $theme = $themeRepository->findByID($themeid);
+
+        return $this->render('product/show_category_products.html.twig', [
+            'controller_name' => 'ProductController',
+            'themes' => $themeRepository->findAll(),
+            'product' => $product,
+            'theme' => $theme,
+            'category' => $category
         ]);
     }
 
