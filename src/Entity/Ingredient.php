@@ -47,7 +47,7 @@ class Ingredient
         return $this;
     }
 
-    public function isIsAllergene(): ?bool
+    public function isisAllergene(): ?bool
     {
         return $this->is_allergene;
     }

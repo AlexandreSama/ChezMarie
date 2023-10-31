@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{product.name}}{% endblock %}
+
+{% block body %}
+<div class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col-8 d-flex h-75 holderProduct p-0">
+        <div class="col-6 h-100">
+            <div id="carouselExampleAutoplaying" class="carousel slide productCarousel" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for picture in pictures %}
+                    <div class="carousel-item active h-100">
+                        <img src="{{ asset('img/' ~ picture.fileName) }}" class="d-block w-100 imgCarouselProduct"
+                            alt="{{picture.slug}}">
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-6 d-flex flex-column h-100 align-items-center justify-content-evenly">
+            <h1>{{product.name}}</h1>
+            <div class="d-flex align-items-center productProperties">
+                <div class="productInfos h-100 d-flex flex-column justify-content-evenly">
+                    <p>Description : {{product.description}}</p>
+                    <p>Prix : {{product.price}}€</p>
+                    <p>Poids : {{product.weight}}Kg</p>
+                    <p>Quantité : {{product.productQuantity}}</p>
+                </div>
+                <div class="listIngredients d-flex h-100 align-items-center">
+                    <ul class="list">Liste des ingrédients :
+                        {% for ingredient in ingredients %}
+                        <li>
+                            <p class="m-0">- {{ingredient.name}}</p>
+                            <p>Allergéne :
+                                {% if ingredient.isisAllergene == true %}
+                                Oui
+                                {% else %}
+                                Non
+                                {% endif %}
+                            </p>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="basketHold justify-content-around">
+                <select class="form-select selectQuantity" aria-label="Default select example">
+                    <option selected>Quantité</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+                <button class="btn btn-success">Ajouter au panier</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

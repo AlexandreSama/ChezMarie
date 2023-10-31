@@ -12,6 +12,7 @@ import './styles/sidebar.css';
 import './styles/main.css';
 import './styles/home.css';
 import './styles/products.css';
+import './styles/spé_product.css';
 
 // start the Stimulus application
 import './bootstrap';
@@ -19,15 +20,19 @@ import $ from 'jquery';
 require('bootstrap');
 
 
-document.getElementById('searchBar').addEventListener('mouseenter', () => {
+document.getElementById('searchBar').addEventListener('click', () => {
     let searchInput = document.getElementById('searchInput')
-    searchInput.style.width = '25%'
+    if(searchInput.style.width == '25%'){
+        searchInput.style.width = '0%'
+        searchInput.style.border = 'none'
+        searchInput.style.paddingLeft = '0'
+    }else{
+        searchInput.style.width = '25%'
+        searchInput.style.border = '2px solid black'
+        searchInput.style.paddingLeft = '10px'
+    }
 })
 
-document.getElementById('searchBar').addEventListener('mouseleave', () => {
-    let searchInput = document.getElementById('searchInput')
-    searchInput.style.width = '0%'
-})
 
 document.getElementById('sidebarBtn').addEventListener('click', () => {
 

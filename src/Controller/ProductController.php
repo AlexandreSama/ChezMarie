@@ -22,7 +22,7 @@ class ProductController extends AbstractController
 
         $ratings = $commentaryRepository->findAverageRatings();
 
-        // Préparez un tableau pour stocker les produits avec leurs notes
+        // Préparez un tableau pour stocker les produits avec leurs notes et leurs images
         $productsWithRatings = [];
 
         // Pour chaque note, trouvez le produit correspondant et combinez les données
@@ -31,14 +31,16 @@ class ProductController extends AbstractController
             $product = $productRepository->find($rating['productId']);
 
             if ($product) {
-                // Ajoutez le produit et sa note moyenne au tableau
+                // Ajoutez le produit, sa note moyenne, et l'URL de l'image au tableau
                 $productsWithRatings[] = [
                     'product' => $product,
                     'avg_rating' => $rating['avg_rating'],
+                    'picture_url' => $rating['picture_url'], // ici, nous ajoutons l'URL de l'image
+                    'picture_slug' => $rating['picture_slug']
                 ];
             }
         }
-        
+
         return $this->render('product/index.html.twig', [
             'controller_name' => 'ProductController',
             'themes' => $themeRepository->findAll(),
@@ -48,14 +50,14 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/product/{themeid}/{categoryid}/{productid}', name: 'list_product_category')]
-    public function list_product_category($themeid, $categoryid, $productid, CategoryRepository $categoryRepository, ThemeRepository $themeRepository, ProductRepository $productRepository): Response
+    #[Route('/product/{themeid}/{categoryid}/{productid}', name: 'show_product_with_category')]
+    public function show_product_with_category($themeid, $categoryid, $productid, CategoryRepository $categoryRepository, ThemeRepository $themeRepository, ProductRepository $productRepository): Response
     {
         $category = $categoryRepository->findBy(['id' => $categoryid]);
         $product = $productRepository->findBy(['id' => $productid]);
         $theme = $themeRepository->findByID($themeid);
 
-        return $this->render('product/show_category_products.html.twig', [
+        return $this->render('product/show_product_with_category.html.twig', [
             'controller_name' => 'ProductController',
             'themes' => $themeRepository->findAll(),
             'product' => $product,
@@ -64,18 +66,25 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/product/{themeid}/{productid}', name: 'show_product')]
-    public function show_product($themeid, $productid, ThemeRepository $themeRepository, ProductRepository $productRepository): Response
+    #[Route('/product/{themeid}/{productid}', name: 'show_product_without_category')]
+    public function show_product_without_category($themeid, $productid, ThemeRepository $themeRepository, ProductRepository $productRepository): Response
     {
 
-        $product = $productRepository->findBy(['id' => $productid]);
+        $product = $productRepository->findOneBy(['id' => $productid]);
         $theme = $themeRepository->findByID($themeid);
 
-        return $this->render('product/show.html.twig', [
+        $ingredients = $product->getIngredients();
+
+        $pictures = $product->getPictures();
+
+
+        return $this->render('product/show_product_without_category.html.twig', [
             'controller_name' => 'ProductController',
             'themes' => $themeRepository->findAll(),
             'product' => $product,
-            'theme' => $theme
+            'theme' => $theme,
+            'pictures' => $pictures,
+            'ingredients' => $ingredients
         ]);
     }
 }

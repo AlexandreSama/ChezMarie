@@ -1,3 +1,15 @@
 .card{
     height: 45%;
+    margin: 10px;
+    border-width: 5px;
+}
+.card-img, .card-img-top{
+    height: 50%;
+    border-top-right-radius: 5px!important;
+    border-top-left-radius: 5px!important;
+}
+.showProductRating{
+    margin-left: 55%;
+    padding-left: 10px;
+    padding-right: 10px;
 }
