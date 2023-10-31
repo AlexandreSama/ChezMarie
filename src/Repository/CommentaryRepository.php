@@ -22,12 +22,15 @@ class CommentaryRepository extends ServiceEntityRepository
         parent::__construct($registry, Commentary::class);
     }
 
-    public function findAverageRatings($limit = 6)
+    public function findAverageRatingsByTheme($themeId, $limit = 6)
     {
         // Créer le constructeur de requête
         $qb = $this->createQueryBuilder('c')
             ->select('product.id as productId, AVG(c.note) as avg_rating')
             ->join('c.product', 'product')
+            ->join('product.category', 'category') // Join sur Category depuis Product
+            ->where('category.theme = :themeId') // Filtre pour un thème spécifique
+            ->setParameter('themeId', $themeId) // Définir la valeur du thème
             ->groupBy('product.id')
             ->orderBy('avg_rating', 'DESC')
             ->setMaxResults($limit);
@@ -36,23 +39,21 @@ class CommentaryRepository extends ServiceEntityRepository
         $results = $qb->getQuery()->getResult();
 
         // Ensuite, pour chaque produit, nous devons aller chercher l'image qui correspond à notre logique de sélection.
-        // Ici, nous supposons que nous avons un Repository pour l'entité Picture.
         $pictureRepository = $this->getEntityManager()->getRepository(Picture::class);
 
         foreach ($results as &$result) {
             $productId = $result['productId'];
             // Ceci est une sous-requête où nous récupérons l'image basée sur une certaine logique. 
-            // Ici, par exemple, nous sélectionnons l'image avec l'ID le plus bas (ou toute autre logique de votre choix).
             $picture = $pictureRepository->createQueryBuilder('p')
                 ->where('p.product = :productId')
                 ->setParameter('productId', $productId)
-                ->orderBy('p.id', 'ASC') // ou tout autre critère pour sélectionner une image spécifique
+                ->orderBy('p.id', 'ASC')
                 ->setMaxResults(1)
                 ->getQuery()
                 ->getOneOrNullResult();
 
             // Ajoutez l'URL de l'image (ou null si aucune image) au résultat.
-            $result['picture_url'] = $picture ? $picture->getFileName() : null; // Adaptez ceci en fonction du nom de votre méthode/propriété
+            $result['picture_url'] = $picture ? $picture->getFileName() : null;
             $result['picture_slug'] = $picture ? $picture->getSlug() : null;
         }
 

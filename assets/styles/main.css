@@ -1,10 +1,17 @@
 @font-face{
-    font-family : 'Abel';
-    src : url('../fonts/Abel-Regular.ttf') format('truetype');
+    font-family : 'Lora';
+    src : url('../fonts/Lora.ttf') format('truetype');
 }
 *{
-    font-family: 'Abel';
+    font-family: 'Lora';
 }
 .main{
     height: 90%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+h1{
+    font-size: 1.5rem;
 }

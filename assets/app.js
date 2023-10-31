@@ -13,6 +13,7 @@ import './styles/main.css';
 import './styles/home.css';
 import './styles/products.css';
 import './styles/spé_product.css';
+import './styles/subbar.css'
 
 // start the Stimulus application
 import './bootstrap';

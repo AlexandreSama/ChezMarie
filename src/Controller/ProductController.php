@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
+
+    //Get 6 best product from this theme
     #[Route('/products/{themeid}', name: 'app_product')]
     public function index($themeid, ThemeRepository $themeRepository, CommentaryRepository $commentaryRepository, ProductRepository $productRepository): Response
     {
@@ -20,7 +22,7 @@ class ProductController extends AbstractController
         $theme = $themeRepository->findByID($themeid);
         $categories = $theme->getCategories();
 
-        $ratings = $commentaryRepository->findAverageRatings();
+        $ratings = $commentaryRepository->findAverageRatingsByTheme($themeid);
 
         // Préparez un tableau pour stocker les produits avec leurs notes et leurs images
         $productsWithRatings = [];
@@ -46,29 +48,37 @@ class ProductController extends AbstractController
             'themes' => $themeRepository->findAll(),
             'categories' => $categories,
             'themeid' => $themeid,
-            'entries' => $productsWithRatings
+            'entries' => $productsWithRatings,
         ]);
     }
 
+    //Get specific product in specific category/theme
     #[Route('/product/{themeid}/{categoryid}/{productid}', name: 'show_product_with_category')]
     public function show_product_with_category($themeid, $categoryid, $productid, CategoryRepository $categoryRepository, ThemeRepository $themeRepository, ProductRepository $productRepository): Response
     {
         $category = $categoryRepository->findBy(['id' => $categoryid]);
         $product = $productRepository->findBy(['id' => $productid]);
         $theme = $themeRepository->findByID($themeid);
+        $categories = $theme->getCategories();
 
         return $this->render('product/show_product_with_category.html.twig', [
             'controller_name' => 'ProductController',
             'themes' => $themeRepository->findAll(),
             'product' => $product,
             'theme' => $theme,
-            'category' => $category
+            'themeid' => $theme->getId(),
+            'category' => $category,
+            'categories' => $categories
         ]);
     }
 
+    //Get one of the six best product in the theme
     #[Route('/product/{themeid}/{productid}', name: 'show_product_without_category')]
     public function show_product_without_category($themeid, $productid, ThemeRepository $themeRepository, ProductRepository $productRepository): Response
     {
+
+        $theme = $themeRepository->findByID($themeid);
+        $categories = $theme->getCategories();
 
         $product = $productRepository->findOneBy(['id' => $productid]);
         $theme = $themeRepository->findByID($themeid);
@@ -83,8 +93,10 @@ class ProductController extends AbstractController
             'themes' => $themeRepository->findAll(),
             'product' => $product,
             'theme' => $theme,
+            'themeid' => $theme->getId(),
             'pictures' => $pictures,
-            'ingredients' => $ingredients
+            'ingredients' => $ingredients,
+            'categories' => $categories
         ]);
     }
 }

@@ -2,10 +2,10 @@
 {% block title %}Top 10 des meilleurs produits !{% endblock %}
 
 {% block body %}
-<div class="row d-flex justify-content-center h-100">
-    <div class="col-6 d-flex flex-wrap h-100 justify-content-center">
+<div class="row d-flex justify-content-center h-100 rankedProducts">
+    <div class="col-7 d-flex flex-wrap h-100 justify-content-center">
         {% for entry in entries %}
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 20rem;">
             <img class="card-img-top" src="{{ asset('img/' ~ entry.picture_url) }}" alt="{{entry.picture_slug}}">
             <div class="card-body">
                 <h5 class="card-title">{{entry.product.name}}</h5>

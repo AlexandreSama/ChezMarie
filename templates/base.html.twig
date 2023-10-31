@@ -23,15 +23,22 @@
 <body style="height: 100%;">
     <header>
         {% if controller_name != 'SecurityController' and controller_name != 'RegistrationController'%}
-        {% if controller_name == 'DashboardController' %}
-        {{ include('shared/sidebar2.html.twig') }}
-        {% else %}
-        {{ include('shared/sidebar.html.twig') }}
-        {% endif %}
+            {% if controller_name == 'DashboardController' %}
+            {{ include('shared/sidebar2.html.twig') }}
+            {% else %}
+            {{ include('shared/sidebar.html.twig') }}
+            {% endif %}
         {% endif %}
         {{include('shared/navbar.html.twig')}}
     </header>
     <main class="container-fluid main">
+        {% if categories is defined %}
+        <div class="d-flex justify-content-around subbar">
+            {% for category in categories %}
+                <a href="{{path('app_category', {'themeid': themeid, 'id': category.id})}}">{{category.categoryName}}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
         {% block body %}
         {% endblock %}
     </main>

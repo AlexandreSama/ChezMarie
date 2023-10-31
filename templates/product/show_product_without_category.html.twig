@@ -2,7 +2,7 @@
 {% block title %}{{product.name}}{% endblock %}
 
 {% block body %}
-<div class="row d-flex justify-content-center align-items-center h-100">
+<div class="row d-flex justify-content-center align-items-center h-100 w-100">
     <div class="col-8 d-flex h-75 holderProduct p-0">
         <div class="col-6 h-100">
             <div id="carouselExampleAutoplaying" class="carousel slide productCarousel" data-bs-ride="carousel">
@@ -35,11 +35,12 @@
                     <p>Poids : {{product.weight}}Kg</p>
                     <p>Quantité : {{product.productQuantity}}</p>
                 </div>
-                <div class="listIngredients d-flex h-100 align-items-center">
-                    <ul class="list">Liste des ingrédients :
+                <div class="listIngredients d-flex flex-column justify-content-around h-100 align-items-center">
+                    <p>Liste des ingrédients :</p>
+                    <ul class="list">
                         {% for ingredient in ingredients %}
                         <li>
-                            <p class="m-0">- {{ingredient.name}}</p>
+                            <p class="m-0">{{ingredient.name}}</p>
                             <p>Allergéne :
                                 {% if ingredient.isisAllergene == true %}
                                 Oui
@@ -53,12 +54,10 @@
                 </div>
             </div>
             <div class="basketHold justify-content-around">
-                <select class="form-select selectQuantity" aria-label="Default select example">
-                    <option selected>Quantité</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+                <div class="d-flex flex-column">
+                    <label for="selectQuantity">Quantité</label>
+                    <input type="number" class="selectQuantity">
+                </div>
                 <button class="btn btn-success">Ajouter au panier</button>
             </div>
         </div>
