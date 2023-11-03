@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,6 +14,18 @@ class DashboardController extends AbstractController
     {
         return $this->render('dashboard/admin.html.twig', [
             'controller_name' => 'DashboardController',
+        ]);
+    }
+
+    #[Route('/gerant/list_products', name: 'list_products')]
+    public function listProducts(ProductRepository $productRepository): Response
+    {
+
+        $products = $productRepository->findAll();
+
+        return $this->render('dashboard/listProducts.html.twig', [
+            'controller_name' => 'DashboardController',
+            'products' => $products
         ]);
     }
 

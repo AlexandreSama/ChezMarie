@@ -1,0 +1,9 @@
+API :
+    => Type d'application ?
+    => Connexion
+    => Clé de sécurité
+
+Site : 
+    => Liste des commandes passés / en cours (admin et User)
+    => Convertir en WebP les images
+    => XN Converter

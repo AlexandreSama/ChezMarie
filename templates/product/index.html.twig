@@ -11,7 +11,7 @@
                 <h5 class="card-title">{{entry.product.name}}</h5>
                 <p class="card-text">{{entry.product.description}}</p>
                 <p class="card-text">Note : {{entry.avg_rating}}/5</p>
-                <a href="{{path('show_product_without_category', {themeid: themeid, productid: entry.product.id})}}" class="btn btn-primary showProductRating">Voir le produit</a>
+                <a href="{{path('show_product_without_category', {themeid: theme.id, productid: entry.product.id})}}" class="btn btn-primary showProductRating">Voir le produit</a>
             </div>
         </div>
         {% endfor %}
