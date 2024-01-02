@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block title %}Modifier un produit{% endblock %}
+
+{% block body %}
+<div class="row w-100 d-flex justify-content-center h-100 rankedProducts">
+    <div class="col-10 d-flex flex-column h-75 align-items-center justify-content-center updateProductDiv">
+        <h1>Modifier un produit</h1>
+        {{ form_start(updateProductForm, { 'attr' : { 'class': 'd-flex flex-column justify-content-between w-100 h-50' } }) }}
+        <div class="firstHold d-flex w-100 justify-content-between">
+            {{ form_row(updateProductForm.name) }}
+            {{ form_row(updateProductForm.description) }}
+        </div>
+        <div class="firstHold d-flex w-100 justify-content-between">
+            {{ form_row(updateProductForm.price) }}
+            {{ form_row(updateProductForm.weight) }}
+        </div>
+        <div class="firstHold d-flex w-100 justify-content-between">
+            {{ form_row(updateProductForm.productQuantity) }}
+            {{ form_row(updateProductForm.is_active) }}
+        </div>
+        <div class="firstHold d-flex w-100 justify-content-between">
+            {{ form_row(updateProductForm.category) }}
+            {{ form_row(updateProductForm.ingredients) }}
+        </div>
+        <div class="d-flex w-100 flex-column align-items-center">
+            {{ form_row(updateProductForm.pictures) }}
+            {{ form_row(updateProductForm.submit) }}
+        </div>
+    {{ form_end(updateProductForm) }}
+    </div>
+</div>
+{% endblock %}

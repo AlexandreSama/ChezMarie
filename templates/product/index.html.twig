@@ -13,8 +13,12 @@
                 <h5 class="card-title">{{entry.product.name}}</h5>
                 <p class="card-text">{{entry.product.description}}</p>
                 <p class="card-text">Note : {{entry.avg_rating}}/5</p>
+<<<<<<< HEAD
                 <a href="{{path('show_product_without_category', {themeid: themeid, productid: entry.product.id})}}"
                 class="btn btn-primary showProductRating" data-toggle="modal" data-target="#productModal">Voir le produit</a>
+=======
+                <a href="{{path('show_product_without_category', {themeid: theme.id, productid: entry.product.id})}}" class="btn btn-primary showProductRating">Voir le produit</a>
+>>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
             </div>
         </div>
         {% endfor %}

@@ -49,17 +49,31 @@ class ProductRepository extends ServiceEntityRepository
 
     public function findProductsByCategory($categoryId)
     {
+<<<<<<< HEAD
         $qb = $this->createQueryBuilder('p')
             ->join('p.category', 'c')
             ->where('c.id = :categoryId')
+=======
+        $qb = $this->createQueryBuilder('p') // "p" est un alias pour "Product"
+            ->join('p.category', 'c') // Join sur Category avec l'alias "c"
+            ->where('c.id = :categoryId') // Filtrer sur la catégorie spécifiée
+>>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
             ->setParameter('categoryId', $categoryId);
 
         $results = $qb->getQuery()->getResult();
 
+<<<<<<< HEAD
+=======
+        // Ensuite, pour chaque produit, nous devons aller chercher l'image qui correspond à notre logique de sélection.
+>>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
         $pictureRepository = $this->getEntityManager()->getRepository(Picture::class);
 
         foreach ($results as $product) {
             $productId = $product->getId();
+<<<<<<< HEAD
+=======
+            // Ceci est une sous-requête où nous récupérons l'image basée sur une certaine logique. 
+>>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
             $picture = $pictureRepository->createQueryBuilder('p')
                 ->where('p.product = :productId')
                 ->setParameter('productId', $productId)
@@ -68,6 +82,10 @@ class ProductRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getOneOrNullResult();
 
+<<<<<<< HEAD
+=======
+            // Ajoutez l'URL de l'image (ou null si aucune image) au produit.
+>>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
             if ($picture) {
                 $result['picture_url'] = $picture ? $picture->getFileName() : null;
                 $result['picture_slug'] = $picture ? $picture->getSlug() : null;

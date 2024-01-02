@@ -40,7 +40,7 @@
         {% if categories is defined %}
         <div class="d-flex justify-content-around subbar">
             {% for category in categories %}
-                <a href="{{path('app_category', {'themeid': themeid, 'id': category.id})}}">{{category.categoryName}}</a>
+                <a href="{{path('app_category', {'themeid': theme.id, 'id': category.id})}}">{{category.categoryName}}</a>
             {% endfor %}
         </div>
         {% endif %}

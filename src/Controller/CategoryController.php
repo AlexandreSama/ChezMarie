@@ -15,13 +15,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends AbstractController
 {
     #[Route('/category/{themeid}/{id}', name: 'app_category')]
+<<<<<<< HEAD
     public function index($themeid, $id, PaginatorInterface $paginator, Request $request, ThemeRepository $themeRepository, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
+=======
+    public function index($themeid, $id, ThemeRepository $themeRepository, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
+>>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
     {
         $category = $categoryRepository->findOneBy(['id' => $id]);
         $theme = $themeRepository->findOneBy(['id' => $themeid]);
         $categories = $theme->getCategories();
+<<<<<<< HEAD
         
         $query = $productRepository->findProductsByCategory($category->getId());
+=======
+
+        $products = $productRepository->findProductsByCategory($category->getId());
+>>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
 
         $productsWithPictures = $paginator->paginate(
             $query,
@@ -31,8 +40,13 @@ class CategoryController extends AbstractController
         
         return $this->render('category/index.html.twig', [
             'controller_name' => 'CategoryController',
+<<<<<<< HEAD
             'productsWithPictures' => $productsWithPictures,
             'categoryName' => $category->getCategoryName(),
+=======
+            'products' => $products,
+            'category' => $category,
+>>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
             'theme' => $theme,
             'themeid' => $themeid,
             'themes' => $themeRepository->findAll(),

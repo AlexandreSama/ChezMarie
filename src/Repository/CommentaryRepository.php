@@ -30,6 +30,7 @@ class CommentaryRepository extends ServiceEntityRepository
             ->join('c.product', 'product')
             ->join('product.category', 'category') // Join sur Category depuis Product
             ->where('category.theme = :themeId') // Filtre pour un thème spécifique
+            ->andWhere('product.is_active = 1')
             ->setParameter('themeId', $themeId) // Définir la valeur du thème
             ->groupBy('product.id')
             ->orderBy('avg_rating', 'DESC')

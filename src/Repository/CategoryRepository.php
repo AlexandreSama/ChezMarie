@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Category;
+use App\Entity\Picture;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -46,4 +47,17 @@ class CategoryRepository extends ServiceEntityRepository
     //        ;
     //    }
 
+<<<<<<< HEAD
+=======
+//    public function findOneBySomeField($value): ?Category
+//    {
+//        return $this->createQueryBuilder('c')
+//            ->andWhere('c.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->getQuery()
+//            ->getOneOrNullResult()
+//        ;
+//    }
+
+>>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
 }

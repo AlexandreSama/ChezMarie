@@ -35,6 +35,7 @@ class Product
     private ?bool $is_active = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Picture::class, orphanRemoval: true)]
+    #[ORM\JoinColumn(nullable: true)]
     private Collection $pictures;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
@@ -122,7 +123,7 @@ class Product
         return $this;
     }
 
-    public function isIsActive(): ?bool
+    public function isActive(): ?bool
     {
         return $this->is_active;
     }
