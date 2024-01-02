@@ -18,18 +18,12 @@ class DashboardController extends AbstractController
         ]);
     }
 
-<<<<<<< HEAD
-    #[Route('/gerant/admin_list_product', name: 'admin_list_product')]
-    public function admin_list_product(ProductRepository $productRepository): Response{
-        $products = $productRepository->findAll();
-=======
     #[Route('/gerant/list_products', name: 'list_products')]
     public function listProducts(ProductRepository $productRepository): Response
     {
 
         $products = $productRepository->findAll();
 
->>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
         return $this->render('dashboard/listProducts.html.twig', [
             'controller_name' => 'DashboardController',
             'products' => $products

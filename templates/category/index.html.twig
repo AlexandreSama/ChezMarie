@@ -4,7 +4,6 @@
 
 {% block body %}
 <div class="row d-flex justify-content-center h-100 rankedProducts">
-<<<<<<< HEAD
     <div class="col-11 d-flex flex-wrap h-100 justify-content-center">
         {% for product in productsWithPictures %}
         <div class="card" style="width: 20rem;">
@@ -17,36 +16,20 @@
             <figure>
                 <img class="card-img-top" src="#" alt="slug">
             </figure>
-=======
-    <div class="col-10 d-flex flex-wrap h-100 justify-content-center">
-        {% for product in products %}
-        <div class="card" style="width: 20rem;">
-            {% if product.pictures[0] is defined %}
-            <img class="card-img-top" src="{{ asset('img/' ~ product.pictures[0].fileName) }}" alt="{{product.pictures[0].slug}}">
-            {% else %}
-            <img class="card-img-top" src="#" alt="baseSlug">
->>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
             {% endif %}
             <div class="card-body">
                 <h5 class="card-title">{{product.name}}</h5>
                 <p class="card-text">{{product.description}}</p>
-<<<<<<< HEAD
                 <a href="{{path('show_product_without_category', {themeid: themeid, productid: product.id})}}"
                     class="btn btn-primary showProductRating" data-toggle="modal" data-target="#productModal">Voir le
                     produit</a>
-=======
-                <a href="{{path('show_product_with_category', {themeid: theme.id, categoryid: category.id, productid: product.id})}}" class="btn btn-primary showProductRating">Voir le produit</a>
->>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
             </div>
         </div>
         {% endfor %}
     </div>
-<<<<<<< HEAD
     <div class="navigation">
         {{ knp_pagination_render(productsWithPictures) }}
     </div>
-=======
->>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
 </div>
 
 <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel"

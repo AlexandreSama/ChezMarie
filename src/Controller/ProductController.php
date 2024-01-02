@@ -58,8 +58,6 @@ class ProductController extends AbstractController
         ]);
     }
 
-<<<<<<< HEAD
-=======
     //Get specific product in specific category/theme
     #[Route('/product/{themeid}/{categoryid}/{productid}', name: 'show_product_with_category')]
     public function show_product_with_category($themeid, $categoryid, $productid, CategoryRepository $categoryRepository, ThemeRepository $themeRepository, ProductRepository $productRepository): Response
@@ -165,7 +163,6 @@ class ProductController extends AbstractController
         ]);
     }
 
->>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
     //Get one of the six best product in the theme
     #[Route('/product/{themeid}/{productid}', name: 'show_product_without_category')]
     public function show_product_without_category($themeid, $productid, ThemeRepository $themeRepository, ProductRepository $productRepository): Response

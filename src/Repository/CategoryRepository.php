@@ -47,8 +47,6 @@ class CategoryRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-<<<<<<< HEAD
-=======
 //    public function findOneBySomeField($value): ?Category
 //    {
 //        return $this->createQueryBuilder('c')
@@ -59,5 +57,4 @@ class CategoryRepository extends ServiceEntityRepository
 //        ;
 //    }
 
->>>>>>> 0d379d5785358cfcd0e5aa84098231bed34f8040
 }
