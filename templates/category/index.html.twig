@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="row d-flex justify-content-center h-100 rankedProducts">
-    <div class="col-11 d-flex flex-wrap h-100 justify-content-center">
+    <div class="products col-9 d-flex flex-wrap justify-content-center">
         {% for product in productsWithPictures %}
         <div class="card" style="width: 20rem;">
             {% if product.pictures[0] is defined %}

@@ -26,7 +26,7 @@ class CategoryController extends AbstractController
         $productsWithPictures = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            8
+            6
         );
         
         return $this->render('category/index.html.twig', [

@@ -5,7 +5,7 @@
         <div class="hold">
             <input type="text" id="searchInput">
             <button class="btn btn-link p-0" id="searchBar"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
-            <a href="#"><i class="fa-solid fa-basket-shopping fa-xl"></i></a>
+            <a href="{{path('app_basket')}}"><i class="fa-solid fa-basket-shopping fa-xl"></i></a>
             {% if app.user %}
             {% if is_granted('ROLE_GERANT') %}
             <a href="{{path('app_dashboard_admin')}}"><i class="fa-solid fa-user fa-xl"></i></a>

@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Repository\ProductRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,10 +21,14 @@ class DashboardController extends AbstractController
     }
 
     #[Route('/gerant/list_products', name: 'list_products')]
-    public function listProducts(ProductRepository $productRepository): Response
+    public function listProducts(PaginatorInterface $paginator, Request $request, ProductRepository $productRepository): Response
     {
 
-        $products = $productRepository->findAll();
+        $products = $paginator->paginate(
+            $productRepository->findAllQuery(),
+            $request->query->getInt('page', 1),
+            10 // 25 items per page
+        );
 
         return $this->render('dashboard/listProducts.html.twig', [
             'controller_name' => 'DashboardController',

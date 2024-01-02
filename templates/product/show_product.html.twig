@@ -34,11 +34,13 @@
             </div>
         </div>
         <div class="basketHold justify-content-around">
-            <div class="d-flex flex-column">
-                <label for="selectQuantity">Quantité</label>
-                <input type="number" class="selectQuantity">
-            </div>
-            <button class="btn btn-success">Ajouter au panier</button>
+            <form action="{{ path('add_product', {productid: product.id}) }}" method="post">
+                <div class="d-flex flex-column">
+                    <label for="selectQuantity">Quantité</label>
+                    <input type="number" name="quantity" class="selectQuantity">
+                </div>
+                <button type="submit" class="btn btn-success">Ajouter au panier</button>
+            </form>
         </div>
     </div>
 </div>

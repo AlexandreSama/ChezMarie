@@ -4,7 +4,7 @@ i{
 header{
     display: flex;
     justify-content: center;
-    height: 10%;
+    height: 8%;
     z-index: 1;
     position: relative;
 }

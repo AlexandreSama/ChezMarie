@@ -57,6 +57,10 @@ class Order
     #[ORM\JoinColumn(nullable: false)]
     private ?Basket $basket = null;
 
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $userid = null;
+
     public function __construct()
     {
         $this->archives = new ArrayCollection();
@@ -225,6 +229,18 @@ class Order
     public function setBasket(?Basket $basket): static
     {
         $this->basket = $basket;
+
+        return $this;
+    }
+
+    public function getUserid(): ?User
+    {
+        return $this->userid;
+    }
+
+    public function setUserid(?User $userid): static
+    {
+        $this->userid = $userid;
 
         return $this;
     }

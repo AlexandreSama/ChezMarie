@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Product;
-use App\Service\FileUploader;
 use App\Form\ProductType;
 use App\Repository\CategoryRepository;
 use App\Repository\CommentaryRepository;
@@ -11,6 +10,7 @@ use App\Repository\ProductRepository;
 use App\Repository\ThemeRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -83,11 +83,15 @@ class ProductController extends AbstractController
     }
 
     #[Route('/product/disable/{productid}', name: 'disable_product')]
-    public function disable_product($productid, ProductRepository $productRepository, EntityManagerInterface $em): Response
+    public function disable_product($productid, PaginatorInterface $paginator, Request $request, ProductRepository $productRepository, EntityManagerInterface $em): Response
     {
 
         $product = $productRepository->findOneBy(['id' => $productid]);
-        $products = $productRepository->findAll();
+        $products = $paginator->paginate(
+            $productRepository->findAllQuery(),
+            $request->query->getInt('page', 1),
+            10 // 25 items per page
+        );
 
         $product->setIsActive(false);
 
@@ -102,11 +106,15 @@ class ProductController extends AbstractController
     }
 
     #[Route('/product/enable/{productid}', name: 'enable_product')]
-    public function enable_product($productid, ProductRepository $productRepository, EntityManagerInterface $em): Response
+    public function enable_product($productid, PaginatorInterface $paginator, Request $request, ProductRepository $productRepository, EntityManagerInterface $em): Response
     {
 
         $product = $productRepository->findOneBy(['id' => $productid]);
-        $products = $productRepository->findAll();
+        $products = $paginator->paginate(
+            $productRepository->findAllQuery(),
+            $request->query->getInt('page', 1),
+            10 // 25 items per page
+        );
 
         $product->setIsActive(true);
 
