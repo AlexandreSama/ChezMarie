@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Picture;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -45,4 +46,34 @@ class ProductRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findProductsByCategory($categoryId)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->join('p.category', 'c')
+            ->where('c.id = :categoryId')
+            ->setParameter('categoryId', $categoryId);
+
+        $results = $qb->getQuery()->getResult();
+
+        $pictureRepository = $this->getEntityManager()->getRepository(Picture::class);
+
+        foreach ($results as $product) {
+            $productId = $product->getId();
+            $picture = $pictureRepository->createQueryBuilder('p')
+                ->where('p.product = :productId')
+                ->setParameter('productId', $productId)
+                ->orderBy('p.id', 'ASC')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult();
+
+            if ($picture) {
+                $result['picture_url'] = $picture ? $picture->getFileName() : null;
+                $result['picture_slug'] = $picture ? $picture->getSlug() : null;
+            }
+        }
+
+        return $results;
+    }
 }

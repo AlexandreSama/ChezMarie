@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des produits!{% endblock %}
+
+{% block body %}
+<div class="row h-100">
+    <div class="col-12 d-flex justify-content-evenly">
+        <div class="col-5 d-flex align-items-center flex-column">
+            <h2>Liste des produits</h2>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Prix</th>
+                        <th scope="col">Poids</th>
+                        <th scope="col">Quantité (Journalière)</th>
+                        <th scope="col">Actif</th>
+                        <th scope="col">Ingrédients</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr class="table-active">
+                        <th scope="row">{{product.id}}</th>
+                        <td>{{product.name}}</td>
+                        <td>{{product.description}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.weight}}</td>
+                        <td>{{product.productQuantity}}</td>
+                        {% if product.is_active == 1 %}
+                        <td>Oui</td>
+                        {% else %}
+                        <td>Non</td>
+                        {% endif %}
+                        <td><button>Afficher</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

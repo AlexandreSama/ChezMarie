@@ -17,7 +17,7 @@ import './styles/subbar.css'
 
 // start the Stimulus application
 import './bootstrap';
-import $ from 'jquery';
+global.$ = global.jQuery = require('jquery');
 require('bootstrap');
 
 
@@ -48,3 +48,14 @@ document.getElementById('sidebarBtn').addEventListener('click', () => {
         sidebar.style.overflow = 'hidden'
     }
 })
+
+$('.showProductRating').on('click', function(e) {
+    e.preventDefault();
+    console.log('test')
+    var productUrl = $(this).attr('href');
+
+    $.get(productUrl, function(data) {
+        $('#productModal .modal-body').html(data);
+        $('#productModal').modal('show');
+    });
+});

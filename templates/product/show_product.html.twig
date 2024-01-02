@@ -1,0 +1,45 @@
+{% block body %}
+<div class="product">
+    <div class="product-image">
+        <figure>
+            <img src="{{ asset('img/' ~ picture.fileName) }}" class="d-block w-100 imgCarouselProduct"
+                alt="{{picture.slug}}">
+        </figure>
+    </div>
+    <div class="product-content">
+        <h1>{{product.name}}</h1>
+        <div class="d-flex align-items-center productProperties">
+            <div class="productInfos h-100 d-flex flex-column justify-content-evenly">
+                <p>Description : {{product.description}}</p>
+                <p>Prix : {{product.price}}€</p>
+                <p>Poids : {{product.weight}}Kg</p>
+                <p>Quantité : {{product.productQuantity}}</p>
+            </div>
+            <div class="listIngredients d-flex flex-column justify-content-around h-100 align-items-center">
+                <p>Liste des ingrédients :</p>
+                <ul class="list">
+                    {% for ingredient in ingredients %}
+                    <li>
+                        <p class="m-0">{{ingredient.name}}</p>
+                        <p>Allergéne :
+                            {% if ingredient.isisAllergene == true %}
+                            Oui
+                            {% else %}
+                            Non
+                            {% endif %}
+                        </p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="basketHold justify-content-around">
+            <div class="d-flex flex-column">
+                <label for="selectQuantity">Quantité</label>
+                <input type="number" class="selectQuantity">
+            </div>
+            <button class="btn btn-success">Ajouter au panier</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

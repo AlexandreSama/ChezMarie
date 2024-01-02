@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class ProductController extends AbstractController
 {
 
@@ -52,26 +53,6 @@ class ProductController extends AbstractController
         ]);
     }
 
-    //Get specific product in specific category/theme
-    #[Route('/product/{themeid}/{categoryid}/{productid}', name: 'show_product_with_category')]
-    public function show_product_with_category($themeid, $categoryid, $productid, CategoryRepository $categoryRepository, ThemeRepository $themeRepository, ProductRepository $productRepository): Response
-    {
-        $category = $categoryRepository->findBy(['id' => $categoryid]);
-        $product = $productRepository->findBy(['id' => $productid]);
-        $theme = $themeRepository->findByID($themeid);
-        $categories = $theme->getCategories();
-
-        return $this->render('product/show_product_with_category.html.twig', [
-            'controller_name' => 'ProductController',
-            'themes' => $themeRepository->findAll(),
-            'product' => $product,
-            'theme' => $theme,
-            'themeid' => $theme->getId(),
-            'category' => $category,
-            'categories' => $categories
-        ]);
-    }
-
     //Get one of the six best product in the theme
     #[Route('/product/{themeid}/{productid}', name: 'show_product_without_category')]
     public function show_product_without_category($themeid, $productid, ThemeRepository $themeRepository, ProductRepository $productRepository): Response
@@ -86,15 +67,16 @@ class ProductController extends AbstractController
         $ingredients = $product->getIngredients();
 
         $pictures = $product->getPictures();
-
-
-        return $this->render('product/show_product_without_category.html.twig', [
+        $picture = $pictures[0];
+        
+        return $this->render('product/show_product.html.twig', [
             'controller_name' => 'ProductController',
             'themes' => $themeRepository->findAll(),
             'product' => $product,
             'theme' => $theme,
             'themeid' => $theme->getId(),
             'pictures' => $pictures,
+            'picture' => $picture,
             'ingredients' => $ingredients,
             'categories' => $categories
         ]);

@@ -1,20 +1,36 @@
 {% extends 'base.html.twig' %}
-{% block title %}Top 10 des meilleurs produits !{% endblock %}
+{% block title %}Top 6 des meilleurs produits !{% endblock %}
 
 {% block body %}
 <div class="row d-flex justify-content-center h-100 rankedProducts">
     <div class="col-7 d-flex flex-wrap h-100 justify-content-center">
         {% for entry in entries %}
         <div class="card" style="width: 20rem;">
-            <img class="card-img-top" src="{{ asset('img/' ~ entry.picture_url) }}" alt="{{entry.picture_slug}}">
+            <figure>
+                <img class="card-img-top" src="{{ asset('img/' ~ entry.picture_url) }}" alt="{{entry.picture_slug}}">
+            </figure>
             <div class="card-body">
                 <h5 class="card-title">{{entry.product.name}}</h5>
                 <p class="card-text">{{entry.product.description}}</p>
                 <p class="card-text">Note : {{entry.avg_rating}}/5</p>
-                <a href="{{path('show_product_without_category', {themeid: themeid, productid: entry.product.id})}}" class="btn btn-primary showProductRating">Voir le produit</a>
+                <a href="{{path('show_product_without_category', {themeid: themeid, productid: entry.product.id})}}"
+                class="btn btn-primary showProductRating" data-toggle="modal" data-target="#productModal">Voir le produit</a>
             </div>
         </div>
         {% endfor %}
+    </div>
+</div>
+
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productModalLabel">Détail du produit</h5>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
