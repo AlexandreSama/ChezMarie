@@ -45,9 +45,6 @@ class Product
     #[ORM\ManyToMany(targetEntity: Ingredient::class, mappedBy: 'products')]
     private Collection $ingredients;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
-    private ?Basket $basket = null;
-
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Commentary::class, orphanRemoval: true)]
     private Collection $commentaries;
 
@@ -203,19 +200,6 @@ class Product
 
         return $this;
     }
-
-    public function getBasket(): ?Basket
-    {
-        return $this->basket;
-    }
-
-    public function setBasket(?Basket $basket): static
-    {
-        $this->basket = $basket;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Commentary>
      */

@@ -1,4 +1,5 @@
-- Espace commentaire
-- Panier
 - Payement
-- Style
+- Afficher commandes
+- Multi-filtre (Bouton "Recherche...") sur les produits
+
+- Style (boutons, font, couleurs, padding)

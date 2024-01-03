@@ -15,66 +15,28 @@ class Basket
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $quantity = null;
-
-    #[ORM\OneToMany(mappedBy: 'basket', targetEntity: Product::class)]
-    private Collection $products;
-
     #[ORM\OneToMany(mappedBy: 'basket', targetEntity: Order::class)]
     private Collection $orders;
 
+    #[ORM\OneToOne(inversedBy: 'basket', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    #[ORM\ManyToMany(targetEntity: Product::class)]
+    private Collection $basket_products;
+
+    #[ORM\Column]
+    private array $productQuantities = [];
+
     public function __construct()
     {
-        $this->products = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->basket_products = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): static
-    {
-        $this->quantity = $quantity;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Product>
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
-    }
-
-    public function addProduct(Product $product): static
-    {
-        if (!$this->products->contains($product)) {
-            $this->products->add($product);
-            $product->setBasket($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProduct(Product $product): static
-    {
-        if ($this->products->removeElement($product)) {
-            // set the owning side to null (unless already changed)
-            if ($product->getBasket() === $this) {
-                $product->setBasket(null);
-            }
-        }
-
-        return $this;
     }
 
     /**
@@ -105,5 +67,60 @@ class Basket
         }
 
         return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getBasketProducts(): Collection
+    {
+        return $this->basket_products;
+    }
+
+    public function addBasketProduct(Product $basketProduct): static
+    {
+        if (!$this->basket_products->contains($basketProduct)) {
+            $this->basket_products->add($basketProduct);
+        }
+
+        return $this;
+    }
+
+    public function removeBasketProduct(Product $basketProduct): static
+    {
+        $this->basket_products->removeElement($basketProduct);
+
+        return $this;
+    }
+
+    public function getProductQuantities(): array
+    {
+        return $this->productQuantities;
+    }
+
+    public function setProductQuantities(Product $product, int $quantity): static
+    {
+        $productId = $product->getId();
+        $this->productQuantities[$productId] = $quantity;
+
+        return $this;
+    }
+
+    public function updateProductQuantity(Product $product, int $newQuantity): void
+    {
+        $this->productQuantities = [
+            $product->getId() => $newQuantity];
     }
 }

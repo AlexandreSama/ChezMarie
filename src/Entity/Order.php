@@ -61,9 +61,30 @@ class Order
     #[ORM\JoinColumn(nullable: false)]
     private ?User $userid = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $desiredPickupDateTime = null;
+
+    #[ORM\Column]
+    private ?bool $is_preparing = null;
+
+    #[ORM\Column(type: "string", nullable: true)]
+    private $stripeToken;
+
     public function __construct()
     {
         $this->archives = new ArrayCollection();
+    }
+
+    public function getStripeToken(): ?string
+    {
+        return $this->stripeToken;
+    }
+
+    public function setStripeToken(?string $stripeToken): self
+    {
+        $this->stripeToken = $stripeToken;
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -241,6 +262,30 @@ class Order
     public function setUserid(?User $userid): static
     {
         $this->userid = $userid;
+
+        return $this;
+    }
+
+    public function getDesiredPickupDateTime(): ?\DateTimeInterface
+    {
+        return $this->desiredPickupDateTime;
+    }
+
+    public function setDesiredPickupDateTime(\DateTimeInterface $desiredPickupDateTime): static
+    {
+        $this->desiredPickupDateTime = $desiredPickupDateTime;
+
+        return $this;
+    }
+
+    public function isIsPreparing(): ?bool
+    {
+        return $this->is_preparing;
+    }
+
+    public function setIsPreparing(bool $is_preparing): static
+    {
+        $this->is_preparing = $is_preparing;
 
         return $this;
     }
