@@ -42,9 +42,9 @@ class OrderType extends AbstractType
             ->add('basket', HiddenType::class)
             ->add('userid', HiddenType::class)
             ->add('stripeToken', HiddenType::class, [
+                'mapped' => false,
                 'attr' => [
-                    'class' => 'stripe-token-field',
-                    'id' => 'stripe-token-id'
+                    'id' => 'stripe-token-id',
                 ],
             ])
             ->add('submit', SubmitType::class, [
