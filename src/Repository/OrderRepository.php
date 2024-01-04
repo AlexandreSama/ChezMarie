@@ -21,28 +21,37 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-//    /**
-//     * @return Order[] Returns an array of Order objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('o.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getOngoingOrders()
+    {
+        // Commencez par obtenir le QueryBuilder
+        $qb = $this->createQueryBuilder('o');  // 'o' est un alias que vous utiliserez pour vous référer à Order dans la requête
 
-//    public function findOneBySomeField($value): ?Order
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        // Construire la requête avec des conditions 'OU'
+        $qb->where('o.is_preparing = :preparing')
+            ->orWhere('o.is_pending = :pending')
+            ->setParameters([
+                'preparing' => true,
+                'pending' => true
+            ]);
+
+        // Exécutez la requête et obtenez les résultats
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getClosedOrders()
+    {
+        // Commencez par obtenir le QueryBuilder
+        $qb = $this->createQueryBuilder('o');  // 'o' est un alias que vous utiliserez pour vous référer à Order dans la requête
+
+        // Construire la requête avec des conditions 'OU'
+        $qb->where('o.is_served = :served')
+            ->orWhere('o.is_notServer = :notServed')
+            ->setParameters([
+                'served' => true,
+                'notServed' => true
+            ]);
+
+        // Exécutez la requête et obtenez les résultats
+        return $qb->getQuery()->getResult();
+    }
 }

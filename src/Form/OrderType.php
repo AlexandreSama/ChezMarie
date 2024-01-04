@@ -42,15 +42,11 @@ class OrderType extends AbstractType
             ->add('basket', HiddenType::class)
             ->add('userid', HiddenType::class)
             ->add('stripeToken', HiddenType::class, [
-                'mapped' => false,
-                'attr' => [
-                    'id' => 'stripe-token-id',
-                ],
+                'mapped' => false
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Valider la commande',
                 'attr' => [
-                    'onclick'=> 'createToken()',
                     'class' => 'btn btn-success'
                 ]
             ])

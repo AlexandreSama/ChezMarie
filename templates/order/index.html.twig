@@ -13,7 +13,7 @@
             {{ form_row(form.customerAdress) }}
             {{ form_row(form.customerTown) }}
             {{ form_row(form.desiredPickupDateTime) }}
-            {{ form_widget(form.stripeToken) }}
+            {{ form_widget(form.stripeToken, {'id': 'stripe-token-id'}) }}
             <div class="card border-0 mt-4" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); border-radius: 30px;">
                 <div class="card-body">
                     {% for message in app.flashes('success') %}
@@ -42,6 +42,7 @@
     var elements = stripe.elements();
     var cardElement = elements.create('card');
     cardElement.mount('#card-element');
+    var form = document.querySelector('form');
 
     function createToken() {
         document.getElementById("pay-btn").disabled = true;
@@ -50,10 +51,17 @@
                 document.getElementById("pay-btn").disabled = false;
                 alert(result.error.message);
             } else {
-                console.log(result.token);
+                // Set the token as the value for the hidden input
                 document.getElementById("stripe-token-id").value = result.token.id;
+                // Submit the form
+                form.submit();
             }
         });
     }
+
+    form.addEventListener("submit", function(event){
+        event.preventDefault();
+        createToken();
+    });
 </script>
 {% endblock %}

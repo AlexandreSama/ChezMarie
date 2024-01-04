@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Facture</title>
+    {# Style your invoice here #}
+</head>
+
+<body>
+    <h1>Facture</h1>
+    <p>Date de Commande: {{ order.dateOrder | date('Y-m-d') }}</p>
+    <h2>Information du client</h2>
+    <p>{{ order.customerName }} {{order.customerFirstName}}</p>
+    <h2>Produits achetés</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in order.basket.getBasketProducts %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ order.basket.getProductQuantities[product.id] }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ order.basket.getProductQuantities[product.id] * product.price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p>Prix total : {{ order.fullPrice }}</p>
+</body>
+
+</html>
