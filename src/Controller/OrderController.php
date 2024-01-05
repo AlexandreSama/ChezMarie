@@ -22,6 +22,9 @@ class OrderController extends AbstractController
     #[Route('/order/{basketId}/{userId}/{fullPrice}', name: 'app_order')]
     public function index($basketId, $userId, $fullPrice, Request $request, BasketRepository $basketRepository, UserRepository $userRepository, EntityManagerInterface $em): Response
     {
+
+        $paypalClientId = $_ENV['PAYPAL_CLIENT_ID'];
+
         // Fetching basket and user with provided IDs
         $basket = $basketRepository->find($basketId);
         $user = $userRepository->find($userId);
@@ -85,7 +88,8 @@ class OrderController extends AbstractController
             'form' => $form->createView(),
             'controller_name' => 'OrderController',
             'stripe_key' => $_ENV["STRIPE_KEY"],
-            'fullPrice' => $fullPrice
+            'fullPrice' => $fullPrice,
+            'paypalClientId' => $paypalClientId
         ]);
     }
 
@@ -109,6 +113,85 @@ class OrderController extends AbstractController
 
             return false;
         }
+    }
+
+    #[Route('/payment/success', name: 'payment_success')]
+    public function paymentSuccess(Request $request): Response
+    {
+        $paymentID = $request->query->get('paymentID');
+        $payerID = $request->query->get('PayerID');
+
+        $accessToken = $this->getPayPalAccessToken();
+
+        // URL pour capturer le paiement. Utilisez l'ID de paiement retourné lors de la création du paiement
+        $url = "https://api.sandbox.paypal.com/v2/checkout/orders/$paymentID/capture";
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            "Authorization: Bearer $accessToken"
+        ));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Environnement Sandbox, ajustez en production
+        curl_setopt($ch, CURLOPT_POSTFIELDS, '{}'); // Corps vide pour la capture
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            // Si une erreur cURL s'est produite
+            throw new \Exception(curl_error($ch));
+        }
+
+        // Fermez la session cURL et libérez les ressources
+        curl_close($ch);
+
+        $data = json_decode($response);
+        if (isset($data->status) && $data->status == 'COMPLETED') {
+
+            
+
+            return $this->render('order/success.html.twig', [
+                'orderDetails' => $data 
+            ]);
+        } else {
+
+            return $this->render('order/error.html.twig', [
+                'error' => 'Le paiement n\'a pas pu être complété. Veuillez réessayer ou utiliser un autre mode de paiement.'
+            ]);
+        }
+    }
+
+    #[Route('/payment/cancel', name: 'payment_cancel')]
+    public function paymentCancel(): Response
+    {
+        // Gérer l'annulation du paiement ici (par exemple, loguer l'annulation, notifier l'utilisateur)
+
+        // Rediriger l'utilisateur vers une page de panier ou d'erreur
+        return $this->render('order/cancel.html.twig');
+    }
+
+    public function getPayPalAccessToken()
+    {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, "https://api.sandbox.paypal.com/v1/oauth2/token");
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, $_ENV['PAYPAL_CLIENT_ID'] . ":" . $_ENV['PAYPAL_CLIENT_SECRET']);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials");
+
+        $result = curl_exec($ch);
+
+        if (empty($result)) die("Error: No response.");
+        else {
+            $json = json_decode($result);
+            return $json->access_token;
+        }
+
+        curl_close($ch);
     }
 
     private function generateInvoicePDF($order)

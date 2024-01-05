@@ -3,6 +3,7 @@
 {% block title %}Valider votre commande{% endblock %}
 
 {% block body %}
+<script src="https://www.paypal.com/sdk/js?client-id={{ paypalClientId }}&currency=EUR"></script>
 <div class="container mt-5">
     <h1 class="text-center mb-4">Valider votre commande</h1>
     <div class="row justify-content-center">
@@ -27,10 +28,11 @@
                         <p>Montant total à payer : {{ fullPrice }} €</p>
                         <div id="card-element" class="form-control"></div>
                         {{ form_row(form.submit, { 'id': 'pay-btn' }) }}
-
                     </div>
                 </div>
             </div>
+            <h4>Ou payer avec Paypal</h4>
+            <div id="paypal-button-container"></div>
             {{ form_end(form) }}
         </div>
     </div>
@@ -59,9 +61,35 @@
         });
     }
 
-    form.addEventListener("submit", function(event){
+    form.addEventListener("submit", function (event) {
         event.preventDefault();
         createToken();
     });
+
+    paypal.Buttons({
+        createOrder: function (data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '{{ fullPrice }}'
+                    }
+                }]
+            });
+        },
+        onApprove: function (data, actions) {
+            return actions.order.capture().then(function (details) {
+                // Construire l'URL de redirection pour la route 'payment_success' avec l'orderID
+                const redirectUrl = new URL("{{ path('payment_success') }}", window.location.origin);
+                redirectUrl.searchParams.append("paymentID", data.orderID);
+
+                // Rediriger l'utilisateur vers la page de succès
+                window.location.href = redirectUrl.href;
+            });
+        },
+        onCancel: function (data) {
+            // Rediriger l'utilisateur vers la page d'annulation
+            window.location.href = "{{ path('payment_cancel') }}";
+        }
+    }).render('#paypal-button-container');
 </script>
 {% endblock %}
