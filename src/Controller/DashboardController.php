@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\EmployeType;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractController
@@ -38,6 +42,39 @@ class DashboardController extends AbstractController
         return $this->render('dashboard/listProducts.html.twig', [
             'controller_name' => 'DashboardController',
             'products' => $products
+        ]);
+    }
+
+    #[Route('/gerant/new_employe', name: 'new_employe')]
+    public function new_employe(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $em): Response
+    {
+
+        $employe = new User();
+
+        $form = $this->createForm(EmployeType::class, $employe);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $employe->setRoles(['ROLE_EMPLOYE']);
+            $employe->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $employe,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            $employe->isVerified(true);
+            $employe->setRoles(['ROLE_EMPLOYE']);
+
+            $em->persist($employe);
+            $em->flush();
+
+            return $this->redirectToRoute('app_dashboard_admin');	
+        }
+
+        return $this->render('dashboard/newEmploye.html.twig', [
+            'controller_name' => 'DashboardController',
+            'form' => $form->createView()
         ]);
     }
 
