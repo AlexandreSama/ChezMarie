@@ -6,13 +6,10 @@ use App\Entity\Invoice;
 use App\Entity\Order;
 use App\Entity\Reference;
 use App\Form\OrderType;
-use App\Repository\BasketRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
+use App\Service\Basket;
 use Doctrine\ORM\EntityManagerInterface;
-use Stripe\Charge;
-use Stripe\Exception\CardException;
-use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,21 +38,18 @@ class OrderController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route('/order/{basketId}/{userId}/{fullPrice}', name: 'app_order')]
-    public function index($basketId, $userId, $fullPrice, Request $request, BasketRepository $basketRepository, ProductRepository $productRepository, UserRepository $userRepository, EntityManagerInterface $em): Response
+    #[Route('/order/{userId}/{fullPrice}', name: 'app_order')]
+    public function index($userId, $fullPrice, Request $request, ProductRepository $productRepository, Basket $panierService, UserRepository $userRepository, EntityManagerInterface $em): Response
     {
 
         $paypalClientId = $_ENV['PAYPAL_CLIENT_ID'];
 
-        $basket = $basketRepository->find($basketId);
         $user = $userRepository->find($userId);
-
-        if (!$basket || !$user) {
+        if (!$user) {
             return $this->redirectToRoute('app_home');
         }
 
         $order = new Order();
-
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
 
@@ -63,31 +57,31 @@ class OrderController extends AbstractController
             $stripeToken = $form->get('stripeToken')->getData();
 
             if ($this->processStripePayment($stripeToken, $fullPrice)) {
-
                 $invoice = new Invoice();
                 $invoice->setCommande($order);
 
                 $em->persist($invoice);
 
-                $products = $basket->getBasketProducts();
-                foreach ($products as $value) {
-                    $reference = new Reference();
+                // Récupérer les produits du panier en session et leur quantité
+                $panierData = $panierService->getPanier();
+                foreach ($panierData as $productId => $quantity) {
+                    $product = $productRepository->find($productId);
+                    if ($product) {
+                        $product->setProductQuantity($product->getProductQuantity() - $quantity);
+                        $em->persist($product);
 
-                    $productFromRepo = $productRepository->findOneBy(['id' => $value->getId()]);
+                        $reference = new Reference();
+                        $reference->setProductName($product->getName())
+                            ->setFullPrice($product->getPrice())
+                            ->setProductId($product->getId())
+                            ->setCommande($order)
+                            ->setInvoice($invoice);
 
-                    $productFromRepo->setProductQuantity($productFromRepo->getProductQuantity() - $value->getProductQuantity());
-
-                    $reference->setProductName($value->getName())
-                        ->setFullPrice($value->getPrice())
-                        ->setProductId($value->getId())
-                        ->setCommande($order)
-                        ->setInvoice($invoice);
-
-                    $em->persist($reference);
+                        $em->persist($reference);
+                    }
                 }
 
-                $order->setBasket($basket)
-                    ->setUserid($user)
+                $order->setUserid($user)
                     ->setIsPending(false)
                     ->setIsServed(false)
                     ->setIsNotServer(false)
@@ -101,9 +95,12 @@ class OrderController extends AbstractController
                 $em->flush();
 
                 $this->generateInvoicePDF($order);
+
+                // Vider le panier en session après la création de la commande
+                $panierService->viderPanier();
+
                 return $this->redirectToRoute('app_home');
             } else {
-
                 return $this->redirectToRoute('app_basket');
             }
         }
@@ -194,10 +191,10 @@ class OrderController extends AbstractController
         $data = json_decode($response);
         if (isset($data->status) && $data->status == 'COMPLETED') {
 
-            
+
 
             return $this->render('order/success.html.twig', [
-                'orderDetails' => $data 
+                'orderDetails' => $data
             ]);
         } else {
 

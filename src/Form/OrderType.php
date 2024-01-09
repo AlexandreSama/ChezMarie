@@ -39,7 +39,6 @@ class OrderType extends AbstractType
             ->add('fullPrice', HiddenType::class)
             ->add('dateOrder', HiddenType::class)
             ->add('invoice', HiddenType::class)
-            ->add('basket', HiddenType::class)
             ->add('userid', HiddenType::class)
             ->add('stripeToken', HiddenType::class, [
                 'mapped' => false

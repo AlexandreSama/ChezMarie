@@ -18,6 +18,9 @@ services:
 
     app.circular_reference_handler:
         class: App\Handler\CircularReferenceHandler
+    App\Service\Basket:
+        arguments:
+            $requestStack: '@request_stack'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

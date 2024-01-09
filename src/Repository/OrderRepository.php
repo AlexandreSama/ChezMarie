@@ -41,6 +41,24 @@ class OrderRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function getSpecificOngoingOrders($userId)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb->where('o.userid = :userId')
+            ->andWhere($qb->expr()->orX(
+                'o.is_preparing = :preparing',
+                'o.is_pending = :pending'
+            ))
+            ->setParameters([
+                'userId' => $userId,
+                'preparing' => true,
+                'pending' => true
+            ]);
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * The function `getClosedOrders` retrieves closed orders from the database based on whether they
      * have been served or not.
@@ -54,6 +72,24 @@ class OrderRepository extends ServiceEntityRepository
         $qb->where('o.is_served = :served')
             ->orWhere('o.is_notServer = :notServed')
             ->setParameters([
+                'served' => true,
+                'notServed' => true
+            ]);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getSpecificClosedOrders($userId)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb->where('o.userid = :userId')
+            ->andWhere($qb->expr()->orX(
+                'o.is_served = :served',
+                'o.is_notServer = :notServed'
+            ))
+            ->setParameters([
+                'userId' => $userId,
                 'served' => true,
                 'notServed' => true
             ]);

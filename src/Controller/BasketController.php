@@ -2,13 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Basket; // Add this import statement
-use App\Entity\Order;
-use App\Entity\Product;
-use App\Repository\BasketRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ThemeRepository;
-use Doctrine\ORM\EntityManager;
+use App\Service\Basket;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,26 +26,31 @@ class BasketController extends AbstractController
      * @return Response a Response object.
      */
     #[Route('/basket', name: 'app_basket')]
-    public function index(BasketRepository $basketRepository, ThemeRepository $themeRepository): Response
+    public function index(ThemeRepository $themeRepository, Basket $Basket, ProductRepository $productRepository): Response
     {
-        $basket = $basketRepository->findOneBy(['user' => $this->getUser()]);
         $themes = $themeRepository->findAll();
 
-        if (!$basket) {
-            return $this->redirectToRoute('app_home');
-        }
+        // Récupération des données du panier
+        $panierData = $Basket->getPanier();
 
-        $products = $basket->getBasketProducts();
-        $productQuantities = $basket->getProductQuantities();
+        // Récupérer les détails des produits et les quantités
+        $products = [];
+        $productQuantities = [];
+        foreach ($panierData as $productId => $quantite) {
+            $product = $productRepository->find($productId);
+            if ($product) {
+                $products[] = $product;
+                $productQuantities[$productId] = $quantite;
+            }
+        }
 
         return $this->render('basket/index.html.twig', [
             'controller_name' => 'BasketController',
             'products' => $products,
             'productQuantities' => $productQuantities,
-            'totalBasketPrice' => $basket ? $this->calculateTotalBasketPrice($basket) : 0,
-            'totalQuantity' => $basket ? $this->calculateTotalQuantity($basket) : 0,
+            'totalBasketPrice' => $this->calculateTotalBasketPrice($products, $productQuantities),
+            'totalQuantity' => array_sum($productQuantities),
             'themes' => $themes,
-            'basket' => $basket,
             'user' => $this->getUser()
         ]);
     }
@@ -64,37 +65,16 @@ class BasketController extends AbstractController
      * 
      * @return float the total price of the products in the basket as a float value.
      */
-    private function calculateTotalBasketPrice($basket): float
+    private function calculateTotalBasketPrice($products, $productQuantities): float
     {
         $totalPrice = 0;
-
-        foreach ($basket->getBasketProducts() as $product) {
-
-            $totalPrice += $product->getPrice() * $basket->getProductQuantities()[$product->getId()];
+        foreach ($products as $product) {
+            $productId = $product->getId();
+            if (isset($productQuantities[$productId])) {
+                $totalPrice += $product->getPrice() * $productQuantities[$productId];
+            }
         }
-
         return $totalPrice;
-    }
-
-    /**
-     * The function calculates the total quantity of products in a given basket.
-     * 
-     * @param basket The parameter `` is an object representing a basket or cart. It likely has
-     * a method `getProductQuantities()` that returns an array or collection of quantities for each
-     * product in the basket.
-     * 
-     * @return int an integer value, which is the total quantity calculated from the product quantities
-     * in the basket.
-     */
-    private function calculateTotalQuantity($basket): int
-    {
-        $totalQuantity = 0;
-
-        foreach ($basket->getProductQuantities() as $quantity) {
-            $totalQuantity += $quantity;
-        }
-
-        return $totalQuantity;
     }
 
     /**
@@ -120,75 +100,32 @@ class BasketController extends AbstractController
      * @return Response a Response object.
      */
     #[Route('/basket/addproduct/{productid}', name: 'add_product')]
-    public function addProduct($productid, Request $request, ProductRepository $productRepository, BasketRepository $basketRepository, EntityManagerInterface $em): Response
+    public function addProduct($productid, Request $request, ProductRepository $productRepository, Basket $Basket): Response
     {
 
-        $user = $this->getUser();
-
-        if(!$user) {
-            return $this->redirectToRoute('app_login');
+        $product = $productRepository->find($productid);
+        if (!$product) {
+            // Gérer le cas où le produit n'est pas trouvé
+            return $this->redirectToRoute('some_route');
         }
 
-        $product = $productRepository->find($productid);
-        $quantity = $request->request->get('quantity');
-        $basket = $basketRepository->findOneBy(['user' => $user]);
+        $quantity = $request->request->get('quantity', 1); // La quantité par défaut est 1 si non fournie
 
-        if($quantity > $product->getProductQuantity()){
+        if ($quantity > $product->getProductQuantity()) {
             $this->addFlash('error', 'La quantité demandée est supérieure à la quantité disponible en stock');
             return $this->redirectToRoute('app_product', ['themeid' => $product->getCategory()->getTheme()->getId()]);
         }
 
-        if(!$basket) {
-            $basket = new Basket();
-            $basket->setUser($user);
-        }
-
-        $basket->addBasketProduct($product);
-        $basket->setProductQuantities($product, $quantity);
-
-        $em->persist($basket);
-
-        $em->flush();
+        $Basket->ajouterAuPanier($productid, $quantity);
 
         return $this->redirectToRoute('app_basket');
     }
 
-    /**
-     * This PHP function removes a product from the user's basket and redirects them to the basket
-     * page.
-     * 
-     * @param Request request The  parameter is an instance of the Request class, which
-     * represents an HTTP request. It contains information about the request, such as the request
-     * method, headers, and request data.
-     * @param productId The `productId` parameter is the ID of the product that needs to be removed
-     * from the basket.
-     * @param BasketRepository basketRepository The `basketRepository` is an instance of the
-     * `BasketRepository` class, which is responsible for retrieving and manipulating data related to
-     * the `Basket` entity. It is used to find the basket associated with the current user.
-     * @param EntityManagerInterface em EntityManagerInterface object used for managing entities in the
-     * database.
-     * 
-     * @return Response a Response object.
-     */
+
     #[Route('/remove-product/{productId}', name: 'remove_product_from_basket', methods: ['POST'])]
-    public function removeProductFromBasket(Request $request, $productId, BasketRepository $basketRepository, EntityManagerInterface $em): Response
+    public function removeProductFromBasket($productId, Basket $Basket): Response
     {
-        $user = $this->getUser();
-        $basket = $basketRepository->findOneBy(['user' => $user]);
-
-        if (!$basket) {
-            return $this->redirectToRoute('app_basket');
-        }
-
-        $product = $em->getRepository(Product::class)->find($productId);
-
-        if (!$product) {
-            return $this->redirectToRoute('app_basket');
-        }
-
-        $basket->removeBasketProduct($product);
-
-        $em->flush();
+        $Basket->supprimerDuPanier($productId);
 
         return $this->redirectToRoute('app_basket');
     }
@@ -212,30 +149,15 @@ class BasketController extends AbstractController
      * route.
      */
     #[Route('/update-quantity/{productId}', name: 'update_quantity_in_basket', methods: ['POST'])]
-    public function updateQuantityInBasket($productId, Request $request, BasketRepository $basketRepository, EntityManagerInterface $em): Response
+    public function updateQuantityInBasket($productId, Request $request, Basket $Basket): Response
     {
-        $user = $this->getUser();
-        $basket = $basketRepository->findOneBy(['user' => $user]);
-
-        if (!$basket) {
-            return $this->redirectToRoute('app_basket');
-        }
-
-        $product = $em->getRepository(Product::class)->find($productId);
-
-        if (!$product) {
-            return $this->redirectToRoute('app_basket');
-        }
-
         $newQuantity = (int)$request->request->get('quantity', 1);
 
         if ($newQuantity < 1) {
             return $this->redirectToRoute('app_basket');
         }
 
-        $basket->updateProductQuantity($product, $newQuantity);
-
-        $em->flush();
+        $Basket->changerQuantite($productId, $newQuantity);
 
         return $this->redirectToRoute('app_basket');
     }

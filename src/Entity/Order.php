@@ -55,10 +55,6 @@ class Order
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Basket $basket = null;
-
-    #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?User $userid = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -238,18 +234,6 @@ class Order
                 $archive->setCommande(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getBasket(): ?Basket
-    {
-        return $this->basket;
-    }
-
-    public function setBasket(?Basket $basket): static
-    {
-        $this->basket = $basket;
 
         return $this;
     }

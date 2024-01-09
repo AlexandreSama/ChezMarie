@@ -51,9 +51,16 @@
             <li>Prix total du panier: {{ totalBasketPrice }} $</li>
         </ul>
         <button class="btn btn-primary">
-            <a href="{{ path('app_order', {'basketId': basket.id, 'userId': user.id, 'fullPrice': totalBasketPrice}) }}">
+
+            {% if app.user %}
+            <a href="{{ path('app_order', {'userId': user.id, 'fullPrice': totalBasketPrice}) }}">
                 Poursuivre la commande
             </a>
+            {% else %}
+            <a href="{{ path('app_login') }}">
+                Se connecter pour poursuivre la commande
+            </a>
+            {% endif %}
         </button>
     </div>
 </div>

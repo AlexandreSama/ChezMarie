@@ -40,9 +40,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'userid', targetEntity: Order::class)]
     private Collection $orders;
 
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Basket $basket = null;
-
 
     public function __construct()
     {
@@ -192,23 +189,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBasket(): ?Basket
-    {
-        return $this->basket;
-    }
-
-    public function setBasket(Basket $basket): static
-    {
-        // set the owning side of the relation if necessary
-        if ($basket->getUser() !== $this) {
-            $basket->setUser($this);
-        }
-
-        $this->basket = $basket;
-
-        return $this;
-    }
-
     public function getHighestRole(): string
     {
         $roleHierarchy = [
@@ -226,4 +206,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $highestRole;
     }
+    
 }

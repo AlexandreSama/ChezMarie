@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\EmployeType;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use App\Repository\ThemeRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -140,10 +141,23 @@ class DashboardController extends AbstractController
      * @return Response a Response object.
      */
     #[Route('/dashboard', name: 'app_dashboard')]
-    public function dashboard(): Response
+    public function dashboard(ThemeRepository $themeRepository, OrderRepository $orderRepository, UserRepository $userRepository): Response
     {
+
+        $themes = $themeRepository->findAll();
+
+        $userEmail = $this->getUser()->getUserIdentifier();
+        $user = $userRepository->findOneBy(['email' => $userEmail]);
+
+        $ongoingOrders = $orderRepository->getSpecificOngoingOrders($user->getId());
+        $closedOrders = $orderRepository->getSpecificClosedOrders($user->getId());
+
+        
         return $this->render('dashboard/index.html.twig', [
-            'controller_name' => 'DashboardController',
+            'controller_name' => 'DashboardControllerClient',
+            'themes' => $themes,
+            'ongoingOrders' => $ongoingOrders,
+            'closedOrders' => $closedOrders
         ]);
     }
 
