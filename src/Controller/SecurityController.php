@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\UserRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,7 +42,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/api/login', name: 'api_login', methods: ['POST'])]
-    public function apiLogin(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher, JWTTokenManagerInterface $JWTManager): Response
+    public function apiLogin(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher, JWTTokenManagerInterface $JWTManager, LoggerInterface $logger): Response
     {
         // Extraire les données de la requête
         $data = json_decode($request->getContent(), true);
@@ -59,6 +60,8 @@ class SecurityController extends AbstractController
 
         // Si l'authentification est réussie, générer un JWT
         $token = $JWTManager->create($user);
+
+        $logger->info('User ' . $user->getEmail() . ' logged in successfully.');
 
         // Retourner le JWT dans la réponse avec l'email de l'utilisateur
         return $this->json(['token' => $token, 'user' => $user->getEmail()]);
