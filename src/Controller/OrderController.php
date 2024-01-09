@@ -18,6 +18,27 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class OrderController extends AbstractController
 {
+
+    #[Route('/order/{orderID}/success', name: 'app_order_success')]
+    public function orderSuccess($orderID, OrderRepository $orderRepository): Response
+    {
+        $order = $orderRepository->findOneBy(['id' => $orderID]);
+
+        if (!$order) {
+            return $this->redirectToRoute('app_home');
+        }
+
+        // Récupérez les détails des produits et les références associées à la commande
+        $references = $order->getArchives();
+
+        return $this->render('order/success.html.twig', [
+            'order' => $order,
+            'references' => $references,
+            'totalPrice' => $order->getFullPrice(),
+            'controller_name' => 'OrderController',
+        ]);
+    }
+
     /**
      * This PHP function handles the creation of an order, including processing the payment, generating
      * an invoice, and redirecting the user to the appropriate page.
@@ -97,6 +118,7 @@ class OrderController extends AbstractController
                 $panierService->viderPanier();
 
                 return $this->redirectToRoute('app_order_success', ['orderID' => $order->getId()]);
+
             } else {
 
                 dd($stripeToken);
@@ -113,25 +135,6 @@ class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/order/{orderID}/success', name: 'app_order_success')]
-    public function orderSuccess($orderID, EntityManagerInterface $em, OrderRepository $orderRepository): Response
-    {
-        $order = $orderRepository->findOneBy(['id' => $orderID]);
-
-        dd($order);
-        // if (!$order) {
-        //     return $this->redirectToRoute('app_home');
-        // }
-
-        // Récupérez les détails des produits et les références associées à la commande
-        $references = $order->getArchives();
-
-        return $this->render('order/success.html.twig', [
-            'order' => $order,
-            'references' => $references,
-            'totalPrice' => $order->getFullPrice()
-        ]);
-    }
     /**
      * The function processes a payment using the Stripe API, charging the specified amount in euros
      * from the provided stripeToken.

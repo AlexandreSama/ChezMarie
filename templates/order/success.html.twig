@@ -20,7 +20,6 @@
             {% for reference in references %}
             <tr>
                 <td>{{ reference.productName }}</td>
-                <td>{{ reference.quantity }}</td>
                 <td>{{ reference.fullPrice }}</td>
                 <td>
                     <div class="rating" data-product="{{ reference.productId }}">
@@ -36,7 +35,7 @@
 
     <!-- Lien de téléchargement de la facture -->
     <div class="d-flex justify-content-between">
-        <a href="{{ path('download_invoice', {'orderId': order.id}) }}" class="btn btn-primary">Télécharger la Facture</a>
+        <a href="{{ path('path_to_invoice', {'id': order.id}) }}" class="btn btn-primary">Télécharger la Facture</a>
         <strong>Total de la Commande : {{ order.fullPrice }}</strong>
     </div>
 </div>
