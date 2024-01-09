@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <title>Facture</title>
-    {# Style your invoice here #}
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
-
 <body>
     <h1>Facture</h1>
     <p>Date de Commande: {{ order.dateOrder | date('Y-m-d') }}</p>
     <h2>Information du client</h2>
-    <p>{{ order.customerName }} {{order.customerFirstName}}</p>
+    <p>{{ order.customerName }} {{ order.customerFirstName }}</p>
     <h2>Produits achetés</h2>
     <table>
         <thead>
             <tr>
                 <th>Produit</th>
-                <th>Quantité</th>
                 <th>Prix unitaire</th>
-                <th>Total</th>
             </tr>
         </thead>
         <tbody>
-            {% for product in order.basket.getBasketProducts %}
+            {% for reference in order.archives %}
             <tr>
-                <td>{{ product.name }}</td>
-                <td>{{ order.basket.getProductQuantities[product.id] }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ order.basket.getProductQuantities[product.id] * product.price }}</td>
+                <td>{{ reference.productName }}</td>
+                <td>{{ reference.quantity }}</td>
+                <td>{{ reference.fullPrice }}</td>
             </tr>
             {% endfor %}
         </tbody>
@@ -36,5 +44,4 @@
 
     <p>Prix total : {{ order.fullPrice }}</p>
 </body>
-
 </html>

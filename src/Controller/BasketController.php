@@ -13,18 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BasketController extends AbstractController
 {
-    /**
-     * This PHP function retrieves the user's basket and related data, calculates the total price and
-     * quantity, and renders the basket view with the necessary variables.
-     * 
-     * @param BasketRepository basketRepository An instance of the BasketRepository class, which is
-     * responsible for retrieving and manipulating data related to the Basket entity in the database.
-     * @param ThemeRepository themeRepository The `` parameter is an instance of the
-     * `ThemeRepository` class. It is used to fetch all themes from the database using the `findAll()`
-     * method. These themes are then passed to the view for rendering.
-     * 
-     * @return Response a Response object.
-     */
+
     #[Route('/basket', name: 'app_basket')]
     public function index(ThemeRepository $themeRepository, Basket $Basket, ProductRepository $productRepository): Response
     {
@@ -55,16 +44,7 @@ class BasketController extends AbstractController
         ]);
     }
 
-    /**
-     * The function calculates the total price of a basket by multiplying the price of each product
-     * with its quantity and summing them up.
-     * 
-     * @param basket The parameter `` is an object representing a shopping basket. It likely has
-     * a method `getBasketProducts()` that returns an array of products in the basket, and a method
-     * `getProductQuantities()` that returns an array of quantities for each product in the basket.
-     * 
-     * @return float the total price of the products in the basket as a float value.
-     */
+
     private function calculateTotalBasketPrice($products, $productQuantities): float
     {
         $totalPrice = 0;
@@ -77,28 +57,7 @@ class BasketController extends AbstractController
         return $totalPrice;
     }
 
-    /**
-     * This PHP function adds a product to the user's basket, updating the quantity if necessary, and
-     * redirects to the basket page.
-     * 
-     * @param productid The product ID is a parameter that represents the ID of the product being added
-     * to the basket. It is passed as a route parameter in the URL.
-     * @param Request request The  parameter is an instance of the Request class, which
-     * represents an HTTP request. It contains information about the request, such as the request
-     * method, headers, and request parameters.
-     * @param ProductRepository productRepository The `` is an instance of the
-     * `ProductRepository` class, which is responsible for retrieving and managing product data from
-     * the database. It is used to find the product with the given `` in the `addProduct`
-     * method.
-     * @param BasketRepository basketRepository The `basketRepository` is an instance of the
-     * `BasketRepository` class, which is responsible for retrieving and manipulating data related to
-     * the `Basket` entity in the database. It is used to find an existing basket for the current user
-     * or create a new one if it doesn't exist.
-     * @param EntityManagerInterface em EntityManagerInterface object used for persisting and flushing
-     * changes to the database.
-     * 
-     * @return Response a Response object.
-     */
+
     #[Route('/basket/addproduct/{productid}', name: 'add_product')]
     public function addProduct($productid, Request $request, ProductRepository $productRepository, Basket $Basket): Response
     {
@@ -130,24 +89,7 @@ class BasketController extends AbstractController
         return $this->redirectToRoute('app_basket');
     }
 
-    /**
-     * This PHP function updates the quantity of a product in the user's basket.
-     * 
-     * @param productId The `productId` parameter is the identifier of the product that needs to be
-     * updated in the basket. It is passed as a route parameter in the URL.
-     * @param Request request The  parameter is an instance of the Request class, which
-     * represents an HTTP request. It contains information about the request, such as the request
-     * method, headers, and request parameters.
-     * @param BasketRepository basketRepository The `basketRepository` is an instance of the
-     * `BasketRepository` class, which is responsible for retrieving and manipulating data related to
-     * the `Basket` entity. It is used to find the basket associated with the current user.
-     * @param EntityManagerInterface em EntityManagerInterface object used for managing entities in the
-     * database.
-     * 
-     * @return Response a Response object, which is typically used to generate a response to be sent
-     * back to the client. In this case, the function is redirecting the user to the 'app_basket'
-     * route.
-     */
+
     #[Route('/update-quantity/{productId}', name: 'update_quantity_in_basket', methods: ['POST'])]
     public function updateQuantityInBasket($productId, Request $request, Basket $Basket): Response
     {

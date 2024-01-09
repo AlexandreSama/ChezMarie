@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation de votre commande{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2>Confirmation de Commande</h2>
+
+    <!-- Liste des produits -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix Total</th>
+                <th>Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reference in references %}
+            <tr>
+                <td>{{ reference.productName }}</td>
+                <td>{{ reference.quantity }}</td>
+                <td>{{ reference.fullPrice }}</td>
+                <td>
+                    <div class="rating" data-product="{{ reference.productId }}">
+                        {% for i in 1..5 %}
+                        <span class="star" data-value="{{ i }}">&#9733;</span>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Lien de téléchargement de la facture -->
+    <div class="d-flex justify-content-between">
+        <a href="{{ path('download_invoice', {'orderId': order.id}) }}" class="btn btn-primary">Télécharger la Facture</a>
+        <strong>Total de la Commande : {{ order.fullPrice }}</strong>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.rating').forEach(ratingDiv => {
+        ratingDiv.addEventListener('click', event => {
+            if (event.target.classList.contains('star')) {
+                const productId = ratingDiv.getAttribute('data-product');
+                const ratingValue = event.target.getAttribute('data-value');
+                console.log(`Produit ${productId}, Note: ${ratingValue}`);
+                // Ici, vous pouvez ajouter la logique pour envoyer la note au serveur
+            }
+        });
+    });
+</script>
+{% endblock %}

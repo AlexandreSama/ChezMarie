@@ -6,6 +6,7 @@ use App\Entity\Invoice;
 use App\Entity\Order;
 use App\Entity\Reference;
 use App\Form\OrderType;
+use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use App\Service\Basket;
@@ -20,17 +21,12 @@ class OrderController extends AbstractController
     /**
      * This PHP function handles the creation of an order, including processing the payment, generating
      * an invoice, and redirecting the user to the appropriate page.
-     * 
-     * @param basketId The `basketId` parameter represents the ID of the basket or shopping cart from
-     * which the order is being placed.
      * @param userId The `userId` parameter represents the ID of the user who is placing the order.
      * @param fullPrice The `fullPrice` parameter represents the total price of the order. It is passed
      * as an argument to the `index` method of the `OrderController`.
      * @param Request request The `` parameter is an instance of the `Request` class, which
      * represents an HTTP request. It contains information about the request, such as the request
      * method, headers, query parameters, and request body.
-     * @param BasketRepository basketRepository An instance of the BasketRepository class, used to
-     * retrieve information about the basket.
      * @param UserRepository userRepository An instance of the UserRepository class, used to retrieve
      * user data from the database.
      * @param EntityManagerInterface em EntityManagerInterface object used for persisting and managing
@@ -45,6 +41,7 @@ class OrderController extends AbstractController
         $paypalClientId = $_ENV['PAYPAL_CLIENT_ID'];
 
         $user = $userRepository->find($userId);
+
         if (!$user) {
             return $this->redirectToRoute('app_home');
         }
@@ -99,9 +96,11 @@ class OrderController extends AbstractController
                 // Vider le panier en session après la création de la commande
                 $panierService->viderPanier();
 
-                return $this->redirectToRoute('app_home');
+                return $this->redirectToRoute('app_order_success', ['orderID' => $order->getId()]);
             } else {
-                return $this->redirectToRoute('app_basket');
+
+                dd($stripeToken);
+                $this->addFlash('error', 'Le paiement n\'a pas pu être complété. Veuillez réessayer ou utiliser un autre mode de paiement.');
             }
         }
 
@@ -114,6 +113,25 @@ class OrderController extends AbstractController
         ]);
     }
 
+    #[Route('/order/{orderID}/success', name: 'app_order_success')]
+    public function orderSuccess($orderID, EntityManagerInterface $em, OrderRepository $orderRepository): Response
+    {
+        $order = $orderRepository->findOneBy(['id' => $orderID]);
+
+        dd($order);
+        // if (!$order) {
+        //     return $this->redirectToRoute('app_home');
+        // }
+
+        // Récupérez les détails des produits et les références associées à la commande
+        $references = $order->getArchives();
+
+        return $this->render('order/success.html.twig', [
+            'order' => $order,
+            'references' => $references,
+            'totalPrice' => $order->getFullPrice()
+        ]);
+    }
     /**
      * The function processes a payment using the Stripe API, charging the specified amount in euros
      * from the provided stripeToken.
