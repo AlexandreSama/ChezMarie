@@ -1,5 +1,6 @@
 - Payement
 - Afficher commandes
 - Multi-filtre (Bouton "Recherche...") sur les produits
+- Email
 
 - Style (boutons, font, couleurs, padding)
