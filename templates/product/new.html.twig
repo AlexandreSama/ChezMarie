@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Créer un nouveau produit</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+    {{ form_end(form) }}
+{% endblock %}

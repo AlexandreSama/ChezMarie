@@ -208,4 +208,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getHighestRole(): string
+    {
+        $roleHierarchy = [
+            'ROLE_GERANT' => 3,
+            'ROLE_EMPLOYE' => 2,
+            'ROLE_USER' => 1
+        ];
+
+        $highestRole = 'ROLE_USER'; // Définir une valeur par défaut
+        foreach ($this->getRoles() as $role) {
+            if ($roleHierarchy[$role] > $roleHierarchy[$highestRole]) {
+                $highestRole = $role;
+            }
+        }
+
+        return $highestRole;
+    }
 }

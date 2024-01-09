@@ -78,7 +78,6 @@ class ProductType extends AbstractType
                     ])
                 ],
             ])
-            ->add('basket', HiddenType::class)
             ->add('submit', SubmitType::class)
         ;
     }

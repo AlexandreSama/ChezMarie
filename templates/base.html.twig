@@ -25,7 +25,7 @@
 
         {% if controller_name != 'SecurityController' and controller_name != 'RegistrationController' and controller_name != 'OrderController'%}
 
-            {% if controller_name == 'DashboardController' %}
+            {% if controller_name == 'DashboardController' or controller_name == 'ProductControllerNew' %}
             {{ include('shared/sidebar2.html.twig') }}
             {% else %}
             {{ include('shared/sidebar.html.twig') }}

@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\EmployeType;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -117,6 +118,18 @@ class DashboardController extends AbstractController
         return $this->render('dashboard/newEmploye.html.twig', [
             'controller_name' => 'DashboardController',
             'form' => $form->createView()
+        ]);
+    }
+    
+    #[Route('/gerant/list_users', name: 'list_users')]
+    public function list(UserRepository $userRepository)
+    {
+        $users = $userRepository->findAll();
+
+        return $this->render('dashboard/listUsers.html.twig', [
+            'users' => $users,
+            'controller_name' => 'DashboardController',
+
         ]);
     }
 

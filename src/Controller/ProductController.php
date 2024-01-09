@@ -285,4 +285,26 @@ class ProductController extends AbstractController
             'categories' => $categories
         ]);
     }
+
+    #[Route('/product/new', name: 'product_new')]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $product = new Product();
+        $form = $this->createForm(ProductType::class, $product);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($product);
+            $entityManager->flush();
+
+            // Redirection après enregistrement, vous pouvez changer la route selon vos besoins
+            return $this->redirectToRoute('list_products');
+        }
+
+        return $this->render('product/new.html.twig', [
+            'form' => $form->createView(),
+            'controller_name' => 'ProductControllerNew',
+        ]);
+    }
 }

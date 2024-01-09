@@ -7,6 +7,7 @@ use App\Entity\Order;
 use App\Entity\Reference;
 use App\Form\OrderType;
 use App\Repository\BasketRepository;
+use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Charge;
@@ -41,7 +42,7 @@ class OrderController extends AbstractController
      * @return Response a Response object.
      */
     #[Route('/order/{basketId}/{userId}/{fullPrice}', name: 'app_order')]
-    public function index($basketId, $userId, $fullPrice, Request $request, BasketRepository $basketRepository, UserRepository $userRepository, EntityManagerInterface $em): Response
+    public function index($basketId, $userId, $fullPrice, Request $request, BasketRepository $basketRepository, ProductRepository $productRepository, UserRepository $userRepository, EntityManagerInterface $em): Response
     {
 
         $paypalClientId = $_ENV['PAYPAL_CLIENT_ID'];
@@ -69,8 +70,12 @@ class OrderController extends AbstractController
                 $em->persist($invoice);
 
                 $products = $basket->getBasketProducts();
-                foreach ($products as $key => $value) {
+                foreach ($products as $value) {
                     $reference = new Reference();
+
+                    $productFromRepo = $productRepository->findOneBy(['id' => $value->getId()]);
+
+                    $productFromRepo->setProductQuantity($productFromRepo->getProductQuantity() - $value->getProductQuantity());
 
                     $reference->setProductName($value->getName())
                         ->setFullPrice($value->getPrice())
