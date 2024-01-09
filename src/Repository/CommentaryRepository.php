@@ -22,29 +22,42 @@ class CommentaryRepository extends ServiceEntityRepository
         parent::__construct($registry, Commentary::class);
     }
 
+    /**
+     * The function `findAverageRatingsByTheme` retrieves the average ratings of products belonging to
+     * a specific theme, along with their corresponding picture URLs and slugs.
+     * 
+     * @param themeId The themeId parameter is the ID of the theme for which you want to find the
+     * average ratings.
+     * @param limit The "limit" parameter is an optional parameter that specifies the maximum number of
+     * results to be returned. By default, it is set to 6, but you can change it to any positive
+     * integer value to limit the number of results returned by the query.
+     * 
+     * @return an array of results. Each result contains the following information:
+     * - 'productId': The ID of the product.
+     * - 'avg_rating': The average rating of the product.
+     * - 'picture_url': The URL of the product's picture.
+     * - 'picture_slug': The slug of the product's picture.
+     */
     public function findAverageRatingsByTheme($themeId, $limit = 6)
     {
-        // Créer le constructeur de requête
         $qb = $this->createQueryBuilder('c')
             ->select('product.id as productId, AVG(c.note) as avg_rating')
             ->join('c.product', 'product')
-            ->join('product.category', 'category') // Join sur Category depuis Product
-            ->where('category.theme = :themeId') // Filtre pour un thème spécifique
+            ->join('product.category', 'category')
+            ->where('category.theme = :themeId')
             ->andWhere('product.is_active = 1')
-            ->setParameter('themeId', $themeId) // Définir la valeur du thème
+            ->setParameter('themeId', $themeId)
             ->groupBy('product.id')
             ->orderBy('avg_rating', 'DESC')
             ->setMaxResults($limit);
 
-        // Vous obtenez d'abord les notes moyennes pour les produits.
         $results = $qb->getQuery()->getResult();
 
-        // Ensuite, pour chaque produit, nous devons aller chercher l'image qui correspond à notre logique de sélection.
         $pictureRepository = $this->getEntityManager()->getRepository(Picture::class);
 
         foreach ($results as &$result) {
             $productId = $result['productId'];
-            // Ceci est une sous-requête où nous récupérons l'image basée sur une certaine logique. 
+
             $picture = $pictureRepository->createQueryBuilder('p')
                 ->where('p.product = :productId')
                 ->setParameter('productId', $productId)
@@ -53,7 +66,6 @@ class CommentaryRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getOneOrNullResult();
 
-            // Ajoutez l'URL de l'image (ou null si aucune image) au résultat.
             $result['picture_url'] = $picture ? $picture->getFileName() : null;
             $result['picture_slug'] = $picture ? $picture->getSlug() : null;
         }

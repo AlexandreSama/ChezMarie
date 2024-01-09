@@ -21,12 +21,16 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
+    /**
+     * The function `getOngoingOrders` retrieves ongoing orders that are either in the preparing or
+     * pending state.
+     * 
+     * @return a list of ongoing orders.
+     */
     public function getOngoingOrders()
     {
-        // Commencez par obtenir le QueryBuilder
-        $qb = $this->createQueryBuilder('o');  // 'o' est un alias que vous utiliserez pour vous référer à Order dans la requête
+        $qb = $this->createQueryBuilder('o'); 
 
-        // Construire la requête avec des conditions 'OU'
         $qb->where('o.is_preparing = :preparing')
             ->orWhere('o.is_pending = :pending')
             ->setParameters([
@@ -34,16 +38,19 @@ class OrderRepository extends ServiceEntityRepository
                 'pending' => true
             ]);
 
-        // Exécutez la requête et obtenez les résultats
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * The function `getClosedOrders` retrieves closed orders from the database based on whether they
+     * have been served or not.
+     * 
+     * @return the result of the query executed on the database.
+     */
     public function getClosedOrders()
     {
-        // Commencez par obtenir le QueryBuilder
-        $qb = $this->createQueryBuilder('o');  // 'o' est un alias que vous utiliserez pour vous référer à Order dans la requête
+        $qb = $this->createQueryBuilder('o');
 
-        // Construire la requête avec des conditions 'OU'
         $qb->where('o.is_served = :served')
             ->orWhere('o.is_notServer = :notServed')
             ->setParameters([
@@ -51,7 +58,6 @@ class OrderRepository extends ServiceEntityRepository
                 'notServed' => true
             ]);
 
-        // Exécutez la requête et obtenez les résultats
         return $qb->getQuery()->getResult();
     }
 }

@@ -36,6 +36,15 @@ class ThemeRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+    /**
+     * The function findByID takes a theme ID as input and returns the corresponding Theme object if
+     * found, or null if not found.
+     * 
+     * @param themeid The parameter "themeid" is the ID of the theme that you want to find in the
+     * database.
+     * 
+     * @return ?Theme an instance of the Theme class or null.
+     */
     public function findByID($themeid): ?Theme
     {
         return $this->createQueryBuilder('t')

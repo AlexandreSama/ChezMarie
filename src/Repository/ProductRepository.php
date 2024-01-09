@@ -47,6 +47,15 @@ class ProductRepository extends ServiceEntityRepository
     //        ;
     //    }
 
+   /**
+    * The function `findProductsByCategory` retrieves products belonging to a specific category and
+    * also fetches the first picture associated with each product.
+    * 
+    * @param categoryId The categoryId parameter is the ID of the category for which you want to find
+    * products.
+    * 
+    * @return an array of products that belong to a specific category.
+    */
     public function findProductsByCategory($categoryId)
     {
         $qb = $this->createQueryBuilder('p')
@@ -56,12 +65,11 @@ class ProductRepository extends ServiceEntityRepository
 
         $results = $qb->getQuery()->getResult();
 
-        // Ensuite, pour chaque produit, nous devons aller chercher l'image qui correspond à notre logique de sélection.
         $pictureRepository = $this->getEntityManager()->getRepository(Picture::class);
 
         foreach ($results as $product) {
             $productId = $product->getId();
-            // Ceci est une sous-requête où nous récupérons l'image basée sur une certaine logique. 
+
             $picture = $pictureRepository->createQueryBuilder('p')
                 ->where('p.product = :productId')
                 ->setParameter('productId', $productId)
@@ -70,7 +78,6 @@ class ProductRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getOneOrNullResult();
 
-            // Ajoutez l'URL de l'image (ou null si aucune image) au produit.
             if ($picture) {
                 $result['picture_url'] = $picture ? $picture->getFileName() : null;
                 $result['picture_slug'] = $picture ? $picture->getSlug() : null;
@@ -80,6 +87,11 @@ class ProductRepository extends ServiceEntityRepository
         return $results;
     }
 
+    /**
+     * The function returns a query builder object for finding all records in a database table.
+     * 
+     * @return a Doctrine query object.
+     */
     public function findAllQuery()
     {
         return $this->createQueryBuilder('p')

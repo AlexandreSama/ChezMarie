@@ -28,11 +28,29 @@ class ApiAuthenticator extends AbstractAuthenticator
         $this->jwtManager = $jwtManager;
     }
 
+    /**
+     * The function checks if the request path is '/api/login' and the request method is 'POST'.
+     * 
+     * @param Request request The parameter `` is an instance of the `Request` class. It
+     * represents an HTTP request made to the server.
+     * 
+     * @return ?bool a boolean value, either true or false.
+     */
     public function supports(Request $request): ?bool
     {
         return $request->getPathInfo() === '/api/login' && $request->isMethod('POST');
     }
 
+    /**
+     * The function takes a request, extracts the username and password from the request data, and
+     * returns a Passport object with a UserBadge and PasswordCredentials.
+     * 
+     * @param Request request The `` parameter is an instance of the `Request` class, which
+     * represents an HTTP request. It contains information about the request, such as the request
+     * method, headers, and body.
+     * 
+     * @return Passport an instance of the Passport class.
+     */
     public function authenticate(Request $request): Passport
     {
         $data = json_decode($request->getContent(), true);
@@ -52,6 +70,20 @@ class ApiAuthenticator extends AbstractAuthenticator
         );
     }
 
+    /**
+     * This function generates a JSON response containing a JWT token and the user identifier upon
+     * successful authentication.
+     * 
+     * @param Request request The  parameter represents the current HTTP request object.
+     * @param TokenInterface token The  parameter is an instance of TokenInterface, which
+     * represents the authentication token for the current user. It contains information about the
+     * authenticated user, such as their roles and credentials.
+     * @param string firewallName The `` parameter represents the name of the firewall
+     * that the user is authenticated against. A firewall is a security configuration in Symfony that
+     * defines how incoming requests should be handled and authenticated.
+     * 
+     * @return ?Response a JsonResponse with an array containing the JWT token and the user identifier.
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         $user = $token->getUser();
@@ -63,6 +95,20 @@ class ApiAuthenticator extends AbstractAuthenticator
         return new JsonResponse(['token' => $jwt, 'user' => $user->getUserIdentifier()]);
     }
 
+    /**
+     * The function returns a JSON response with an unauthorized status code and a message based on the
+     * authentication failure exception.
+     * 
+     * @param Request request The  parameter is an instance of the
+     * Symfony\Component\HttpFoundation\Request class. It represents the current HTTP request being
+     * handled by the application.
+     * @param AuthenticationException exception The  parameter is an instance of the
+     * AuthenticationException class. It represents the exception that occurred during the
+     * authentication process. It contains information about the error, such as the error message and
+     * any additional data associated with the error.
+     * 
+     * @return ?Response A JsonResponse object is being returned.
+     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         $data = ['message' => strtr($exception->getMessageKey(), $exception->getMessageData())];
