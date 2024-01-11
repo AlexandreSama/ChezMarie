@@ -1,0 +1,69 @@
+main {
+
+    height: 100vh;
+
+    .sixProductsBoulangerie, .sixProductsPatisserie{
+        height: 50%;
+        padding-top: 15px;
+        text-align: center;
+
+        .products {
+
+            height: 80%;
+            display: flex;
+            justify-content: space-around;
+
+            .product-card {
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                overflow: hidden;
+                max-width: 300px;
+                width: 100%;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                transform: translateY(20px);
+                transition: transform 0.3s ease;
+                
+                &:hover {
+                    transform: translateY(0);
+                }
+
+                .product-image {
+                    object-fit: cover;
+                    width: 100%;
+                    height: 60%;
+                }
+
+                .product-info {
+                    padding: 15px;
+
+                    .product-name {
+                        margin: 0;
+                        font-size: 1.2em;
+                    }
+
+                    .product-rating {
+                        color: gold;
+
+                        .star {
+                            cursor: pointer;
+                        }
+                    }
+
+                    .product-button {
+                        background-color: white;
+                        color: black;
+                        border: none;
+                        padding: 10px 20px;
+                        margin-top: 10px;
+                        border-radius: 5px;
+                        cursor: pointer;
+
+                        .fa-arrow-right{
+                            margin-right: 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

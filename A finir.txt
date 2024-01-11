@@ -1,6 +1,10 @@
-V - Payement
-V - Afficher commandes
-V - Panier en session, possible de mettre des produits dans le panier mais commande obligé de se connecter
-- Multi-filtre (Bouton "Recherche...") sur les produits
-- Email
-- Style (boutons, font, couleurs, padding)
+V - Ne pas permettre des chiffres négatifs de quantités
+V - Griser les produits qui ne sont plus en stock
+V - Agrandir la modal Fiche Produit (Et changer le style)
+V - Mettre plusieurs images produit
+V - Repenser l'incrémentation des quantités
+V - Retravailler la page Register
+V - Gérer la suppression des users
+V - Anonymiser les commandes et l'utilisateur après suppression de l'utilisateur
+V - Ajouter une référence a la commande
+V - Mettre no-index au niveau du côté Employé

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html style="height: 100%;">
+<html>
 
 <head>
     <meta charset="UTF-8">
@@ -19,34 +19,30 @@
     {% endblock %}
 </head>
 
-<body style="height: 100%;">
+<body>
     <header>
 
-        {% if controller_name != 'SecurityController' and controller_name != 'RegistrationController' and controller_name != 'OrderController' and controller_name != 'registrationController'%}
+        {# {% if controller_name != 'SecurityController' and controller_name != 'RegistrationController' and controller_name != 'OrderController' and controller_name != 'registrationController'%}
 
             {% if controller_name == 'DashboardController' or controller_name == 'ProductControllerNew' %}
             {{ include('shared/sidebar2.html.twig') }}
-            {% else %}
-            {{ include('shared/sidebar.html.twig') }}
             {% endif %}
 
-        {% endif %}
+        {% endif %} #}
         {{include('shared/navbar.html.twig')}}
 
     </header>
-    <main class="container-fluid main">
 
-        {% if categories is defined %}
+        {# {% if categories is defined %}
         <div class="d-flex justify-content-around subbar">
             {% for category in categories %}
                 <a href="{{path('app_category', {'themeid': theme.id, 'id': category.id})}}">{{category.categoryName}}</a>
             {% endfor %}
         </div>
-        {% endif %}
+        {% endif %} #}
 
         {% block body %}
         {% endblock %}
-    </main>
 </body>
 
 </html>

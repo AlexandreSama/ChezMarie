@@ -22,70 +22,86 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-    //    /**
-    //     * @return Product[] Returns an array of Product objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Product
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
-
-   /**
-    * The function `findProductsByCategory` retrieves products belonging to a specific category and
-    * also fetches the first picture associated with each product.
-    * 
-    * @param categoryId The categoryId parameter is the ID of the category for which you want to find
-    * products.
-    * 
-    * @return an array of products that belong to a specific category.
-    */
-    public function findProductsByCategory($categoryId)
+    /**
+     * The function finds the top rated products by theme, grouping them by theme and selecting the top
+     * 4 products for each theme based on their average note.
+     * 
+     * @return an array of top-rated products grouped by theme. Each theme has a maximum of 4 products,
+     * and each product includes the product object and its average note.
+     */
+    public function findTopRatedProductsByTheme()
     {
-        $qb = $this->createQueryBuilder('p')
-            ->join('p.category', 'c')
-            ->where('c.id = :categoryId')
-            ->setParameter('categoryId', $categoryId);
+        $qb = $this->createQueryBuilder('product');
 
-        $results = $qb->getQuery()->getResult();
+        $qb->select('product, AVG(commentary.note) as avgNote, category, theme.id as themeId')
+            ->join('product.commentaries', 'commentary')
+            ->join('product.category', 'category')
+            ->join('category.theme', 'theme')
+            ->groupBy('theme.id, product.id')
+            ->orderBy('theme.id', 'ASC')
+            ->addOrderBy('avgNote', 'DESC');
 
-        $pictureRepository = $this->getEntityManager()->getRepository(Picture::class);
+        $query = $qb->getQuery();
+        $results = $query->getResult();
 
-        foreach ($results as $product) {
-            $productId = $product->getId();
+        $topProducts = [];
+        foreach ($results as $result) {
+            $themeId = $result['themeId'];
 
-            $picture = $pictureRepository->createQueryBuilder('p')
-                ->where('p.product = :productId')
-                ->setParameter('productId', $productId)
-                ->orderBy('p.id', 'ASC')
-                ->setMaxResults(1)
-                ->getQuery()
-                ->getOneOrNullResult();
+            if (!isset($topProducts[$themeId])) {
+                $topProducts[$themeId] = [];
+            }
 
-            if ($picture) {
-                $result['picture_url'] = $picture ? $picture->getFileName() : null;
-                $result['picture_slug'] = $picture ? $picture->getSlug() : null;
+            if (count($topProducts[$themeId]) < 4) {
+                $topProducts[$themeId][] = [
+                    'product' => $result[0],
+                    'avgNote' => $result['avgNote']
+                ];
             }
         }
 
-        return $results;
+        return $topProducts;
     }
+
+    /**
+     * The function `findProductsByCategory` retrieves products belonging to a specific category and
+     * also fetches the first picture associated with each product.
+     * 
+     * @param categoryId The categoryId parameter is the ID of the category for which you want to find
+     * products.
+     * 
+     * @return an array of products that belong to a specific category.
+     */
+    // public function findProductsByCategory($categoryId)
+    // {
+    //     $qb = $this->createQueryBuilder('p')
+    //         ->join('p.category', 'c')
+    //         ->where('c.id = :categoryId')
+    //         ->setParameter('categoryId', $categoryId);
+
+    //     $results = $qb->getQuery()->getResult();
+
+    //     $pictureRepository = $this->getEntityManager()->getRepository(Picture::class);
+
+    //     foreach ($results as $product) {
+    //         $productId = $product->getId();
+
+    //         $picture = $pictureRepository->createQueryBuilder('p')
+    //             ->where('p.product = :productId')
+    //             ->setParameter('productId', $productId)
+    //             ->orderBy('p.id', 'ASC')
+    //             ->setMaxResults(1)
+    //             ->getQuery()
+    //             ->getOneOrNullResult();
+
+    //         if ($picture) {
+    //             $result['picture_url'] = $picture ? $picture->getFileName() : null;
+    //             $result['picture_slug'] = $picture ? $picture->getSlug() : null;
+    //         }
+    //     }
+
+    //     return $results;
+    // }
 
     /**
      * The function returns a query builder object for finding all records in a database table.

@@ -1,30 +1,27 @@
 <nav class="navbar">
-    <div class="holder">
-        <button class="btn btn-link" id="sidebarBtn"><i class="fa-solid fa-bars fa-xl"></i></button>
-        <a href="{{path('app_home')}}"><img src="{{asset('img/fouet.png')}}" alt="" class="iconWebsite"></a>
-        <div class="hold">
-            <input type="text" id="searchInput">
-            <button class="btn btn-link p-0" id="searchBar"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
-            <a href="{{path('app_basket')}}"><i class="fa-solid fa-basket-shopping fa-xl"></i></a>
-            {% if app.user %}
-            <div class="dropdown">
-                {# <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-bs-toggle="dropdown" aria-expanded="false"> #}
-                    <i class="fa-solid fa-user fa-xl" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                {# </button> #}
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    {% if is_granted('ROLE_GERANT') %}
-                    <li><a class="dropdown-item" href="{{ path('app_dashboard_admin') }}">Dashboard Admin</a></li>
-                    {% else %}
-                    <li><a class="dropdown-item" href="{{ path('app_dashboard') }}">Dashboard</a></li>
-                    <li><a class="dropdown-item" href="{{path('app_logout')}}">Se déconnecter</a></li>
-                    <li><a class="dropdown-item" href="{{path('anonymize_account')}}">Supprimer mon compte</a></li>
-                    {% endif %}
-                </ul>
+    <div class="top">
+        <div class="firstPart">
+            <div class="search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Rechercher
             </div>
-            {% else %}
-            <a href="{{ path('app_login') }}"><i class="fa-solid fa-user fa-xl"></i></a>
-            {% endif %}
         </div>
+        <div class="title">
+            <h1>
+                Chez <strong>Marie</strong>
+            </h1>
+            <h2>
+                <strong>Boulan</strong>gerie-Patis<strong>serie</strong>
+            </h2>
+        </div>
+        <div class="secondPart">
+            <i class="fa-solid fa-basket-shopping"></i>
+            <i class="fa-solid fa-user"></i>
+        </div>
+    </div>
+    <div class="bottom">
+        {% for category in categories %}
+        <a href="{{path('app_category', {'id': category.id})}}">{{category.categoryName}}</a>
+        {% endfor %}
     </div>
 </nav>

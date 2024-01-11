@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'Lora';
+    src: url('../fonts/Lora.ttf');
+}
+@import '~bootstrap/scss/bootstrap';
+@import url('navbar.scss');
+@import url('main.scss');
+
+
+*{
+    font-family: 'Lora', serif;
+}
+
+body{
+    min-height: 100%;
+}

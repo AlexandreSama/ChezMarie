@@ -14,8 +14,6 @@ class Commentary
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $note = null;
 
     #[ORM\ManyToOne(inversedBy: 'commentaries')]
     #[ORM\JoinColumn(nullable: false)]
@@ -25,23 +23,13 @@ class Commentary
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
+    private ?string $note = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getNote(): ?int
-    {
-        return $this->note;
-    }
-
-    public function setNote(int $note): static
-    {
-        $this->note = $note;
-
-        return $this;
-    }
-
 
     public function getProduct(): ?Product
     {
@@ -63,6 +51,18 @@ class Commentary
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(string $note): static
+    {
+        $this->note = $note;
 
         return $this;
     }

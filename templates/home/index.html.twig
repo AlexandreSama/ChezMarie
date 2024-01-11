@@ -3,19 +3,64 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="{{asset('img/slider1.jpg')}}" class="d-block w-100 sliderImg" alt="...">
+<main>
+    <section class="sixProductsBoulangerie">
+        <h3>Les six produits les mieux notés côté boulangerie</h3>
+        <div class="products">
+            {% for productInfo in products[1] %}
+            {% set product = productInfo.product %}
+            {% set avgNote = productInfo.avgNote|number_format(0, '.', '') %} <!-- Formatage de la note moyenne -->
+
+            <div class="product-card">
+                <img src="{{ asset('img/' ~ product.pictures[0].fileName) }}" alt="{{ product.name }}"
+                    class="product-image">
+                <div class="product-info">
+                    <h3 class="product-name">{{ product.name }}</h3>
+                    <div class="product-rating">
+                        {% for i in 1..5 %}
+                        {% if i <= avgNote %} <span class="star">&#9733;</span>
+                            {% else %}
+                            <span class="star">&#9734;</span>
+                            {% endif %}
+                            {% endfor %}
+                    </div>
+                    <button class="product-button"><i class="fa-solid fa-arrow-right"></i>Voir le produit</button>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        <div class="carousel-item">
-            <img src="{{asset('img/slider2.jpg')}}" class="d-block w-100 sliderImg" alt="...">
+    </section>
+
+    <section class="sixProductsPatisserie">
+        <h3>Les six produits les mieux notés côté pâtisserie</h3>
+        <div class="products">
+            {% for productInfo in products[2] %}
+            {% set product = productInfo.product %}
+            {% set avgNote = productInfo.avgNote|number_format(0, '.', '') %} <!-- Formatage de la note moyenne -->
+
+            <div class="product-card">
+                {% if product.pictures|length > 0 %}
+
+                <img src="{{ asset('img/' ~ product.pictures[0].fileName) }}" alt="{{ product.name }}"
+                    class="product-image">
+                {% else %}
+                <img src="#" alt="{{ product.name }}" class="product-image">
+                {% endif %}
+                <div class="product-info">
+                    <h3 class="product-name">{{ product.name }}</h3>
+                    <div class="product-rating">
+                        {% for i in 1..5 %}
+                        {% if i <= avgNote %} <span class="star">&#9733;</span>
+                            {% else %}
+                            <span class="star">&#9734;</span>
+                            {% endif %}
+                            {% endfor %}
+                    </div>
+                    <button class="product-button"><i class="fa-solid fa-arrow-right"></i>Voir le produit</button>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        <div class="carousel-item">
-            <img src="{{asset('img/slider3.jpg')}}" class="d-block w-100 sliderImg" alt="...">
-        </div>
-    </div>
-</div>
-<h1 class="titleMain">Bienvenue chez Marie !</h1>
-<h5 class="textMain">Des gâteaux aux pains, venez découvrir nos saveurs !</h5>
+    </section>
+</main>
 {% endblock %}

@@ -39,12 +39,10 @@ class CategoryController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route('/category/{themeid}/{id}', name: 'app_category')]
-    public function index($themeid, $id, PaginatorInterface $paginator, Request $request, ThemeRepository $themeRepository, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
+    #[Route('/category/{id}', name: 'app_category')]
+    public function index($id, PaginatorInterface $paginator, Request $request, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
     {
         $category = $categoryRepository->findOneBy(['id' => $id]);
-        $theme = $themeRepository->findOneBy(['id' => $themeid]);
-        $categories = $theme->getCategories();
         
         $query = $productRepository->findProductsByCategory($category->getId());
 
@@ -58,10 +56,6 @@ class CategoryController extends AbstractController
             'controller_name' => 'CategoryController',
             'productsWithPictures' => $productsWithPictures,
             'categoryName' => $category->getCategoryName(),
-            'theme' => $theme,
-            'themeid' => $themeid,
-            'themes' => $themeRepository->findAll(),
-            'categories' => $categories
         ]);
     }
 }
