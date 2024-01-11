@@ -8,7 +8,7 @@
         {% for product in productsWithPictures %}
         <div class="card" style="width: 20rem;">
             {% if product.pictures[0] is defined %}
-            <figure>
+            <figure class="{{ product.productQuantity < 1 ? 'grayscale' : '' }}">
                 <img class="card-img-top" src="{{ asset('img/' ~ product.pictures[0].fileName) }}"
                     alt="{{product.pictures[0].slug}}">
             </figure>
@@ -20,16 +20,19 @@
             <div class="card-body">
                 <h5 class="card-title">{{product.name}}</h5>
                 <p class="card-text">{{product.description}}</p>
+                {% if product.productQuantity < 1 %}
+                <button class="btn btn-secondary disabled">Produit épuisé</button>
+                {% else %}
                 <a href="{{path('show_product_without_category', {themeid: themeid, productid: product.id})}}"
-                    class="btn btn-primary showProductRating" data-toggle="modal" data-target="#productModal">Voir le
-                    produit</a>
+                    class="btn btn-primary showProductRating" data-toggle="modal" data-target="#productModal">Voir le produit</a>
+                {% endif %}
             </div>
         </div>
         {% endfor %}
     </div>
-    <div class="navigation">
-        {{ knp_pagination_render(productsWithPictures) }}
-    </div>
+<div class="navigation">
+    {{ knp_pagination_render(productsWithPictures) }}
+</div>
 </div>
 
 <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel"
@@ -38,6 +41,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="productModalLabel">Détail du produit</h5>
+                <button type="button" class="close btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
             </div>

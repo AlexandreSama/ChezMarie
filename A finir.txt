@@ -1,6 +1,6 @@
 V - Payement
 V - Afficher commandes
+V - Panier en session, possible de mettre des produits dans le panier mais commande obligé de se connecter
 - Multi-filtre (Bouton "Recherche...") sur les produits
 - Email
-- Panier en session, possible de mettre des produits dans le panier mais commande obligé de se connecter
 - Style (boutons, font, couleurs, padding)

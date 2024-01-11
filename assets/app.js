@@ -59,3 +59,47 @@ $('.showProductRating').on('click', function(e) {
         $('#productModal').modal('show');
     });
 });
+
+function increaseValue() {
+    var maxQuantity = parseInt(document.getElementById('quantity').getAttribute('data-max'), 10);
+    var value = parseInt(document.getElementById('quantity').value, 10);
+    value = isNaN(value) ? 0 : value;
+    if (value < maxQuantity) {
+        value++;
+        document.getElementById('quantity').value = value;
+    }
+}
+
+function decreaseValue() {
+    var value = parseInt(document.getElementById('quantity').value, 10);
+    value = isNaN(value) ? 0 : value;
+    value < 2 ? value = 1 : value--;
+    document.getElementById('quantity').value = value;
+}
+
+
+$('#productModal').on('shown.bs.modal', function () {
+    attachEventHandlers();
+});
+
+function attachEventHandlers() {
+
+    function changeImage(element) {
+        var imgSrc = element.getAttribute('data-img-src');
+        var imgAlt = element.getAttribute('data-img-alt');
+        var mainImage = document.getElementById('mainImage').getElementsByTagName('img')[0];
+        mainImage.src = imgSrc;
+        mainImage.alt = imgAlt;
+    }
+
+    const increaseButton = document.getElementById('increaseValue');
+    const decreaseButton = document.getElementById('decreaseValue');
+
+    if (increaseButton) {
+        increaseButton.addEventListener('click', increaseValue);
+    }
+
+    if (decreaseButton) {
+        decreaseButton.addEventListener('click', decreaseValue);
+    }
+}

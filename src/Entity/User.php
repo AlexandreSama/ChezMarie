@@ -206,5 +206,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $highestRole;
     }
-    
+
+    public function anonymize(): void
+    {
+        $this->email = 'anonymous' . $this->id . '@example.com';
+        $this->password = '';
+        $this->roles = [];
+    }
 }

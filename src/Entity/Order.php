@@ -66,6 +66,9 @@ class Order
     #[ORM\Column(type: "string", nullable: true)]
     private $stripeToken;
 
+    #[ORM\Column(length: 25)]
+    private ?string $reference = null;
+
     public function __construct()
     {
         $this->archives = new ArrayCollection();
@@ -270,6 +273,18 @@ class Order
     public function setIsPreparing(bool $is_preparing): static
     {
         $this->is_preparing = $is_preparing;
+
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(string $reference): static
+    {
+        $this->reference = $reference;
 
         return $this;
     }

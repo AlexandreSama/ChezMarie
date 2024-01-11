@@ -75,6 +75,9 @@ class OrderController extends AbstractController
             $stripeToken = $form->get('stripeToken')->getData();
 
             if ($this->processStripePayment($stripeToken, $fullPrice)) {
+
+                $uniqueReference = uniqid('ref-');
+                $order->setReference($uniqueReference);
                 $invoice = new Invoice();
                 $invoice->setCommande($order);
 

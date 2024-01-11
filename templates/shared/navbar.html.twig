@@ -7,13 +7,23 @@
             <button class="btn btn-link p-0" id="searchBar"><i class="fa-solid fa-magnifying-glass fa-xl"></i></button>
             <a href="{{path('app_basket')}}"><i class="fa-solid fa-basket-shopping fa-xl"></i></a>
             {% if app.user %}
-            {% if is_granted('ROLE_GERANT') %}
-            <a href="{{path('app_dashboard_admin')}}"><i class="fa-solid fa-user fa-xl"></i></a>
+            <div class="dropdown">
+                {# <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false"> #}
+                    <i class="fa-solid fa-user fa-xl" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                {# </button> #}
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {% if is_granted('ROLE_GERANT') %}
+                    <li><a class="dropdown-item" href="{{ path('app_dashboard_admin') }}">Dashboard Admin</a></li>
+                    {% else %}
+                    <li><a class="dropdown-item" href="{{ path('app_dashboard') }}">Dashboard</a></li>
+                    <li><a class="dropdown-item" href="{{path('app_logout')}}">Se déconnecter</a></li>
+                    <li><a class="dropdown-item" href="{{path('anonymize_account')}}">Supprimer mon compte</a></li>
+                    {% endif %}
+                </ul>
+            </div>
             {% else %}
-            <a href="{{path('app_dashboard')}}"><i class="fa-solid fa-user fa-xl"></i></a>
-            {% endif %}
-            {% else %}
-            <a href="{{path('app_login')}}"><i class="fa-solid fa-user fa-xl"></i></a>
+            <a href="{{ path('app_login') }}"><i class="fa-solid fa-user fa-xl"></i></a>
             {% endif %}
         </div>
     </div>

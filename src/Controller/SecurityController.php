@@ -3,16 +3,15 @@
 namespace App\Controller;
 
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class SecurityController extends AbstractController
 {
@@ -41,29 +40,40 @@ class SecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    // #[Route('/api/login', name: 'api_login', methods: ['POST'])]
-    // public function apiLogin(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher, JWTTokenManagerInterface $JWTManager, LoggerInterface $logger): Response
-    // {
-    //     // Extraire les données de la requête
-    //     $data = json_decode($request->getContent(), true);
-    //     $username = $data['username'] ?? null;  // Utilisez 'username' au lieu de 'email'
-    //     $password = $data['password'] ?? null;
+    #[Route('/api/login', name: 'api_login', methods: ['POST'])]
+    public function apiLogin(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher, JWTTokenManagerInterface $JWTManager, LoggerInterface $logger): Response
+    {
+        // Extraire les données de la requête
+        $data = json_decode($request->getContent(), true);
+        $username = $data['username'] ?? null;  // Utilisez 'username' au lieu de 'email'
+        $password = $data['password'] ?? null;
 
-    //     // Ajoutez ici votre logique pour charger l'utilisateur
-    //     $user = $userRepository->findOneBy(['email' => $username]);  // Recherchez par email
+        // Ajoutez ici votre logique pour charger l'utilisateur
+        $user = $userRepository->findOneBy(['email' => $username]);  // Recherchez par email
 
-    //     // Vérifiez le mot de passe
-    //     if (!$user || !$passwordHasher->isPasswordValid($user, $password)) {
-    //         // Gérer l'authentification échouée avec une réponse plus appropriée
-    //         return $this->json(['error' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
-    //     }
+        // Vérifiez le mot de passe
+        if (!$user || !$passwordHasher->isPasswordValid($user, $password)) {
+            // Gérer l'authentification échouée avec une réponse plus appropriée
+            return $this->json(['error' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
+        }
 
-    //     // Si l'authentification est réussie, générer un JWT
-    //     $token = $JWTManager->create($user);
+        // Si l'authentification est réussie, générer un JWT
+        $token = $JWTManager->create($user);
 
-    //     $logger->info('User ' . $user->getEmail() . ' logged in successfully.');
+        $logger->info('User ' . $user->getEmail() . ' logged in successfully.');
 
-    //     // Retourner le JWT dans la réponse avec l'email de l'utilisateur
-    //     return $this->json(['token' => $token, 'user' => $user->getEmail()]);
-    // }
+        // Retourner le JWT dans la réponse avec l'email de l'utilisateur
+        return $this->json(['token' => $token, 'user' => $user->getEmail()]);
+    }
+    
+    #[Route(path: '/user/delete', name: 'anonymize_account')]
+    public function anonymizeUser(UserRepository $userRepository, EntityManagerInterface $entityManager): Response
+    {
+        $userEmail = $this->getUser()->getUserIdentifier();
+        $user = $userRepository->findOneBy(['email' => $userEmail]);
+        $user->anonymize();
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_home');
+    }
 }

@@ -1,9 +1,20 @@
+.grayscale {
+    filter: grayscale(100%);
+}
+
 .rankedProducts {
     background-color: #f8f9fa;
 }
 
 .products{
     height: 95%;
+}
+
+.modal-dialog{
+    max-width: none!important;
+    margin: 28px!important;
+    padding: 28px!important;
+    height: 93%!important;
 }
 
 .card {

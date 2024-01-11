@@ -1,46 +1,61 @@
 {% block body %}
-<div class="product">
-    <div class="product-image">
-        <figure>
-            <img src="{{ asset('img/' ~ picture.fileName) }}" class="d-block w-100 imgCarouselProduct"
-                alt="{{picture.slug}}">
-        </figure>
-    </div>
-    <div class="product-content">
-        <h1>{{product.name}}</h1>
-        <div class="d-flex align-items-center productProperties">
-            <div class="productInfos h-100 d-flex flex-column justify-content-evenly">
-                <p>Description : {{product.description}}</p>
-                <p>Prix : {{product.price}}€</p>
-                <p>Poids : {{product.weight}}Kg</p>
-                <p>Quantité : {{product.productQuantity}}</p>
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        <!-- Section Gauche: Détails du Produit -->
+        <div class="col-md-5 border-end">
+            <div class="product h-75">
+                <h1>{{ product.name }}</h1>
+                <p><strong>Description :</strong> {{ product.description }}</p>
+                <p><strong>Prix :</strong> {{ product.price }}€</p>
+                <p><strong>Poids :</strong> {{ product.weight }}Kg</p>
+                <p><strong>Quantité :</strong> {{ product.productQuantity }}</p>
+
+                <div class="listIngredients">
+                    <p><strong>Liste des ingrédients :</strong></p>
+                    <ul class="list-unstyled">
+                        {% for ingredient in ingredients %}
+                        <li>
+                            <p class="m-0">{{ ingredient.name }}</p>
+                            <p>Allergène : {{ ingredient.isAllergene ? 'Oui' : 'Non' }}</p>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-            <div class="listIngredients d-flex flex-column justify-content-around h-100 align-items-center">
-                <p>Liste des ingrédients :</p>
-                <ul class="list">
-                    {% for ingredient in ingredients %}
-                    <li>
-                        <p class="m-0">{{ingredient.name}}</p>
-                        <p>Allergéne :
-                            {% if ingredient.isisAllergene == true %}
-                            Oui
-                            {% else %}
-                            Non
-                            {% endif %}
-                        </p>
-                    </li>
-                    {% endfor %}
-                </ul>
+            <div class="basketHold">
+                <form action="{{ path('add_product', {productid: product.id}) }}" method="post">
+                    <div class="d-flex flex-column">
+                        <label for="quantity">Quantité</label>
+                        <div class="input-group mb-3">
+                            <button type="button" class="btn btn-outline-secondary" id="decreaseValue">-</button>
+                            <input type="text" id="quantity" name="quantity" class="form-control text-center"
+                                value="1" readonly data-max="{{ product.productQuantity }}">
+                            <button type="button" class="btn btn-outline-secondary" id="increaseValue">+</button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Ajouter au panier</button>
+                </form>
             </div>
         </div>
-        <div class="basketHold justify-content-around">
-            <form action="{{ path('add_product', {productid: product.id}) }}" method="post">
-                <div class="d-flex flex-column">
-                    <label for="selectQuantity">Quantité</label>
-                    <input type="number" name="quantity" class="selectQuantity">
+
+        <!-- Section Droite: Sélecteur d'Images -->
+        <div class="col-md-7">
+            <div class="product-image d-flex flex-row">
+                <!-- Image Principale -->
+                <figure id="mainImage" class="main-image-container">
+                    <img src="{{ asset('img/' ~ picture.fileName) }}" class="d-block w-100" alt="{{ picture.slug }}">
+                </figure>
+
+                <!-- Miniatures -->
+                <div class="thumbnails-container d-flex flex-column">
+                    {% for image in product.pictures %}
+                    <div class="thumbnail" onclick="changeImage(this)"
+                        data-img-src="{{ asset('img/' ~ image.fileName) }}" data-img-alt="{{ image.slug }}">
+                        <img src="{{ asset('img/' ~ image.fileName) }}" alt="{{ image.slug }}">
+                    </div>
+                    {% endfor %}
                 </div>
-                <button type="submit" class="btn btn-success">Ajouter au panier</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
