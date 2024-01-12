@@ -8,6 +8,12 @@ header {
         padding: 0;
         display: flex;
         flex-direction: column;
+        position: relative;
+        z-index: 9000;
+
+        &:hover{
+            cursor: url('https://image.pngaaa.com/913/4477913-middle.png'), auto;
+        }
 
         .top {
 

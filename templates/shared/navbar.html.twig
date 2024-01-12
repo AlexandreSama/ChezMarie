@@ -1,16 +1,4 @@
 <nav class="navbar">
-    {# <div class="top"> #}
-        {# <div class="firstPart">
-            <div class="search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                Rechercher
-            </div>
-        </div> #}
-        {# <div class="secondPart">
-            <i class="fa-solid fa-basket-shopping"></i>
-            <i class="fa-solid fa-user"></i>
-        </div> #}
-    {# </div> #}
     <div class="links">
         {% for category in categories %}
         <a href="{{path('app_category', {'id': category.id})}}">{{category.categoryName}}</a>

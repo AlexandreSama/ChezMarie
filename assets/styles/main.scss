@@ -183,14 +183,30 @@
                         }
                     }
 
-                    .product-button {
+                    .product-button-boulangerie {
                         background-color: white;
                         color: black;
                         border: none;
                         padding: 10px 20px;
                         margin-top: 10px;
                         border-radius: 5px;
-                        cursor: pointer;
+                        cursor: url('../images/u-1f956-g2q5gzkdmspxlc2zj07xn__1_-removebg-preview.cur'), auto;
+
+
+                        .fa-arrow-right {
+                            margin-right: 10px;
+                        }
+                    }
+
+                    .product-button-patisserie {
+                        background-color: white;
+                        color: black;
+                        border: none;
+                        padding: 10px 20px;
+                        margin-top: 10px;
+                        border-radius: 5px;
+                        cursor: url('../images/png-clipart-three-chocolate-sticks-illustration-eclairs-food-french-pastries-thumbnail__1_-removebg-.cur'), auto;
+
 
                         .fa-arrow-right {
                             margin-right: 10px;
