@@ -4,63 +4,143 @@
 
 {% block body %}
 <main>
-    <section class="sixProductsBoulangerie">
-        <h3>Les six produits les mieux notés côté boulangerie</h3>
-        <div class="products">
-            {% for productInfo in products[1] %}
-            {% set product = productInfo.product %}
-            {% set avgNote = productInfo.avgNote|number_format(0, '.', '') %} <!-- Formatage de la note moyenne -->
+    <section class="search">
+        <div class="mainBox">
+            <h1 class="titleHome">Chez Marie</h1>
+            <h2 class="subtitleHome">Votre boulangerie-pâtisserie en ligne</h2>
+            <form action="#" class="formSearch">
+                <input type="text" placeholder="Rechercher un produit" class="searchBar">
+                <button type="submit" class="searchButton">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+        <i class="fa-solid fa-arrow-down bounce"></i>
+    </section>
 
-            <div class="product-card">
-                <img src="{{ asset('img/' ~ product.pictures[0].fileName) }}" alt="{{ product.name }}"
-                    class="product-image">
-                <div class="product-info">
-                    <h3 class="product-name">{{ product.name }}</h3>
-                    <div class="product-rating">
-                        {% for i in 1..5 %}
-                        {% if i <= avgNote %} <span class="star">&#9733;</span>
-                            {% else %}
-                            <span class="star">&#9734;</span>
-                            {% endif %}
-                            {% endfor %}
+    <div class="productsMain">
+        <section class="sixProductsBoulangerie">
+            <h3 class="sectionTitle">Les six produits les mieux notés côté boulangerie</h3>
+            <div class="carousel">
+                <div class="carousel-slides">
+                    <div class="carousel-group">
+                        {% for productInfo in products[1] %}
+                        {% set product = productInfo.product %}
+                        {% set avgNote = productInfo.avgNote|number_format(0, '.', '') %}
+                        <div class="product-card">
+                            <img src="{{ asset('img/' ~ product.pictures[0].fileName) }}" alt="{{ product.name }}" class="product-image">
+                            <div class="product-info">
+                                <h3 class="product-name">{{ product.name }}</h3>
+                                <div class="product-rating">
+                                    {% for i in 1..5 %}
+                                    {% if i <= avgNote %} <span class="star">&#9733;</span>
+                                    {% else %}
+                                    <span class="star">&#9734;</span>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <button class="product-button"><i class="fa-solid fa-arrow-right"></i>Voir le produit</button>
+                            </div>
+                        </div>
+                        {% if loop.index is divisible by(3) and not loop.last %}
+                        </div><div class="carousel-group">
+                        {% endif %}
+                        {% endfor %}
                     </div>
-                    <button class="product-button"><i class="fa-solid fa-arrow-right"></i>Voir le produit</button>
                 </div>
+                <button class="prev"><i class="fa fa-arrow-left"></i></button>
+                <button class="next"><i class="fa fa-arrow-right"></i></button>
             </div>
-            {% endfor %}
+        </section>
+        <section class="sixProductsPatisserie">
+            <h3 class="sectionTitle">Les six produits les mieux notés côté boulangerie</h3>
+            <div class="carousel">
+                <div class="carousel-slides">
+                    <div class="carousel-group">
+                        {% for productInfo in products[2] %}
+                        {% set product = productInfo.product %}
+                        {% set avgNote = productInfo.avgNote|number_format(0, '.', '') %}
+                        <div class="product-card">
+                            {% if product.pictures|length > 0 %}
+                            <img src="{{ asset('img/' ~ product.pictures[0].fileName) }}" alt="{{ product.name }}" class="product-image">
+                            {% else %}
+                            <img src="#" alt="{{ product.name }}" class="product-image">
+                            {% endif %}
+                            <div class="product-info">
+                                <h3 class="product-name">{{ product.name }}</h3>
+                                <div class="product-rating">
+                                    {% for i in 1..5 %}
+                                    {% if i <= avgNote %} <span class="star">&#9733;</span>
+                                    {% else %}
+                                    <span class="star">&#9734;</span>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <button class="product-button"><i class="fa-solid fa-arrow-right"></i>Voir le produit</button>
+                            </div>
+                        </div>
+                        {% if loop.index is divisible by(3) and not loop.last %}
+                        </div><div class="carousel-group">
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <button class="prev"><i class="fa fa-arrow-left"></i></button>
+                <button class="next"><i class="fa fa-arrow-right"></i></button>
+            </div>
+        </section>
+    </div>
+    <section id="about-us" class="about-bakery-section">
+        <h2>À Propos de Chez Marie</h2>
+        <div class="about-content">
+            <img src="{{asset('img/slider3.jpg')}}" alt="Boulangerie Chez Marie" class="bakery-image">
+            <div class="text-content">
+                <h3>Notre Histoire</h3>
+                <p>Bienvenue à <strong>Chez Marie</strong>, un havre de gourmandises et de traditions au cœur de notre belle ville. Fondée en 2000 par Marie Dupont, une passionnée de pâtisserie et de boulangerie, notre établissement a grandi en se nourrissant de l'amour pour le bon pain et les douceurs sucrées.</p>
+                
+                <h3>Nos Produits</h3>
+                <p>À Chez Marie, nous sommes fiers de vous proposer un vaste assortiment de pains artisanaux, de viennoiseries croustillantes et de pâtisseries délicates. Chaque pièce est créée avec passion, en utilisant des ingrédients locaux et de saison pour vous garantir une expérience gustative inoubliable.</p>
+                
+                <h3>Notre Engagement</h3>
+                <p>Chez Marie, l'excellence et le souci du détail sont au cœur de notre démarche. Nous nous engageons à offrir à nos clients des produits de la plus haute qualité, tout en soutenant les producteurs locaux et en respectant notre environnement.</p>
+                
+                <h3>Venez Nous Rendre Visite</h3>
+                <p>Entrez dans l'univers chaleureux de Chez Marie, où chaque visite est une promesse de découverte et de plaisir. Venez déguster nos créations et partager un moment de convivialité autour d'un bon pain ou d'une pâtisserie raffinée. Nous vous attendons avec impatience !</p>
+            </div>
         </div>
     </section>
 
-    <section class="sixProductsPatisserie">
-        <h3>Les six produits les mieux notés côté pâtisserie</h3>
-        <div class="products">
-            {% for productInfo in products[2] %}
-            {% set product = productInfo.product %}
-            {% set avgNote = productInfo.avgNote|number_format(0, '.', '') %} <!-- Formatage de la note moyenne -->
-
-            <div class="product-card">
-                {% if product.pictures|length > 0 %}
-
-                <img src="{{ asset('img/' ~ product.pictures[0].fileName) }}" alt="{{ product.name }}"
-                    class="product-image">
-                {% else %}
-                <img src="#" alt="{{ product.name }}" class="product-image">
-                {% endif %}
-                <div class="product-info">
-                    <h3 class="product-name">{{ product.name }}</h3>
-                    <div class="product-rating">
-                        {% for i in 1..5 %}
-                        {% if i <= avgNote %} <span class="star">&#9733;</span>
-                            {% else %}
-                            <span class="star">&#9734;</span>
-                            {% endif %}
-                            {% endfor %}
-                    </div>
-                    <button class="product-button"><i class="fa-solid fa-arrow-right"></i>Voir le produit</button>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var carousels = document.querySelectorAll('.carousel');
+        
+            carousels.forEach(function(carousel) {
+                var carouselSlides = carousel.querySelector('.carousel-slides');
+                var groups = carousel.querySelectorAll('.carousel-group');
+                var totalWidth = groups.length * carousel.offsetWidth;
+                var nextButton = carousel.querySelector('.next');
+                var prevButton = carousel.querySelector('.prev');
+                let translateXValue = 0;
+        
+                nextButton.addEventListener('click', function() {
+                    if (Math.abs(translateXValue) < totalWidth - carousel.offsetWidth) {
+                        translateXValue -= carousel.offsetWidth;
+                    } else {
+                        translateXValue = 0; // Revenir au début
+                    }
+                    carouselSlides.style.transform = `translateX(${translateXValue}px)`;
+                });
+        
+                prevButton.addEventListener('click', function() {
+                    if (translateXValue < 0) {
+                        translateXValue += carousel.offsetWidth;
+                    } else {
+                        translateXValue = -(totalWidth - carousel.offsetWidth); // Aller à la fin
+                    }
+                    carouselSlides.style.transform = `translateX(${translateXValue}px)`;
+                });
+            });
+        });
+    </script>
 </main>
 {% endblock %}

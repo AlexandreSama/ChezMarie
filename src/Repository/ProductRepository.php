@@ -52,7 +52,7 @@ class ProductRepository extends ServiceEntityRepository
                 $topProducts[$themeId] = [];
             }
 
-            if (count($topProducts[$themeId]) < 4) {
+            if (count($topProducts[$themeId]) < 6) {
                 $topProducts[$themeId][] = [
                     'product' => $result[0],
                     'avgNote' => $result['avgNote']

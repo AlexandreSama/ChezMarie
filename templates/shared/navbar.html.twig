@@ -1,27 +1,27 @@
 <nav class="navbar">
-    <div class="top">
-        <div class="firstPart">
+    {# <div class="top"> #}
+        {# <div class="firstPart">
             <div class="search">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 Rechercher
             </div>
-        </div>
-        <div class="title">
-            <h1>
-                Chez <strong>Marie</strong>
-            </h1>
-            <h2>
-                <strong>Boulan</strong>gerie-Patis<strong>serie</strong>
-            </h2>
-        </div>
-        <div class="secondPart">
+        </div> #}
+        {# <div class="secondPart">
             <i class="fa-solid fa-basket-shopping"></i>
             <i class="fa-solid fa-user"></i>
-        </div>
-    </div>
-    <div class="bottom">
+        </div> #}
+    {# </div> #}
+    <div class="links">
         {% for category in categories %}
         <a href="{{path('app_category', {'id': category.id})}}">{{category.categoryName}}</a>
         {% endfor %}
+    </div>
+    <div class="user">
+        <a href="#"><i class="fa-solid fa-basket-shopping"></i></a>
+        {% if app.user %}
+        <a href="#"><i class="fa-solid fa-user"></i></a>
+        {% else %}
+        <a href="{{path('app_login')}}"><i class="fa-solid fa-right-to-bracket"></i></i></a>
+        {% endif %}
     </div>
 </nav>

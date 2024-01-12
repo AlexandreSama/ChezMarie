@@ -1,3 +1,9 @@
+$khaki: #C2B398ff;
+$raw-umber: #956848ff;
+$walnut-brown: #6F6456ff;
+$gunmetal: #353C44ff;
+$seal-brown: #642B19ff;
+
 @font-face {
     font-family: 'Lora';
     src: url('../fonts/Lora.ttf');
@@ -5,6 +11,7 @@
 @import '~bootstrap/scss/bootstrap';
 @import url('navbar.scss');
 @import url('main.scss');
+@import url('footer.scss');
 
 
 *{
@@ -12,5 +19,5 @@
 }
 
 body{
-    min-height: 100%;
+    min-height: 100vh;
 }

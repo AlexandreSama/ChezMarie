@@ -1,17 +1,148 @@
 main {
 
-    height: 100vh;
+    min-height: 100vh;
 
-    .sixProductsBoulangerie, .sixProductsPatisserie{
-        height: 50%;
-        padding-top: 15px;
-        text-align: center;
+    .search {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
 
-        .products {
+        background-image: url('../images/mainBackground.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        .mainBox {
 
-            height: 80%;
+            height: 45vh;
+            width: 80vh;
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(1.3px);
+            -webkit-backdrop-filter: blur(1.3px);
+            border: 1px solid #956848ff;
+
+            .titleHome {
+                color: white;
+                font-size: 5rem;
+            }
+
+            .subtitleHome {
+                color: black;
+                font-size: 2rem;
+            }
+
+            .formSearch {
+                width: 50vh;
+
+                .searchBar {
+                    width: 100%;
+                    height: 5vh;
+                    border-radius: 25px;
+                    border: 1px solid #956848ff;
+                    padding-left: 10px;
+                    font-size: 1.5rem;
+                }
+
+                .searchButton {
+                    width: 7vh;
+                    height: 5vh;
+                    position: relative;
+                    border-radius: 40%;
+                    left: 43vh;
+                    bottom: 5vh;
+                    border: 1px solid #956848ff;
+                    background-color: #956848ff;
+                    color: white;
+                    font-size: 1.5rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        }
+
+        .fa-arrow-down {
+            color: white;
+            font-size: 6rem;
+            margin-top: 20vh;
+        }
+
+        .bounce {
+            animation: bounce 1s ease-in-out infinite;
+
+            @keyframes bounce {
+
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                50% {
+                    transform: translateY(20px);
+                }
+            }
+        }
+    }
+
+    .productsMain {
+
+        .sixProductsBoulangerie,
+        .sixProductsPatisserie {
+
+            height: 60vh;
+            text-align: center;
+            color: black;
+
+            .sectionTitle {
+                margin-top: 50px;
+            }
+
+            .carousel {
+                position: relative;
+                width: 100%;
+                overflow: hidden;
+                color: black;
+
+                .carousel-slides {
+                    display: flex;
+                    transition: transform 0.5s ease;
+                }
+
+                .carousel-group {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    min-width: 100%;
+                    justify-content: space-evenly;
+                }
+
+                .prev,
+                .next {
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    border: none;
+                    padding: 5px;
+                    cursor: pointer;
+                    z-index: 1;
+                    background-color: transparent;
+                    color: black;
+                }
+
+                .prev {
+                    left: 10px;
+                }
+
+                .next {
+                    right: 10px;
+                }
+            }
 
             .product-card {
                 border: 1px solid #ddd;
@@ -22,7 +153,10 @@ main {
                 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
                 transform: translateY(20px);
                 transition: transform 0.3s ease;
-                
+                height: 80%;
+                background: rgba(255, 255, 255, 0.4);
+
+
                 &:hover {
                     transform: translateY(0);
                 }
@@ -58,12 +192,34 @@ main {
                         border-radius: 5px;
                         cursor: pointer;
 
-                        .fa-arrow-right{
+                        .fa-arrow-right {
                             margin-right: 10px;
                         }
                     }
                 }
             }
         }
+    }
+
+    .about-bakery-section {
+        padding: 20px;
+        max-width: 800px;
+        margin: auto;
+    }
+    
+    .about-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+    
+    .bakery-image {
+        width: 40%;
+        max-width: 300px;
+        border-radius: 10px;
+    }
+    
+    .text-content {
+        width: 55%;
     }
 }
