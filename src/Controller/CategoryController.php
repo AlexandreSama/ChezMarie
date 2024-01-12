@@ -43,6 +43,8 @@ class CategoryController extends AbstractController
     public function index($id, PaginatorInterface $paginator, Request $request, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
     {
         $category = $categoryRepository->findOneBy(['id' => $id]);
+
+        $categories = $categoryRepository->findAll();
         
         $query = $productRepository->findProductsByCategory($category->getId());
 
@@ -56,6 +58,7 @@ class CategoryController extends AbstractController
             'controller_name' => 'CategoryController',
             'productsWithPictures' => $productsWithPictures,
             'categoryName' => $category->getCategoryName(),
+            'categories' => $categories
         ]);
     }
 }

@@ -1,53 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nos {{categoryName}} !{% endblock %}
+{% block title %}Nos {{ categoryName }} !{% endblock %}
 
 {% block body %}
-<div class="row d-flex justify-content-center h-100 rankedProducts">
-    <div class="products col-9 d-flex flex-wrap justify-content-center">
-        {% for product in productsWithPictures %}
-        <div class="card" style="width: 20rem;">
-            {% if product.pictures[0] is defined %}
-            <figure class="{{ product.productQuantity < 1 ? 'grayscale' : '' }}">
-                <img class="card-img-top" src="{{ asset('img/' ~ product.pictures[0].fileName) }}"
-                    alt="{{product.pictures[0].slug}}">
-            </figure>
-            {% else %}
-            <figure>
-                <img class="card-img-top" src="#" alt="slug">
-            </figure>
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{product.name}}</h5>
-                <p class="card-text">{{product.description}}</p>
-                {% if product.productQuantity < 1 %}
-                <button class="btn btn-secondary disabled">Produit épuisé</button>
-                {% else %}
-                <a href="{{path('show_product_without_category', {themeid: themeid, productid: product.id})}}"
-                    class="btn btn-primary showProductRating" data-toggle="modal" data-target="#productModal">Voir le produit</a>
-                {% endif %}
+<main class="py-4 showProductMain">
+    <div class="container">
+        <div class="row">
+            {% for product in productsWithPictures %}
+            <div class="col-md-4 d-flex justify-content-center">
+                <div class="product-card">
+                    {% if product.pictures[0] is defined %}
+                    <img src="{{ asset('img/' ~ product.pictures[0].fileName) }}" alt="{{ product.name }}" class="product-image {{ product.productQuantity < 1 ? 'grayscale' : '' }}">
+                    {% else %}
+                    <img src="{{ asset('img/default.png') }}" alt="Image non disponible" class="product-image {{ product.productQuantity < 1 ? 'grayscale' : '' }}">
+                    {% endif %}
+                    <div class="product-info">
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        {# <div class="product-rating">
+                            {% for i in 1..5 %}
+                            {% if i <= avgNote %} <span class="star">&#9733;</span>
+                            {% else %}
+                            <span class="star">&#9734;</span>
+                            {% endif %}
+                            {% endfor %}
+                        </div> #}
+                        {% if product.productQuantity < 1 %}
+                        <button class="product-button"><i class="fa-solid fa-x"></i>Produit épuisé</button>
+                        {% else %}
+                        <button class="product-button showProductRating" href="{{path('show_product', {'productid': product.id})}}"data-bs-toggle="modal" data-bs-target="#productModal"><i class="fa-solid fa-arrow-right"></i>Voir le produit</button>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+        <div class="d-flex justify-content-center mt-4">
+            {{ knp_pagination_render(productsWithPictures) }}
+        </div>
     </div>
-<div class="navigation">
-    {{ knp_pagination_render(productsWithPictures) }}
-</div>
-</div>
 
-<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="productModalLabel">Détail du produit</h5>
-                <button type="button" class="close btn btn-danger" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalLabel">Détail du produit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Le contenu du produit sera chargé ici -->
+                </div>
             </div>
         </div>
     </div>
-</div>
+</main>
 {% endblock %}

@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\CategoryRepository;
-use App\Repository\CommentaryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ThemeRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,63 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
-
-    /**
-     * This PHP function retrieves products with their ratings and images based on a given theme ID.
-     * 
-     * @param themeid The `themeid` parameter is the identifier of a theme. It is used to retrieve the
-     * theme object from the `ThemeRepository` and find the corresponding products and ratings
-     * associated with that theme.
-     * @param ThemeRepository themeRepository The `` parameter is an instance of the
-     * `ThemeRepository` class. It is used to retrieve theme data from the database, such as finding a
-     * theme by its ID or retrieving all themes.
-     * @param CommentaryRepository commentaryRepository The commentaryRepository is an instance of the
-     * CommentaryRepository class, which is responsible for retrieving and manipulating data related to
-     * commentaries or ratings for products. It is used in the index method of the ProductController to
-     * fetch the average ratings for a specific theme.
-     * @param ProductRepository productRepository The `` parameter is an instance of
-     * the `ProductRepository` class. It is used to retrieve product data from the database. The
-     * `ProductRepository` class likely has methods such as `find()` to retrieve a specific product by
-     * its identifier.
-     * 
-     * @return Response a Response object.
-     */
-    #[Route('/products/{themeid}', name: 'app_product')]
-    public function index($themeid, ThemeRepository $themeRepository, CommentaryRepository $commentaryRepository, ProductRepository $productRepository): Response
-    {
-
-        $theme = $themeRepository->findByID($themeid);
-        $categories = $theme->getCategories();
-
-        $ratings = $commentaryRepository->findAverageRatingsByTheme($themeid);
-
-        // Préparez un tableau pour stocker les produits avec leurs notes et leurs images
-        $productsWithRatings = [];
-
-        // Pour chaque note, trouvez le produit correspondant et combinez les données
-        foreach ($ratings as $rating) {
-            // Recherchez chaque produit par son identifiant
-            $product = $productRepository->find($rating['productId']);
-
-            if ($product) {
-                // Ajoutez le produit, sa note moyenne, et l'URL de l'image au tableau
-                $productsWithRatings[] = [
-                    'product' => $product,
-                    'avg_rating' => $rating['avg_rating'],
-                    'picture_url' => $rating['picture_url'], // ici, nous ajoutons l'URL de l'image
-                    'picture_slug' => $rating['picture_slug']
-                ];
-            }
-        }
-
-        return $this->render('product/index.html.twig', [
-            'controller_name' => 'ProductController',
-            'themes' => $themeRepository->findAll(),
-            'theme' => $theme,
-            'categories' => $categories,
-            'entries' => $productsWithRatings,
-        ]);
-    }
 
     /**
      * The function disables a product by setting its isActive property to false and then renders a
@@ -259,15 +201,13 @@ class ProductController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route('/product/{themeid}/{productid}', name: 'show_product_without_category')]
-    public function show_product_without_category($themeid, $productid, ThemeRepository $themeRepository, ProductRepository $productRepository): Response
+    #[Route('/product/{productid}', name: 'show_product')]
+    public function show_product_without_category($productid, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
     {
 
-        $theme = $themeRepository->findByID($themeid);
-        $categories = $theme->getCategories();
+        $categories = $categoryRepository->findAll();
 
         $product = $productRepository->findOneBy(['id' => $productid]);
-        $theme = $themeRepository->findByID($themeid);
 
         $ingredients = $product->getIngredients();
 
@@ -276,9 +216,7 @@ class ProductController extends AbstractController
 
         return $this->render('product/show_product.html.twig', [
             'controller_name' => 'ProductController',
-            'themes' => $themeRepository->findAll(),
             'product' => $product,
-            'theme' => $theme,
             'pictures' => $pictures,
             'picture' => $picture,
             'ingredients' => $ingredients,

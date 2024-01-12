@@ -44,16 +44,16 @@ bsCustomFileInput.init();
 //     }
 // })
 
-// $('.showProductRating').on('click', function(e) {
-//     e.preventDefault();
-//     console.log('test')
-//     var productUrl = $(this).attr('href');
+$('.showProductRating').on('click', function(e) {
+    e.preventDefault();
+    console.log('test')
+    var productUrl = $(this).attr('href');
 
-//     $.get(productUrl, function(data) {
-//         $('#productModal .modal-body').html(data);
-//         $('#productModal').modal('show');
-//     });
-// });
+    $.get(productUrl, function(data) {
+        $('#productModal .modal-body').html(data);
+        $('#productModal').modal('show');
+    });
+});
 
 // function increaseValue() {
 //     var maxQuantity = parseInt(document.getElementById('quantity').getAttribute('data-max'), 10);
