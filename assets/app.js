@@ -9,89 +9,79 @@
 import './styles/app.scss';
 
 // start the Stimulus application
+import $ from 'jquery';
 import 'bootstrap';
-global.$ = global.jQuery = require('jquery');
+import { Modal } from 'bootstrap';
 
+document.querySelectorAll('.showProductRating').forEach(element => {
+    element.addEventListener('click', function (e) {
+        e.preventDefault();
+        const productUrl = this.getAttribute('href');
 
-// document.getElementById('searchBar').addEventListener('click', () => {
-//     let searchInput = document.getElementById('searchInput')
-//     if(searchInput.style.width == '25%'){
-//         searchInput.style.width = '0%'
-//         searchInput.style.border = 'none'
-//         searchInput.style.paddingLeft = '0'
-//     }else{
-//         searchInput.style.width = '25%'
-//         searchInput.style.border = '2px solid black'
-//         searchInput.style.paddingLeft = '10px'
-//     }
-// })
-
-
-// document.getElementById('sidebarBtn').addEventListener('click', () => {
-
-//     let sidebar = document.getElementById('sidebar')
-
-//     if(sidebar.style.width == '0%' || sidebar.style.width.length == 0){
-
-//         sidebar.style.width = '15%'
-//     }else{
-
-//         sidebar.style.width = '0%'
-//         sidebar.style.overflow = 'hidden'
-//     }
-// })
-
-$('.showProductRating').on('click', function(e) {
-    e.preventDefault();
-    console.log('test')
-    var productUrl = $(this).attr('href');
-
-    $.get(productUrl, function(data) {
-        $('#productModal .modal-body').html(data);
-        $('#productModal').modal('show');
+        fetch(productUrl)
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('#productModal .modal-body').innerHTML = data;
+                const modalElement = document.getElementById('productModal');
+                const productModal = new Modal(modalElement);
+                productModal.show();
+            });
     });
 });
 
-// function increaseValue() {
-//     var maxQuantity = parseInt(document.getElementById('quantity').getAttribute('data-max'), 10);
-//     var value = parseInt(document.getElementById('quantity').value, 10);
-//     value = isNaN(value) ? 0 : value;
-//     if (value < maxQuantity) {
-//         value++;
-//         document.getElementById('quantity').value = value;
-//     }
-// }
+document.addEventListener('DOMContentLoaded', function() {
+    // Fonctions pour augmenter et diminuer la quantité
+    function increaseValue() {
+        var maxQuantity = parseInt(document.getElementById('quantity').getAttribute('data-max'), 10);
+        var value = parseInt(document.getElementById('quantity').value, 10);
+        value = isNaN(value) ? 0 : value;
+        if (value < maxQuantity) {
+            value++;
+            document.getElementById('quantity').value = value;
+        }
+    }
 
-// function decreaseValue() {
-//     var value = parseInt(document.getElementById('quantity').value, 10);
-//     value = isNaN(value) ? 0 : value;
-//     value < 2 ? value = 1 : value--;
-//     document.getElementById('quantity').value = value;
-// }
+    function decreaseValue() {
+        var value = parseInt(document.getElementById('quantity').value, 10);
+        value = isNaN(value) ? 0 : value;
+        value < 2 ? value = 1 : value--;
+        document.getElementById('quantity').value = value;
+    }
 
+    // Fonction pour changer l'image principale
+    function changeImage(element) {
+        const imgSrc = element.getAttribute('data-img-src');
+        const imgAlt = element.getAttribute('data-img-alt');
+        const mainImage = document.getElementById('mainImage').querySelector('img');
+        mainImage.src = imgSrc;
+        mainImage.alt = imgAlt;
+    }
 
-// $('#productModal').on('shown.bs.modal', function () {
-//     attachEventHandlers();
-// });
+    // Fonction pour attacher des gestionnaires d'événements aux boutons et vignettes
+    function attachEventHandlers() {
+        const increaseButton = document.getElementById('increaseValue');
+        const decreaseButton = document.getElementById('decreaseValue');
 
-// function attachEventHandlers() {
+        if (increaseButton) {
+            increaseButton.addEventListener('click', increaseValue);
+        }
 
-//     function changeImage(element) {
-//         var imgSrc = element.getAttribute('data-img-src');
-//         var imgAlt = element.getAttribute('data-img-alt');
-//         var mainImage = document.getElementById('mainImage').getElementsByTagName('img')[0];
-//         mainImage.src = imgSrc;
-//         mainImage.alt = imgAlt;
-//     }
+        if (decreaseButton) {
+            decreaseButton.addEventListener('click', decreaseValue);
+        }
 
-//     const increaseButton = document.getElementById('increaseValue');
-//     const decreaseButton = document.getElementById('decreaseValue');
+        document.querySelectorAll('.thumbnail').forEach(thumbnail => {
+            thumbnail.addEventListener('click', function() {
+                changeImage(this);
+            });
+        });
+    }
 
-//     if (increaseButton) {
-//         increaseButton.addEventListener('click', increaseValue);
-//     }
-
-//     if (decreaseButton) {
-//         decreaseButton.addEventListener('click', decreaseValue);
-//     }
-// }
+    // Écouteur d'événement pour la modal, une fois affichée
+    const productModalElement = document.getElementById('productModal');
+    if (productModalElement) {
+        productModalElement.addEventListener('shown.bs.modal', function () {
+            attachEventHandlers();
+        });
+    }
+});

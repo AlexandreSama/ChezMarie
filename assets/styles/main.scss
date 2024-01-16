@@ -1,9 +1,11 @@
+/* Home Page */
 .homeMain {
 
     min-height: 100vh;
+    background-color: #f0f0f0;
 
     .search {
-        height: 95vh;
+        height: 90vh;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -12,10 +14,11 @@
         background-image: url('../images/searchImage.jpg');
         background-size: cover;
         background-repeat: no-repeat;
+
         .mainBox {
 
             height: 45vh;
-            width: 80vw;
+            width: 40vw;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -39,7 +42,7 @@
             }
 
             .formSearch {
-                width: 50vw;
+                width: 65%;
 
                 .searchBar {
                     width: 100%;
@@ -54,15 +57,15 @@
                     width: 7vw;
                     height: 5vh;
                     position: relative;
-                    border-radius: 40%;
-                    left: 43vh;
-                    bottom: 5vh;
+                    border-radius: 25px;
                     border: 1px solid #956848ff;
                     background-color: #956848ff;
                     color: white;
                     font-size: 1.5rem;
                     display: flex;
                     align-items: center;
+                    bottom: 80px;
+                    left: 73%;
                     justify-content: center;
                 }
             }
@@ -71,7 +74,7 @@
         .fa-arrow-down {
             color: white;
             font-size: 6rem;
-            margin-top: 20vh;
+            margin-top: 15vh;
         }
 
         .bounce {
@@ -93,10 +96,6 @@
 
     .productsMain {
 
-        background-image: url('../images/products.png');
-        background-size: cover;
-        background-repeat: no-repeat;
-        
         .sixProductsBoulangerie,
         .sixProductsPatisserie {
 
@@ -105,8 +104,9 @@
             color: black;
 
             .sectionTitle {
-                color: white;
-                padding-top: 55px;
+                color: black;
+                padding-top: 50px;
+                margin-bottom: 30px;
             }
 
             .carousel {
@@ -155,7 +155,7 @@
                 overflow: hidden;
                 max-width: 300px;
                 width: 100%;
-                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
                 transform: translateY(20px);
                 transition: transform 0.3s ease;
                 height: 80%;
@@ -220,27 +220,313 @@
                 }
             }
         }
+
+        .sixProductsBoulangerie {
+            border-bottom: 2px solid #956848ff;
+            border-radius: 80px;
+        }
+
+        .sixProductsPatisserie {
+            border-top: 2px solid #956848ff;
+            border-radius: 80px;
+        }
     }
 
     .about-bakery-section {
         padding: 20px;
         max-width: 800px;
         margin: auto;
+
+        .aboutUsTitle {
+            margin-bottom: 30px;
+        }
     }
-    
+
     .about-content {
         display: flex;
         align-items: center;
         justify-content: space-around;
     }
-    
+
     .bakery-image {
         width: 40%;
         max-width: 300px;
         border-radius: 10px;
     }
-    
+
     .text-content {
         width: 55%;
     }
+}
+
+/* Show Product */
+.showProductMain {
+    background-color: #f0f0f0;
+    height: 95vh;
+    padding-bottom: 0;
+
+    .productCol {
+        max-height: 43vh;
+
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            max-width: 300px;
+            width: 100%;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            height: 80%;
+            background: rgba(255, 255, 255, 0.4);
+
+
+            &:hover {
+                transform: translateY(0);
+            }
+
+            .product-image {
+                object-fit: cover;
+                width: 100%;
+                height: 60%;
+            }
+
+            .product-info {
+                padding: 15px;
+
+                .product-name {
+                    margin: 0;
+                    font-size: 1.2em;
+                }
+
+                .product-rating {
+                    color: gold;
+
+                    .star {
+                        cursor: pointer;
+                    }
+                }
+
+                .product-button {
+                    background-color: white;
+                    color: black;
+                    border: none;
+                    padding: 10px 20px;
+                    margin-top: 10px;
+                    border-radius: 5px;
+                    cursor: pointer;
+
+                    .fa-arrow-right {
+                        margin-right: 10px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Login */
+
+/* Styles généraux pour positionner la boîte de connexion au centre */
+.loginMain {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+/* Styles pour la boîte de connexion */
+.login-box {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    padding: 2rem;
+    margin: 1rem;
+    background: #ffffff;
+    border: 2px solid #eeeeee;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Styles pour le titre 'Connexion' */
+h1 {
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-weight: normal;
+}
+
+/* Styles pour les champs de formulaire */
+input[type="email"],
+input[type="password"] {
+    width: calc(100% - 4rem);
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+/* Styles pour les étiquettes */
+label {
+    display: block;
+    text-align: left;
+    margin-top: 1rem;
+}
+
+/* Styles pour le bouton de soumission */
+button[type="submit"] {
+    padding: 0.6rem 1.2rem;
+    color: #fff;
+    background-color: #5cb85c;
+    border: none;
+    border-radius: 4px;
+    margin-top: 2rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #4cae4c;
+    /* Assombrir le bouton au survol */
+}
+
+/* Styles pour les liens de navigation */
+.links a {
+    display: block;
+    margin-top: 1rem;
+    color: #337ab7;
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+    /* Soulignement au survol pour indiquer la possibilité de cliquer */
+}
+
+/* Pseudo-éléments pour les accolades */
+.login-box::before {
+    content: '{';
+    position: absolute;
+    top: 50%;
+    /* transform: translateY(-50%); */
+    font-size: 3em;
+    color: #cccccc;
+}
+
+.login-box::after {
+    content: '}';
+    position: absolute;
+    top: 50%;
+    /* transform: translateY(-50%); */
+    font-size: 3em;
+    color: #cccccc;
+}
+
+.login-box::before {
+    left: -1.5em;
+    /* Positionnement à gauche de la boîte */
+}
+
+.login-box::after {
+    right: -1.5em;
+    /* Positionnement à droite de la boîte */
+}
+
+
+/* Show Product */
+
+.product-details {
+    padding: 20px;
+}
+
+.product-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.product-description {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.product-info p {
+    margin-bottom: .5rem;
+}
+
+.list-ingredients {
+    margin-top: 1.5rem;
+}
+
+.ingredient-item {
+    margin-bottom: .5rem;
+}
+
+.ingredient-name {
+    font-weight: bold;
+}
+
+.allergen {
+    font-style: italic;
+}
+
+.basket-holder {
+    margin-top: 2rem;
+}
+
+.quantity-selector .btn {
+    min-width: 40px;
+}
+
+.add-to-basket-form .btn {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.product-image-selector {
+    padding: 20px;
+}
+
+.main-image-container {
+    margin-bottom: 1rem;
+}
+
+.thumbnails-container {
+    display: flex;
+    justify-content: start;
+    gap: 10px;
+    height: 10%;
+}
+
+.thumbnail {
+    width: 10%;
+    cursor: pointer;
+}
+
+.thumbnail img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+/* Modal Dialog Styles */
+.modal-dialog {
+    max-width: 65%!important;
+    height: 90%;
+}
+
+.modal-content {
+    height: 100%;
+}
+
+/* Admin Dashboard */
+
+.mainDashboardAdmin{
+    height: 85vh;
+    background-color: #f0f0f0;
+}
+
+/* Basket */
+
+.basketMain{
+    min-height: 40vh;
 }

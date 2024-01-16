@@ -3,68 +3,70 @@
 {% block title %}Mon panier{% endblock %}
 
 {% block body %}
-<h1 class="text-left my-4 w-100">Votre panier</h1>
+<main class="basketMain container my-5">
+    <h1>Votre panier</h1>
 
-{% if products is not empty %}
-<div class="row h-100 w-100">
-    <div class="col-9 overflow-auto">
-        <table class="table table-striped w-75">
-            <thead>
-                <tr>
-                    <th scope="col">Produit</th>
-                    <th scope="col">Quantité</th>
-                    <th scope="col">Prix à l'unité</th>
-                    <th scope="col">Prix total</th>
-                    <th scope="col">Supprimer le produit</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for product in products %}
-                <tr>
-                    <td>{{ product.name }}</td>
-                    <td>
-                        <form action="{{ path('update_quantity_in_basket', {'productId': product.id}) }}" method="post">
-                            <input type="number" name="quantity" value="{{ productQuantities[product.id] }}" min="1"
-                                max="100" step="1">
-                            <button type="submit" class="btn btn-primary">Mettre à jour</button>
-                        </form>
-                    </td>
-                    <td>{{ product.price }} $</td>
-                    <td>{{ product.price * productQuantities[product.id] }}</td>
-                    <td>
-                        <form action="{{ path('remove_product_from_basket', {'productId': product.id}) }}"
-                            method="post">
-                            <button type="submit" class="btn btn-danger">Supprimer</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <p class="w-75 text-end"><strong>Total:</strong> {{ totalBasketPrice }}</p>
-    </div>
-    <div class="col-3 border border-dark rounded">
-        <h4>Résumé du panier</h4>
-        <ul class="h-75 d-flex flex-column justify-content-evenly">
-            <li>Nombre de produits: {{ products|length }}</li>
-            <li>Quantité totale: {{ totalQuantity }}</li>
-            <li>Prix total du panier: {{ totalBasketPrice }} $</li>
-        </ul>
-        <button class="btn btn-primary">
+    {% if products is not empty %}
+    <div class="row">
+        <div class="col-lg-9 overflow-auto">
+            <table class="table table-hover mt-4">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Produit</th>
+                        <th scope="col">Quantité</th>
+                        <th scope="col">Prix à l'unité</th>
+                        <th scope="col">Prix total</th>
+                        <th scope="col">Supprimer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>
+                            <form action="{{ path('update_quantity_in_basket', {'productId': product.id}) }}"
+                                method="post">
+                                <input type="number" name="quantity" value="{{ productQuantities[product.id] }}" min="1"
+                                    max="100" step="1">
+                                <button class="btn btn-primary">Mettre à jour</button>
+                            </form>
+                        </td>
+                        <td>{{ product.price }} $</td>
+                        <td>{{ product.price * productQuantities[product.id] }}</td>
+                        <td>
+                            <form action="{{ path('remove_product_from_basket', {'productId': product.id}) }}"
+                                method="post">
+                                <button class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p class="text-end fw-bold">Total: {{ totalBasketPrice }} $</p>
+        </div>
 
+        <div class="col-lg-3 border border-dark rounded p-3">
+            <h4>Résumé du panier</h4>
+            <ul class="list-unstyled">
+                <li>Nombre de produits: {{ products|length }}</li>
+                <li>Quantité totale: {{ totalQuantity }}</li>
+                <li>Prix total: {{ totalBasketPrice }} $</li>
+            </ul>
             {% if app.user %}
-            <a href="{{ path('app_order', {'userId': user.id, 'fullPrice': totalBasketPrice}) }}">
+            <a href="{{ path('app_order', {'userId': user.id, 'fullPrice': totalBasketPrice}) }}"
+                class="btn btn-primary w-100">
                 Poursuivre la commande
             </a>
             {% else %}
-            <a href="{{ path('app_login') }}">
+            <a href="{{ path('app_login') }}" class="btn btn-primary w-100">
                 Se connecter pour poursuivre la commande
             </a>
             {% endif %}
-        </button>
+        </div>
     </div>
-</div>
-{% else %}
-<p class="w-75 text-center">Votre panier est vide.</p>
-{% endif %}
+    {% else %}
+    <p>Votre panier est vide.</p>
+    {% endif %}
+</main>
 {% endblock %}

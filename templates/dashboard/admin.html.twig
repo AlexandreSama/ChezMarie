@@ -3,133 +3,185 @@
 {% block title %}Panel Gérant{% endblock %}
 
 {% block body %}
-<div class="row h-100 w-100">
-    <div class="col-12 d-flex justify-content-evenly">
-        <!-- Commandes en cours -->
-        <div class="col-5 d-flex align-items-center flex-column">
-            <h2>Commandes en cours</h2>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Client</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Produits</th>
-                        <th scope="col">Date commande</th>
-                        <th scope="col">Prix</th>
-                        <th scope="col">Facture</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order in ongoingOrders %}
-                    <tr>
-                        <th scope="row">{{ order.id }}</th>
-                        <td>{{ order.customerName }} {{ order.customerFirstName }}</td>
-                        <td>
-                            {% if order.isIsPreparing %}
-                            En préparation
-                            {% elseif order.isIsPending %}
-                            En attente
-                            {% else %}
-                            Non spécifié
-                            {% endif %}
-                        </td>
-                        <td>
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#productsModal{{ order.id }}">
-                                {{ order.archives|length }}
-                            </a>
-                        </td>
-                        <td>{{ order.dateOrder|date('Y-m-d') }}</td>
-                        <td>{{ order.fullPrice }}</td>
-                        <td>
-                            {% if order.invoice %}
-                            <a href="{{ path('path_to_invoice', {'id': order.id}) }}">Télécharger</a>
-                            {% else %}
-                            Pas de facture
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <!-- Commandes closes -->
-        <div class="col-5 d-flex align-items-center flex-column">
-            <h2>Commandes closes</h2>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Client</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Produits</th>
-                        <th scope="col">Date commande</th>
-                        <th scope="col">Prix</th>
-                        <th scope="col">Facture</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for order in closedOrders %}
-                    <tr>
-                        <th scope="row">{{ order.id }}</th>
-                        <td>{{ order.customerName }} {{ order.customerFirstName }}</td>
-                        <td>
-                            {% if order.isIsServed %}
-                            Servi
-                            {% elseif order.isIsNotServer %}
-                            Non-récupéré
-                            {% else %}
-                            Non spécifié
-                            {% endif %}
-                        </td>
-                        <td>{{ order.basket.getBasketProducts|length }}</td>
-                        <td>{{ order.dateOrder|date('Y-m-d') }}</td>
-                        <td>{{ order.fullPrice }}</td>
-                        <td>{{ order.invoice ? 'Oui' : 'Non' }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
 
-                {% for order in ongoingOrders %}
-                <div class="modal fade" id="productsModal{{ order.id }}" tabindex="-1" aria-labelledby="productsModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="productsModalLabel">Détails des produits de la commande {{ order.id }}</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <ul>
-                                    {% for reference in order.archives %}
-                                    <li>{{ reference.productName }} - Prix unitaire: {{ reference.fullPrice }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+<main class="mainDashboardAdmin">
+    <div class="d-flex h-100">
+        <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="{{ path('app_home') }}" class="nav-link active" aria-current="page">
+                        <!-- Icône SVG Accueil -->
+                        Accueil
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('list_products') }}" class="nav-link text-white">
+                        <!-- Icône SVG Liste des produits -->
+                        Liste des produits
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_dashboard_admin') }}" class="nav-link text-white">
+                        <!-- Icône SVG Liste des commandes -->
+                        Liste des commandes
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('list_users') }}" class="nav-link text-white">
+                        <!-- Icône SVG Liste des utilisateurs -->
+                        Liste des utilisateurs
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('new_employe') }}" class="nav-link text-white">
+                        <!-- Icône SVG Créer un employé -->
+                        Créer un employé
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="flex-grow-1">
+            <div class="row justify-content-center w-100 h-100">
+                <!-- Commandes en cours -->
+                <div class="col-lg-5 mb-5 mt-5">
+                    <h2 class="text-center mb-3">Commandes en cours</h2>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Client</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Produits</th>
+                                    <th scope="col">Date commande</th>
+                                    <th scope="col">Prix</th>
+                                    <th scope="col">Facture</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in ongoingOrders %}
+                                <tr>
+                                    <th scope="row">{{ order.id }}</th>
+                                    <td>{{ order.customerName }} {{ order.customerFirstName }}</td>
+                                    <td>
+                                        {% if order.isIsPreparing %}
+                                        En préparation
+                                        {% elseif order.isIsPending %}
+                                        En attente
+                                        {% else %}
+                                        Non spécifié
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="#" data-bs-toggle="modal"
+                                            data-bs-target="#productsModal{{ order.id }}">
+                                            {{ order.archives|length }}
+                                        </a>
+                                    </td>
+                                    <td>{{ order.dateOrder|date('Y-m-d') }}</td>
+                                    <td>{{ order.fullPrice }}</td>
+                                    <td>
+                                        {% if order.invoice %}
+                                        <a href="{{ path('path_to_invoice', {'id': order.id}) }}">Télécharger</a>
+                                        {% else %}
+                                        Pas de facture
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Commandes closes -->
+                <div class="col-lg-5 mb-5 mt-5">
+                    <h2 class="text-center mb-3">Commandes closes</h2>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Client</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Produits</th>
+                                    <th scope="col">Date commande</th>
+                                    <th scope="col">Prix</th>
+                                    <th scope="col">Facture</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in closedOrders %}
+                                <tr>
+                                    <th scope="row">{{ order.id }}</th>
+                                    <td>{{ order.customerName }} {{ order.customerFirstName }}</td>
+                                    <td>
+                                        {% if order.isIsServed %}
+                                        Servi
+                                        {% elseif order.isIsNotServer %}
+                                        Non-récupéré
+                                        {% else %}
+                                        Non spécifié
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="#" data-bs-toggle="modal"
+                                            data-bs-target="#productsModal{{ order.id }}">
+                                            {{ order.archives|length }}
+                                        </a>
+                                    </td>
+                                    <td>{{ order.dateOrder|date('Y-m-d') }}</td>
+                                    <td>{{ order.fullPrice }}</td>
+                                    <td>{{ order.invoice ? 'Oui' : 'Non' }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% for order in ongoingOrders %}
+            <div class="modal fade" id="productsModal{{ order.id }}" tabindex="-1" aria-labelledby="productsModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="productsModalLabel">Détails des produits de la commande {{
+                                order.id }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <ul>
+                                {% for reference in order.archives %}
+                                <li>{{ reference.productName }} - Prix unitaire: {{ reference.fullPrice }}</li>
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
-                {% for order in closedOrders %}
-                <div class="modal fade" id="productsModal{{ order.id }}" tabindex="-1" aria-labelledby="productsModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="productsModalLabel">Détails des produits de la commande {{ order.id }}</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <ul>
-                                    {% for reference in order.archives %}
-                                    <li>{{ reference.productName }} - Prix unitaire: {{ reference.fullPrice }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
+            </div>
+            {% endfor %}
+            {% for order in closedOrders %}
+            <div class="modal fade" id="productsModal{{ order.id }}" tabindex="-1" aria-labelledby="productsModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="productsModalLabel">Détails des produits de la commande {{
+                                order.id }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <ul>
+                                {% for reference in order.archives %}
+                                <li>{{ reference.productName }} - Prix unitaire: {{ reference.fullPrice }}</li>
+                                {% endfor %}
+                            </ul>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
-            </table>
+            </div>
+            {% endfor %}
         </div>
     </div>
-</div>
+</main>
 {% endblock %}

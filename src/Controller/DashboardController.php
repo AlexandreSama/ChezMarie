@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\EmployeType;
+use App\Repository\CategoryRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ThemeRepository;
@@ -27,15 +28,18 @@ class DashboardController extends AbstractController
      * @return Response a Response object.
      */
     #[Route('/gerant/dashboard_admin', name: 'app_dashboard_admin')]
-    public function index(OrderRepository $orderRepository): Response
+    public function index(OrderRepository $orderRepository, CategoryRepository $categoryRepository): Response
     {
         $ongoingOrders = $orderRepository->getOngoingOrders();
         $closedOrders = $orderRepository->getClosedOrders();
+
+        $categories = $categoryRepository->findAll();
 
         return $this->render('dashboard/admin.html.twig', [
             'ongoingOrders' => $ongoingOrders,
             'closedOrders' => $closedOrders,
             'controller_name' => 'DashboardController',
+            'categories' => $categories
         ]);
     }
 
@@ -57,7 +61,7 @@ class DashboardController extends AbstractController
      * @return Response a Response object.
      */
     #[Route('/gerant/list_products', name: 'list_products')]
-    public function listProducts(PaginatorInterface $paginator, Request $request, ProductRepository $productRepository): Response
+    public function listProducts(PaginatorInterface $paginator, Request $request, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
     {
 
         $products = $paginator->paginate(
@@ -66,9 +70,12 @@ class DashboardController extends AbstractController
             10
         );
 
+        $categories = $categoryRepository->findAll();
+
         return $this->render('dashboard/listProducts.html.twig', [
             'controller_name' => 'DashboardController',
-            'products' => $products
+            'products' => $products,
+            'categories' => $categories
         ]);
     }
 
@@ -90,8 +97,10 @@ class DashboardController extends AbstractController
      * @return Response a Response object.
      */
     #[Route('/gerant/new_employe', name: 'new_employe')]
-    public function new_employe(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $em): Response
+    public function new_employe(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $em, CategoryRepository $categoryRepository): Response
     {
+
+        $categories = $categoryRepository->findAll();
 
         $employe = new User();
 
@@ -118,19 +127,22 @@ class DashboardController extends AbstractController
 
         return $this->render('dashboard/newEmploye.html.twig', [
             'controller_name' => 'DashboardController',
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'categories' => $categories
         ]);
     }
     
     #[Route('/gerant/list_users', name: 'list_users')]
-    public function list(UserRepository $userRepository)
+    public function list(UserRepository $userRepository, CategoryRepository $categoryRepository)
     {
         $users = $userRepository->findAll();
+
+        $categories = $categoryRepository->findAll();
 
         return $this->render('dashboard/listUsers.html.twig', [
             'users' => $users,
             'controller_name' => 'DashboardController',
-
+            'categories' => $categories
         ]);
     }
 
@@ -141,8 +153,10 @@ class DashboardController extends AbstractController
      * @return Response a Response object.
      */
     #[Route('/dashboard', name: 'app_dashboard')]
-    public function dashboard(ThemeRepository $themeRepository, OrderRepository $orderRepository, UserRepository $userRepository): Response
+    public function dashboard(ThemeRepository $themeRepository, OrderRepository $orderRepository, UserRepository $userRepository, CategoryRepository $categoryRepository): Response
     {
+
+        $categories = $categoryRepository->findAll();
 
         $themes = $themeRepository->findAll();
 
@@ -157,7 +171,8 @@ class DashboardController extends AbstractController
             'controller_name' => 'DashboardControllerClient',
             'themes' => $themes,
             'ongoingOrders' => $ongoingOrders,
-            'closedOrders' => $closedOrders
+            'closedOrders' => $closedOrders,
+            'categories' => $categories
         ]);
     }
 

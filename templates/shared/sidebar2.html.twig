@@ -1,42 +1,32 @@
-<div class="flex-column flex-shrink-0 p-3 text-white bg-dark sidebar" id="sidebar">
-    <ul class="nav nav-pills flex-column mb-auto" id="nav">
+<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" id="sidebar" style="width: 280px; height: 100vh;">
+    <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <a href="{{path('app_home')}}" class="nav-link active" aria-current="page">
-                <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#home"></use>
-                </svg>
+            <a href="{{ path('app_home') }}" class="nav-link active" aria-current="page">
+                <!-- Icône SVG Accueil -->
                 Accueil
             </a>
         </li>
-        <li>
-            <a href="{{path('list_products')}}" class="nav-link text-white">
-                <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#speedometer2"></use>
-                </svg>
+        <li class="nav-item">
+            <a href="{{ path('list_products') }}" class="nav-link text-white">
+                <!-- Icône SVG Liste des produits -->
                 Liste des produits
             </a>
         </li>
-        <li>
-            <a href="{{path('app_dashboard_admin')}}" class="nav-link text-white">
-                <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#grid"></use>
-                </svg>
+        <li class="nav-item">
+            <a href="{{ path('app_dashboard_admin') }}" class="nav-link text-white">
+                <!-- Icône SVG Liste des commandes -->
                 Liste des commandes
             </a>
         </li>
-        <li>
-            <a href="{{path('list_users')}}" class="nav-link text-white">
-                <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#people-circle"></use>
-                </svg>
+        <li class="nav-item">
+            <a href="{{ path('list_users') }}" class="nav-link text-white">
+                <!-- Icône SVG Liste des utilisateurs -->
                 Liste des utilisateurs
             </a>
         </li>
-        <li>
-            <a href="{{path('new_employe')}}" class="nav-link text-white">
-                <svg class="bi me-2" width="16" height="16">
-                    <use xlink:href="#people-circle"></use>
-                </svg>
+        <li class="nav-item">
+            <a href="{{ path('new_employe') }}" class="nav-link text-white">
+                <!-- Icône SVG Créer un employé -->
                 Créer un employé
             </a>
         </li>

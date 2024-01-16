@@ -1,5 +1,33 @@
 <nav class="navbar">
-    <div class="logo">
+    <div class="top">
+        <div class="firstPart">
+            <a href="{{path('app_home')}}"><i class="fa-solid fa-bread-slice"></i></a>
+            <p class="siteName">Chez Marie</p>
+        </div>
+        <div class="secondPart">
+            <span class="decorationLeft">Boulangerie</span>
+            <img src="{{asset('./img/logo.png')}}" alt="" class="logo">
+            <span class="decorationRight">Patisserie</span>
+        </div>
+        <div class="thirdPart">
+            <a href="{{path('app_basket')}}" class="basket"><i class="fa-solid thin fa-cart-shopping"></i></a>
+            {% if app.user %}
+                {% if is_granted('ROLE_GERANT') %}
+                <a href="{{path('app_dashboard_admin')}}"><i class="fa-solid thin fa-user"></i></a>
+                {% else %}
+                <a href="{{path('app_dashboard')}}"><i class="fa-solid thin fa-user"></i></a>
+                {% endif %}
+            {% else %}
+            <a href="{{path('app_login')}}"><i class="fa-solid thin fa-arrow-right-to-bracket"></i></a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="bottom">
+        {% for category in categories %}
+        <a href="{{path('app_category', {'id': category.id})}}">{{category.categoryName}}</a>
+        {% endfor %}
+    </div>
+    {# <div class="logo">
         <a href="{{path('app_home')}}"><i class="fa-solid fa-bread-slice"></i></a>
         <p class="siteName">Chez Marie</p>
     </div>
@@ -15,5 +43,5 @@
         {% else %}
         <a href="{{path('app_login')}}"><i class="fa-solid thin fa-arrow-right-to-bracket"></i></a>
         {% endif %}
-    </div>
+    </div> #}
 </nav>

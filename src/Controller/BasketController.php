@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ThemeRepository;
 use App\Service\Basket;
@@ -15,10 +16,10 @@ class BasketController extends AbstractController
 {
 
     #[Route('/basket', name: 'app_basket')]
-    public function index(ThemeRepository $themeRepository, Basket $Basket, ProductRepository $productRepository): Response
+    public function index(ThemeRepository $themeRepository, Basket $Basket, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
     {
         $themes = $themeRepository->findAll();
-
+        $categories = $categoryRepository->findAll();
         // Récupération des données du panier
         $panierData = $Basket->getPanier();
 
@@ -40,7 +41,8 @@ class BasketController extends AbstractController
             'totalBasketPrice' => $this->calculateTotalBasketPrice($products, $productQuantities),
             'totalQuantity' => array_sum($productQuantities),
             'themes' => $themes,
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
+            'categories' => $categories
         ]);
     }
 
@@ -61,25 +63,25 @@ class BasketController extends AbstractController
     #[Route('/basket/addproduct/{productid}', name: 'add_product')]
     public function addProduct($productid, Request $request, ProductRepository $productRepository, Basket $Basket): Response
     {
-
         $product = $productRepository->find($productid);
         if (!$product) {
             // Gérer le cas où le produit n'est pas trouvé
             return $this->redirectToRoute('some_route');
         }
-
+    
         $quantity = $request->request->get('quantity', 1); // La quantité par défaut est 1 si non fournie
-
+    
         if ($quantity > $product->getProductQuantity()) {
             $this->addFlash('error', 'La quantité demandée est supérieure à la quantité disponible en stock');
             return $this->redirectToRoute('app_product', ['themeid' => $product->getCategory()->getTheme()->getId()]);
         }
-
+    
         $Basket->ajouterAuPanier($productid, $quantity);
-
-        return $this->redirectToRoute('app_basket');
+    
+        // Rediriger l'utilisateur vers la page précédente
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer ?? $this->generateUrl('app_home')); 
     }
-
 
     #[Route('/remove-product/{productId}', name: 'remove_product_from_basket', methods: ['POST'])]
     public function removeProductFromBasket($productId, Basket $Basket): Response

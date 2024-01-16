@@ -1,35 +1,38 @@
 {% block body %}
 <div class="container-fluid h-100">
     <div class="row h-100">
+
         <!-- Section Gauche: Détails du Produit -->
-        <div class="col-md-5 border-end">
-            <div class="product h-75">
-                <h1>{{ product.name }}</h1>
-                <p><strong>Description :</strong> {{ product.description }}</p>
+        <div class="col-md-5 border-end product-details">
+            <h1 class="product-title">{{ product.name }}</h1>
+            <p class="product-description"><strong>Description :</strong> {{ product.description }}</p>
+            <div class="product-info">
                 <p><strong>Prix :</strong> {{ product.price }}€</p>
                 <p><strong>Poids :</strong> {{ product.weight }}Kg</p>
                 <p><strong>Quantité :</strong> {{ product.productQuantity }}</p>
-
-                <div class="listIngredients">
-                    <p><strong>Liste des ingrédients :</strong></p>
-                    <ul class="list-unstyled">
-                        {% for ingredient in ingredients %}
-                        <li>
-                            <p class="m-0">{{ ingredient.name }}</p>
-                            <p>Allergène : {{ ingredient.isAllergene ? 'Oui' : 'Non' }}</p>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
             </div>
-            <div class="basketHold">
-                <form action="{{ path('add_product', {productid: product.id}) }}" method="post">
-                    <div class="d-flex flex-column">
-                        <label for="quantity">Quantité</label>
-                        <div class="input-group mb-3">
+
+            <div class="list-ingredients">
+                <p><strong>Liste des ingrédients :</strong></p>
+                <ul class="list-unstyled">
+                    {% for ingredient in ingredients %}
+                    <li class="ingredient-item">
+                        <p class="ingredient-name">{{ ingredient.name }}</p>
+                        <p class="allergen">Allergène : {{ ingredient.isAllergene ? 'Oui' : 'Non' }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="basket-holder">
+                <form action="{{ path('add_product', {productid: product.id}) }}" method="post"
+                    class="add-to-basket-form">
+                    <div class="quantity-selector mb-3">
+                        <label for="quantity" class="form-label"><strong>Quantité :</strong></label>
+                        <div class="input-group">
                             <button type="button" class="btn btn-outline-secondary" id="decreaseValue">-</button>
-                            <input type="text" id="quantity" name="quantity" class="form-control text-center"
-                                value="1" readonly data-max="{{ product.productQuantity }}">
+                            <input type="text" id="quantity" name="quantity" class="form-control text-center" value="1"
+                                readonly data-max="{{ product.productQuantity }}">
                             <button type="button" class="btn btn-outline-secondary" id="increaseValue">+</button>
                         </div>
                     </div>
@@ -39,24 +42,19 @@
         </div>
 
         <!-- Section Droite: Sélecteur d'Images -->
-        <div class="col-md-7">
-            <div class="product-image d-flex flex-row">
-                <!-- Image Principale -->
-                <figure id="mainImage" class="main-image-container">
-                    <img src="{{ asset('img/' ~ picture.fileName) }}" class="d-block w-100" alt="{{ picture.slug }}">
-                </figure>
-
-                <!-- Miniatures -->
-                <div class="thumbnails-container d-flex flex-column">
-                    {% for image in product.pictures %}
-                    <div class="thumbnail" onclick="changeImage(this)"
-                        data-img-src="{{ asset('img/' ~ image.fileName) }}" data-img-alt="{{ image.slug }}">
-                        <img src="{{ asset('img/' ~ image.fileName) }}" alt="{{ image.slug }}">
-                    </div>
-                    {% endfor %}
+        <div class="col-md-7 product-image-selector">
+            <figure id="mainImage" class="main-image-container">
+                <img src="{{ asset('img/' ~ picture.fileName) }}" class="d-block w-100" alt="{{ picture.slug }}">
+            </figure>
+            <div class="thumbnails-container">
+                {% for image in product.pictures %}
+                <div class="thumbnail" data-img-src="{{ asset('img/' ~ image.fileName) }}" data-img-alt="{{ image.slug }}">
+                    <img src="{{ asset('img/' ~ image.fileName) }}" alt="{{ image.slug }}">
                 </div>
+                {% endfor %}
             </div>
         </div>
     </div>
+
 </div>
 {% endblock %}
