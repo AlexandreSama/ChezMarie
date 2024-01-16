@@ -7,7 +7,7 @@
     <div class="container">
         <div class="row">
             {% for product in productsWithPictures %}
-            <div class="col-md-4 d-flex justify-content-center">
+            <div class="col-md-4 d-flex justify-content-center productCol">
                 <div class="product-card">
                     {% if product.pictures[0] is defined %}
                     <img src="{{ asset('img/' ~ product.pictures[0].fileName) }}" alt="{{ product.name }}" class="product-image {{ product.productQuantity < 1 ? 'grayscale' : '' }}">

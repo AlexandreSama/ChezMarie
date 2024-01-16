@@ -9,9 +9,6 @@
     {% block stylesheets %}
     {{ encore_entry_link_tags('app') }}
     {% endblock %}
-    {% if controller_name != 'HomeController' %}
-    <link type="text/css" rel="stylesheet" href="{{ asset('css/navbar2.css')}}">
-    {% endif %}
 
     {% block javascripts %}
     <script src="https://kit.fontawesome.com/eec634434d.js" crossorigin="anonymous"></script>
@@ -20,7 +17,7 @@
 </head>
 
 <body>
-    <header>
+    <header class="header">
         {{include('shared/navbar.html.twig')}}
     </header>
 

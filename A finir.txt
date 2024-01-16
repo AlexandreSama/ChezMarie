@@ -8,3 +8,27 @@ V - Gérer la suppression des users
 V - Anonymiser les commandes et l'utilisateur après suppression de l'utilisateur
 V - Ajouter une référence a la commande
 V - Mettre no-index au niveau du côté Employé
+
+
+
+Main Page : 
+
+- Changer police d'écriture V
+- Faire attention aux fautes d'ortographes
+- Chaque première lettre de mot en Maj
+- margin: 0; padding: 0; V
+- Icone Basket, login trop grosse
+- Changer logo Basket, Login (icon Ios ou Lite)
+
+- Faire un angle plus graçieux pour le searchButton (pas de %, 25px)
+- Width en vw, pas vh
+- Mettre un padding (en px) et text-align center pour le texte dans la main-box
+
+- Enlever l'image de la section 6 produits pour revenir au blanc + peut-être box-shadow ou effet dégradé de l'image
+- padding 55px 30px pour titre section 6 produits
+- Changer glassmorphism card (fond) en blanc pour text gris foncés 
+- mettre même fond pour le button des cards
+
+- plus d'espace entre "A propos de Chez Marie" au-dessus et en-dessous (50 top et 30 bottom)
+- Plus d'espace entre chaque partie du "A propos de chez Mari"
+- Accordéon A Propos de Chez Marie texte

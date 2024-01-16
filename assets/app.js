@@ -11,9 +11,6 @@ import './styles/app.scss';
 // start the Stimulus application
 import 'bootstrap';
 global.$ = global.jQuery = require('jquery');
-import bsCustomFileInput from 'bs-custom-file-input';
-
-bsCustomFileInput.init();
 
 
 // document.getElementById('searchBar').addEventListener('click', () => {
