@@ -3,56 +3,47 @@
 {% block title %}Panel Gérant{% endblock %}
 
 {% block body %}
-<div class="row h-100 w-75">
-    <div class="col-12 d-flex justify-content-evenly">
-        <div class="col-12 d-flex align-items-center flex-column">
-            <h2>Liste des produits</h2>
-            <button class="btn btn-info"><a href="{{path('product_new')}}">Créer un produit</a></button>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Prix</th>
-                        <th scope="col">Poids</th>
-                        <th scope="col">Quantité</th>
-                        <th scope="col">Actif</th>
-                        <th scope="col">Modifier</th>
-                        <th scope="col">Désactiver</th>
-                        <th scope="col">Supprimer</th>
-                        {# <th scope="col">Poids</th> #}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in products %}
-                    <tr class="table-active">
-                        <th scope="row">{{product.id}}</th>
-                        <td>{{product.name}}</td>
-                        <td>{{product.description}}</td>
-                        <td>{{product.price}}</td>
-                        <td>{{product.weight}}</td>
-                        <td>{{product.productQuantity}}</td>
-                        {% if product.isActive == 1 %}
-                        <td>Oui</td>
-                        {% else %}
-                        <td>Non</td>
-                        {% endif %}
-                        <td><button type="button" class="btn btn-warning"><a href="{{path('update_product', {productid: product.id})}}">Modifier</a></button></td>
-                        {% if product.isActive == 1 %}
-                        <td><button type="button" class="btn btn-info"><a href="{{path('disable_product', {productid: product.id})}}">Désactiver</a></button></td>
-                        {% else %}
-                        <td><button type="button" class="btn btn-info"><a href="{{path('enable_product', {productid: product.id})}}">Activer</a></button></td>
-                        {% endif %}
-                        <td><button type="button" class="btn btn-danger"><a href="{{path('delete_product', {productid: product.id})}}">Supprimer</a></button></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <div class="navigation">
-                {{ knp_pagination_render(products) }}
-            </div>
-        </div>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Liste des produits</h2>
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{{ path('product_new') }}" class="btn btn-primary">Créer un produit</a>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Poids</th>
+                    <th scope="col">Quantité</th>
+                    <th scope="col">Actif</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <th scope="row">{{ product.id }}</th>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.description }}</td>
+                    <td>{{ product.price }}</td>
+                    <td>{{ product.weight }}</td>
+                    <td>{{ product.productQuantity }}</td>
+                    <td>{{ product.isActive ? 'Oui' : 'Non' }}</td>
+                    <td>
+                        <a href="{{ path('update_product', {productid: product.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                        <a href="{{ path(product.isActive ? 'disable_product' : 'enable_product', {productid: product.id}) }}" class="btn btn-info btn-sm">{{ product.isActive ? 'Désactiver' : 'Activer' }}</a>
+                        <a href="{{ path('delete_product', {productid: product.id}) }}" class="btn btn-danger btn-sm">Supprimer</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex justify-content-center">
+        {{ knp_pagination_render(products) }}
     </div>
 </div>
 {% endblock %}

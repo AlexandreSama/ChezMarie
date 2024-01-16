@@ -29,7 +29,7 @@ document.querySelectorAll('.showProductRating').forEach(element => {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Fonctions pour augmenter et diminuer la quantité
     function increaseValue() {
         var maxQuantity = parseInt(document.getElementById('quantity').getAttribute('data-max'), 10);
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         document.querySelectorAll('.thumbnail').forEach(thumbnail => {
-            thumbnail.addEventListener('click', function() {
+            thumbnail.addEventListener('click', function () {
                 changeImage(this);
             });
         });
@@ -82,6 +82,44 @@ document.addEventListener('DOMContentLoaded', function() {
     if (productModalElement) {
         productModalElement.addEventListener('shown.bs.modal', function () {
             attachEventHandlers();
+        });
+    }
+
+    const datetimeField = document.getElementById('desiredPickupDate');
+
+    if (datetimeField) {
+        datetimeField.addEventListener('change', function () {
+            const selectedDate = new Date(this.value);
+            const hour = selectedDate.getHours();
+
+            if (hour < 8) {
+                selectedDate.setHours(8); // Si l'heure est avant 8h, la fixer à 8h
+                selectedDate.setMinutes(0); // Réinitialiser les minutes
+            } else if (hour > 18) {
+                selectedDate.setHours(18); // Si l'heure est après 18h, la fixer à 18h
+                selectedDate.setMinutes(0); // Réinitialiser les minutes
+            }
+
+            // Mettre à jour le champ de formulaire avec la nouvelle valeur
+            this.value = selectedDate.toISOString().substring(0, 16);
+        });
+
+    }
+
+    if (document.querySelector('.rating')) {
+        const productId = document.querySelector('.rating').dataset.product;
+
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                const ratingValue = event.target.dataset.value;
+                const form = document.getElementById('rating-form-' + productId);
+                const ratingInput = document.querySelector('.rating-' + productId);
+
+                ratingInput.value = ratingValue;
+                form.submit();
+            });
         });
     }
 });

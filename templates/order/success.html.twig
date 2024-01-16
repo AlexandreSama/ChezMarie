@@ -4,14 +4,13 @@
 
 {% block body %}
 <div class="container mt-4">
-    <h2>Confirmation de Commande</h2>
+    <h2 class="text-center mb-4">Confirmation de Commande</h2>
 
     <!-- Liste des produits -->
-    <table class="table">
-        <thead>
+    <table class="table table-hover">
+        <thead class="table-light">
             <tr>
                 <th>Produit</th>
-                <th>Quantité</th>
                 <th>Prix Total</th>
                 <th>Note</th>
             </tr>
@@ -26,6 +25,10 @@
                         {% for i in 1..5 %}
                         <span class="star" data-value="{{ i }}">&#9733;</span>
                         {% endfor %}
+                        {{ form_start(form, {'attr': {'id': 'rating-form-' ~ reference.productId}}) }}
+                        {{ form_widget(form.note, {'attr': {'class': 'rating-' ~ reference.productId ~ ' d-none'}}) }}
+                        {{ form_row(form.submit, {'attr': {'class': 'd-none'}}) }}
+                        {{ form_end(form) }}
                     </div>
                 </td>
             </tr>
@@ -34,22 +37,9 @@
     </table>
 
     <!-- Lien de téléchargement de la facture -->
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between align-items-center mt-4">
         <a href="{{ path('path_to_invoice', {'id': order.id}) }}" class="btn btn-primary">Télécharger la Facture</a>
         <strong>Total de la Commande : {{ order.fullPrice }}</strong>
     </div>
 </div>
-
-<script>
-    document.querySelectorAll('.rating').forEach(ratingDiv => {
-        ratingDiv.addEventListener('click', event => {
-            if (event.target.classList.contains('star')) {
-                const productId = ratingDiv.getAttribute('data-product');
-                const ratingValue = event.target.getAttribute('data-value');
-                console.log(`Produit ${productId}, Note: ${ratingValue}`);
-                // Ici, vous pouvez ajouter la logique pour envoyer la note au serveur
-            }
-        });
-    });
-</script>
 {% endblock %}

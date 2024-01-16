@@ -5,7 +5,7 @@
     background-color: #f0f0f0;
 
     .search {
-        height: 90vh;
+        height: 95vh;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -266,7 +266,7 @@
     padding-bottom: 0;
 
     .productCol {
-        max-height: 43vh;
+        max-height: 40vh;
 
         .product-card {
             border: 1px solid #ddd;
@@ -488,23 +488,35 @@ button[type="submit"]:hover {
 }
 
 .main-image-container {
+    width: 100%;
+    height: 500px;
     margin-bottom: 1rem;
+    overflow: hidden;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
 }
 
 .thumbnails-container {
     display: flex;
     justify-content: start;
     gap: 10px;
-    height: 10%;
 }
 
 .thumbnail {
-    width: 10%;
+    width: 100px; /* Largeur fixe pour les vignettes */
+    height: 100px; /* Hauteur fixe pour les vignettes */
+    overflow: hidden; /* Cache les parties débordantes de l'image */
     cursor: pointer;
 }
 
 .thumbnail img {
-    width: 100%;
+    width: 100%; /* Largeur complète du conteneur */
+    height: 100%; /* Hauteur complète du conteneur */
+    object-fit: cover; /* Redimensionne l'image pour couvrir la zone, en conservant les proportions */
     border-radius: 5px;
 }
 

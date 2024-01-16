@@ -12,12 +12,14 @@
 
     {% block javascripts %}
     <script src="https://kit.fontawesome.com/eec634434d.js" crossorigin="anonymous"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+
     {{ encore_entry_script_tags('app') }}
     {% endblock %}
 </head>
 
 <body>
-    <header class="header">
+    <header>
         {{include('shared/navbar.html.twig')}}
     </header>
 

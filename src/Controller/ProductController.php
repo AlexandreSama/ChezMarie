@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Commentary;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ThemeRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -223,6 +225,23 @@ class ProductController extends AbstractController
             'categories' => $categories
         ]);
     }
+
+    // #[Route('/product/addnotation/{userid}/{productid}/{note}', name: 'product_addnotation')]
+    // public function addNotation($userid, $productid, $note, UserRepository $userRepository, ProductRepository $productRepository, EntityManagerInterface $entityManager)
+    // {
+
+    //     $product = $productRepository->findOneBy(['id' => $productid]);
+    //     $user = $userRepository->findOneBy(['id' => $userid]);
+
+    //     $newNote = new Commentary();
+
+    //     $newNote->setUser($user);
+    //     $newNote->setProduct($product);
+    //     $newNote->setNote($note);
+
+    //     $entityManager->persist($note);
+    //     $entityManager->flush();
+    // }
 
     #[Route('/product/new', name: 'product_new')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

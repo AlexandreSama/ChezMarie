@@ -32,3 +32,5 @@ Main Page :
 - plus d'espace entre "A propos de Chez Marie" au-dessus et en-dessous (50 top et 30 bottom)
 - Plus d'espace entre chaque partie du "A propos de chez Mari"
 - Accordéon A Propos de Chez Marie texte
+
+- Tenter de mettre la navbar si l'image de la section Search (position absolute, background transparent) et accentuer la couleur des liens

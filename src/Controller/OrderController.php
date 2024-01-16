@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Commentary;
 use App\Entity\Invoice;
 use App\Entity\Order;
 use App\Entity\Reference;
+use App\Form\NotationType;
 use App\Form\OrderType;
+use App\Repository\CategoryRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
@@ -20,22 +23,41 @@ class OrderController extends AbstractController
 {
 
     #[Route('/order/{orderID}/success', name: 'app_order_success')]
-    public function orderSuccess($orderID, OrderRepository $orderRepository): Response
+    public function orderSuccess($orderID, Request $request, OrderRepository $orderRepository, ProductRepository $productRepository, UserRepository $userRepository, CategoryRepository $categoryRepository, EntityManagerInterface $em): Response
     {
         $order = $orderRepository->findOneBy(['id' => $orderID]);
+
+        $categories = $categoryRepository->findAll();
 
         if (!$order) {
             return $this->redirectToRoute('app_home');
         }
 
-        // Récupérez les détails des produits et les références associées à la commande
+        $notation = new Commentary();
+        $form = $this->createForm(NotationType::class, $notation);
+        $form->handleRequest($request);
+
         $references = $order->getArchives();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $product = $productRepository->findOneBy(['id' => $order->getArchives()[0]->getProductId()]);
+            $user = $userRepository->findOneBy(['id' => $order->getUserid()->getId()]);
+            $notation->setProduct($product);
+            $notation->setUser($user);
+
+            $em->persist($notation);
+            $em->flush();
+
+        }
 
         return $this->render('order/success.html.twig', [
             'order' => $order,
             'references' => $references,
             'totalPrice' => $order->getFullPrice(),
             'controller_name' => 'OrderController',
+            'form' => $form->createView(),
+            'categories' => $categories
         ]);
     }
 
@@ -56,12 +78,14 @@ class OrderController extends AbstractController
      * @return Response a Response object.
      */
     #[Route('/order/{userId}/{fullPrice}', name: 'app_order')]
-    public function index($userId, $fullPrice, Request $request, ProductRepository $productRepository, Basket $panierService, UserRepository $userRepository, EntityManagerInterface $em): Response
+    public function index($userId, $fullPrice, Request $request, ProductRepository $productRepository, Basket $panierService, UserRepository $userRepository, EntityManagerInterface $em, CategoryRepository $categoryRepository): Response
     {
 
         $paypalClientId = $_ENV['PAYPAL_CLIENT_ID'];
 
         $user = $userRepository->find($userId);
+
+        $categories = $categoryRepository->findAll();
 
         if (!$user) {
             return $this->redirectToRoute('app_home');
@@ -121,7 +145,6 @@ class OrderController extends AbstractController
                 $panierService->viderPanier();
 
                 return $this->redirectToRoute('app_order_success', ['orderID' => $order->getId()]);
-
             } else {
 
                 dd($stripeToken);
@@ -134,7 +157,8 @@ class OrderController extends AbstractController
             'controller_name' => 'OrderController',
             'stripe_key' => $_ENV["STRIPE_KEY"],
             'fullPrice' => $fullPrice,
-            'paypalClientId' => $paypalClientId
+            'paypalClientId' => $paypalClientId,
+            'categories' => $categories
         ]);
     }
 

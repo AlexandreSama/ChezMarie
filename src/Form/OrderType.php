@@ -33,8 +33,9 @@ class OrderType extends AbstractType
                 'html5' => true,
                 'input' => 'datetime_immutable',
                 'attr' => [
-                    'min' => (new \DateTime('tomorrow'))->format('yyyy-MM-dd'),
+                    'min' => (new \DateTime('+2 days'))->format('Y-m-d\TH:i'), // Inclure l'heure dans le format
                 ],
+                'label' => 'Date et heure de retrait souhaitées'
             ])
             ->add('fullPrice', HiddenType::class)
             ->add('dateOrder', HiddenType::class)
@@ -42,12 +43,6 @@ class OrderType extends AbstractType
             ->add('userid', HiddenType::class)
             ->add('stripeToken', HiddenType::class, [
                 'mapped' => false
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Valider la commande',
-                'attr' => [
-                    'class' => 'btn btn-success'
-                ]
             ])
         ;
     }

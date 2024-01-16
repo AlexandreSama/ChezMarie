@@ -38,7 +38,7 @@ class DashboardController extends AbstractController
         return $this->render('dashboard/admin.html.twig', [
             'ongoingOrders' => $ongoingOrders,
             'closedOrders' => $closedOrders,
-            'controller_name' => 'DashboardController',
+            'controller_name' => 'DashboardAdminController',
             'categories' => $categories
         ]);
     }
@@ -73,7 +73,7 @@ class DashboardController extends AbstractController
         $categories = $categoryRepository->findAll();
 
         return $this->render('dashboard/listProducts.html.twig', [
-            'controller_name' => 'DashboardController',
+            'controller_name' => 'DashboardAdminController',
             'products' => $products,
             'categories' => $categories
         ]);
@@ -126,7 +126,7 @@ class DashboardController extends AbstractController
         }
 
         return $this->render('dashboard/newEmploye.html.twig', [
-            'controller_name' => 'DashboardController',
+            'controller_name' => 'DashboardAdminController',
             'form' => $form->createView(),
             'categories' => $categories
         ]);
@@ -141,7 +141,7 @@ class DashboardController extends AbstractController
 
         return $this->render('dashboard/listUsers.html.twig', [
             'users' => $users,
-            'controller_name' => 'DashboardController',
+            'controller_name' => 'DashboardAdminController',
             'categories' => $categories
         ]);
     }
