@@ -7,3 +7,5 @@ Site :
     => Liste des commandes passés / en cours (admin et User)
     => Convertir en WebP les images
     => XN Converter
+
+    php8.2.15
