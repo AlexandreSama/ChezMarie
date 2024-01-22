@@ -35,6 +35,13 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $honeypot = $request->request->get('honeypot', '');
+            if (!empty($honeypot)) {
+                // Si le champ honeypot est rempli, rejetez la soumission.
+                throw ("Erreur d'authentification.");
+            }
+            
             // encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(

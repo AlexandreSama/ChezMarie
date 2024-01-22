@@ -23,4 +23,15 @@ class HomeController extends AbstractController
             'products' => $products
         ]);
     }
+
+    #[Route('/mentions', name: 'mentions_legales')]
+    public function category(CategoryRepository $categoryRepository): Response
+    {
+        $categories = $categoryRepository->findAll();
+        
+        return $this->render('mentions.html.twig', [
+            'controller_name' => 'HomeController',
+            'categories' => $categories,
+        ]);
+    }
 }

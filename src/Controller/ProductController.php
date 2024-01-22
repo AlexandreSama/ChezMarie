@@ -226,23 +226,6 @@ class ProductController extends AbstractController
         ]);
     }
 
-    // #[Route('/product/addnotation/{userid}/{productid}/{note}', name: 'product_addnotation')]
-    // public function addNotation($userid, $productid, $note, UserRepository $userRepository, ProductRepository $productRepository, EntityManagerInterface $entityManager)
-    // {
-
-    //     $product = $productRepository->findOneBy(['id' => $productid]);
-    //     $user = $userRepository->findOneBy(['id' => $userid]);
-
-    //     $newNote = new Commentary();
-
-    //     $newNote->setUser($user);
-    //     $newNote->setProduct($product);
-    //     $newNote->setNote($note);
-
-    //     $entityManager->persist($note);
-    //     $entityManager->flush();
-    // }
-
     #[Route('/product/new', name: 'product_new')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {

@@ -63,27 +63,19 @@ class ApiAuthenticator extends AbstractAuthenticator
                 if (!$user) {
                     throw new CustomUserMessageAuthenticationException('Email not found.');
                 }
-
+        
+                // Vérifier si l'utilisateur a le rôle [ROLE_EMPLOYE]
+                $roles = $user->getRoles();
+                if (!in_array('[ROLE_EMPLOYE]', $roles)) {
+                    throw new CustomUserMessageAuthenticationException('Access Denied: You do not have the employee role.');
+                }
+        
                 return $user;
             }),
             new PasswordCredentials($password)
         );
     }
 
-    /**
-     * This function generates a JSON response containing a JWT token and the user identifier upon
-     * successful authentication.
-     * 
-     * @param Request request The  parameter represents the current HTTP request object.
-     * @param TokenInterface token The  parameter is an instance of TokenInterface, which
-     * represents the authentication token for the current user. It contains information about the
-     * authenticated user, such as their roles and credentials.
-     * @param string firewallName The `` parameter represents the name of the firewall
-     * that the user is authenticated against. A firewall is a security configuration in Symfony that
-     * defines how incoming requests should be handled and authenticated.
-     * 
-     * @return ?Response a JsonResponse with an array containing the JWT token and the user identifier.
-     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         $user = $token->getUser();

@@ -34,3 +34,5 @@ Main Page :
 - Accordéon A Propos de Chez Marie texte
 
 - Tenter de mettre la navbar si l'image de la section Search (position absolute, background transparent) et accentuer la couleur des liens
+
+- Honeypot / Tarte aux citrons

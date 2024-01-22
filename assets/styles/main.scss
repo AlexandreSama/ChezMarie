@@ -455,19 +455,26 @@ button[type="submit"]:hover {
 }
 
 .list-ingredients {
-    margin-top: 1.5rem;
-}
+    max-height: 300px; /* ajustez selon vos besoins */
+    overflow-y: auto; /* permet le défilement vertical si le contenu dépasse max-height */
+    padding: 15px;
+    border: 1px solid #ddd; /* bordure légère pour un aspect épuré */
+    border-radius: 5px; /* coins arrondis pour un look moderne */
+    background-color: #f8f9fa; /* couleur de fond légère pour un style épuré */
 
-.ingredient-item {
-    margin-bottom: .5rem;
-}
+    .ingredient-item {
+        padding: 5px 0; /* espace entre les éléments de la liste */
+        border-bottom: 1px solid #eee; /* séparateur subtil entre les ingrédients */
 
-.ingredient-name {
-    font-weight: bold;
-}
-
-.allergen {
-    font-style: italic;
+        &:last-child {
+            border-bottom: none; /* enlève la bordure du dernier élément */
+        }
+    }
+    
+    .ingredient-name, .allergen {
+        margin: 0; /* enlève les marges par défaut pour un look plus propre */
+        font-size: 14px; /* ajustez la taille de police selon vos besoins */
+    }
 }
 
 .basket-holder {
@@ -533,12 +540,17 @@ button[type="submit"]:hover {
 /* Admin Dashboard */
 
 .mainDashboardAdmin{
-    height: 85vh;
+    min-height: 100vh;
     background-color: #f0f0f0;
+
+    .dashboard{
+        min-height: 100vh;
+    }
 }
 
 /* Basket */
 
 .basketMain{
-    min-height: 40vh;
+    min-height: 100vh !important;
+
 }
