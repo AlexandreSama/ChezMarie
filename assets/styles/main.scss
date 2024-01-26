@@ -71,26 +71,28 @@
             }
         }
 
-        .fa-arrow-down {
-            color: white;
-            font-size: 6rem;
-            margin-top: 15vh;
-        }
+        .fa-solid {
 
-        .bounce {
-            animation: bounce 1s ease-in-out infinite;
+            &.fa-arrow-down {
+                color: white;
+                font-size: 6rem;
+                margin-top: 15vh;
+                position: relative;
+                animation: 3s ease-in 1s infinite reverse both running slidein;
 
-            @keyframes bounce {
-
-                0%,
-                100% {
-                    transform: translateY(0);
+                &:before{
+                    animation: 3s ease-in 1s infinite reverse both running slidein;
                 }
 
-                50% {
-                    transform: translateY(20px);
+                &:after{
+                    animation: 3s ease-in 1s infinite reverse both running slidein;
                 }
             }
+        }
+
+        @keyframes slidein {
+            from { transform: scaleX(0); }
+            to   { transform: scaleX(1); }
         }
     }
 
@@ -359,7 +361,7 @@
             &:hover {
                 text-decoration: underline;
                 /* Soulignement au survol pour indiquer la possibilité de cliquer */
-            }    
+            }
         }
 
         /* Pseudo-éléments pour les accolades */
