@@ -64,7 +64,7 @@
                     font-size: 1.5rem;
                     display: flex;
                     align-items: center;
-                    bottom: 80px;
+                    bottom: 48px;
                     left: 73%;
                     justify-content: center;
                 }
@@ -234,11 +234,12 @@
 
     .about-bakery-section {
         padding: 20px;
-        max-width: 800px;
+        max-width: 1100px;
         margin: auto;
 
         .aboutUsTitle {
             margin-bottom: 30px;
+            text-align: center;
         }
     }
 
@@ -334,107 +335,107 @@
     align-items: center;
     height: 100vh;
     background-color: #f0f0f0;
+
+    /* Styles pour la boîte de connexion */
+    .login-box {
+        position: relative;
+        width: 100%;
+        max-width: 320px;
+        padding: 2rem;
+        margin: 1rem;
+        background: #ffffff;
+        border: 2px solid #eeeeee;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+
+        /* Styles pour les liens de navigation */
+        .links a {
+            display: block;
+            margin-top: 1rem;
+            color: #337ab7;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+                /* Soulignement au survol pour indiquer la possibilité de cliquer */
+            }    
+        }
+
+        /* Pseudo-éléments pour les accolades */
+        &::before {
+            content: '{';
+            position: absolute;
+            top: 50%;
+            /* transform: translateY(-50%); */
+            font-size: 3em;
+            color: #cccccc;
+        }
+
+        &::after {
+            content: '}';
+            position: absolute;
+            top: 50%;
+            /* transform: translateY(-50%); */
+            font-size: 3em;
+            color: #cccccc;
+        }
+
+        &::before {
+            left: -1.5em;
+            /* Positionnement à gauche de la boîte */
+        }
+
+        &::after {
+            right: -1.5em;
+            /* Positionnement à droite de la boîte */
+        }
+    }
+
+    /* Styles pour le titre 'Connexion' */
+    h1 {
+        margin-bottom: 1.5rem;
+        color: #333;
+        font-weight: normal;
+    }
+
+    /* Styles pour les champs de formulaire */
+    input[type="email"],
+    input[type="password"] {
+        width: calc(100% - 4rem);
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+    }
+
+    /* Styles pour les étiquettes */
+    label {
+        display: block;
+        text-align: left;
+        margin-top: 1rem;
+    }
+
+    /* Styles pour le bouton de soumission */
+    button[type="submit"] {
+        padding: 0.6rem 1.2rem;
+        color: #fff;
+        background-color: #5cb85c;
+        border: none;
+        border-radius: 4px;
+        margin-top: 2rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #4cae4c;
+        /* Assombrir le bouton au survol */
+    }
 }
 
-/* Styles pour la boîte de connexion */
-.login-box {
-    position: relative;
-    width: 100%;
-    max-width: 320px;
-    padding: 2rem;
-    margin: 1rem;
-    background: #ffffff;
-    border: 2px solid #eeeeee;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
 
-/* Styles pour le titre 'Connexion' */
-h1 {
-    margin-bottom: 1.5rem;
-    color: #333;
-    font-weight: normal;
-}
-
-/* Styles pour les champs de formulaire */
-input[type="email"],
-input[type="password"] {
-    width: calc(100% - 4rem);
-    margin-top: 0.5rem;
-    padding: 0.5rem;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-}
-
-/* Styles pour les étiquettes */
-label {
-    display: block;
-    text-align: left;
-    margin-top: 1rem;
-}
-
-/* Styles pour le bouton de soumission */
-button[type="submit"] {
-    padding: 0.6rem 1.2rem;
-    color: #fff;
-    background-color: #5cb85c;
-    border: none;
-    border-radius: 4px;
-    margin-top: 2rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button[type="submit"]:hover {
-    background-color: #4cae4c;
-    /* Assombrir le bouton au survol */
-}
-
-/* Styles pour les liens de navigation */
-.links a {
-    display: block;
-    margin-top: 1rem;
-    color: #337ab7;
-    text-decoration: none;
-}
-
-.links a:hover {
-    text-decoration: underline;
-    /* Soulignement au survol pour indiquer la possibilité de cliquer */
-}
-
-/* Pseudo-éléments pour les accolades */
-.login-box::before {
-    content: '{';
-    position: absolute;
-    top: 50%;
-    /* transform: translateY(-50%); */
-    font-size: 3em;
-    color: #cccccc;
-}
-
-.login-box::after {
-    content: '}';
-    position: absolute;
-    top: 50%;
-    /* transform: translateY(-50%); */
-    font-size: 3em;
-    color: #cccccc;
-}
-
-.login-box::before {
-    left: -1.5em;
-    /* Positionnement à gauche de la boîte */
-}
-
-.login-box::after {
-    right: -1.5em;
-    /* Positionnement à droite de la boîte */
-}
-
-
-/* Show Product */
+/* SHOW PRODUCT */
 
 .product-details {
     padding: 20px;
@@ -455,25 +456,36 @@ button[type="submit"]:hover {
 }
 
 .list-ingredients {
-    max-height: 300px; /* ajustez selon vos besoins */
-    overflow-y: auto; /* permet le défilement vertical si le contenu dépasse max-height */
+    max-height: 300px;
+    /* ajustez selon vos besoins */
+    overflow-y: auto;
+    /* permet le défilement vertical si le contenu dépasse max-height */
     padding: 15px;
-    border: 1px solid #ddd; /* bordure légère pour un aspect épuré */
-    border-radius: 5px; /* coins arrondis pour un look moderne */
-    background-color: #f8f9fa; /* couleur de fond légère pour un style épuré */
+    border: 1px solid #ddd;
+    /* bordure légère pour un aspect épuré */
+    border-radius: 5px;
+    /* coins arrondis pour un look moderne */
+    background-color: #f8f9fa;
+    /* couleur de fond légère pour un style épuré */
 
     .ingredient-item {
-        padding: 5px 0; /* espace entre les éléments de la liste */
-        border-bottom: 1px solid #eee; /* séparateur subtil entre les ingrédients */
+        padding: 5px 0;
+        /* espace entre les éléments de la liste */
+        border-bottom: 1px solid #eee;
+        /* séparateur subtil entre les ingrédients */
 
         &:last-child {
-            border-bottom: none; /* enlève la bordure du dernier élément */
+            border-bottom: none;
+            /* enlève la bordure du dernier élément */
         }
     }
-    
-    .ingredient-name, .allergen {
-        margin: 0; /* enlève les marges par défaut pour un look plus propre */
-        font-size: 14px; /* ajustez la taille de police selon vos besoins */
+
+    .ingredient-name,
+    .allergen {
+        margin: 0;
+        /* enlève les marges par défaut pour un look plus propre */
+        font-size: 14px;
+        /* ajustez la taille de police selon vos besoins */
     }
 }
 
@@ -514,22 +526,28 @@ button[type="submit"]:hover {
 }
 
 .thumbnail {
-    width: 100px; /* Largeur fixe pour les vignettes */
-    height: 100px; /* Hauteur fixe pour les vignettes */
-    overflow: hidden; /* Cache les parties débordantes de l'image */
+    width: 100px;
+    /* Largeur fixe pour les vignettes */
+    height: 100px;
+    /* Hauteur fixe pour les vignettes */
+    overflow: hidden;
+    /* Cache les parties débordantes de l'image */
     cursor: pointer;
 }
 
 .thumbnail img {
-    width: 100%; /* Largeur complète du conteneur */
-    height: 100%; /* Hauteur complète du conteneur */
-    object-fit: cover; /* Redimensionne l'image pour couvrir la zone, en conservant les proportions */
+    width: 100%;
+    /* Largeur complète du conteneur */
+    height: 100%;
+    /* Hauteur complète du conteneur */
+    object-fit: cover;
+    /* Redimensionne l'image pour couvrir la zone, en conservant les proportions */
     border-radius: 5px;
 }
 
 /* Modal Dialog Styles */
 .modal-dialog {
-    max-width: 65%!important;
+    max-width: 65% !important;
     height: 90%;
 }
 
@@ -539,18 +557,18 @@ button[type="submit"]:hover {
 
 /* Admin Dashboard */
 
-.mainDashboardAdmin{
+.mainDashboardAdmin {
     min-height: 100vh;
     background-color: #f0f0f0;
 
-    .dashboard{
+    .dashboard {
         min-height: 100vh;
     }
 }
 
 /* Basket */
 
-.basketMain{
+.basketMain {
     min-height: 100vh !important;
 
 }
