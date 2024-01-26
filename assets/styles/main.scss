@@ -80,19 +80,7 @@
                 position: relative;
                 animation: 3s ease-in 1s infinite reverse both running slidein;
 
-                &:before{
-                    animation: 3s ease-in 1s infinite reverse both running slidein;
-                }
-
-                &:after{
-                    animation: 3s ease-in 1s infinite reverse both running slidein;
-                }
             }
-        }
-
-        @keyframes slidein {
-            from { transform: scaleX(0); }
-            to   { transform: scaleX(1); }
         }
     }
 
