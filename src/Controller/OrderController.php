@@ -81,41 +81,68 @@ class OrderController extends AbstractController
     public function index($userId, $fullPrice, Request $request, ProductRepository $productRepository, Basket $panierService, UserRepository $userRepository, EntityManagerInterface $em, CategoryRepository $categoryRepository): Response
     {
 
+        //On récupère le client id de paypal
         $paypalClientId = $_ENV['PAYPAL_CLIENT_ID'];
 
+        //On récupère l'utilisateur par son id
         $user = $userRepository->find($userId);
 
+        //On récupère les catégories (pour la navbar)
         $categories = $categoryRepository->findAll();
 
+        //Si pas d'utilisateur, on renvoi a l'accueil
         if (!$user) {
             return $this->redirectToRoute('app_home');
         }
 
+        //On créer une nouvelle entité Commande
         $order = new Order();
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            //On récupère le stripeToken qui se trouve dans le form
             $stripeToken = $form->get('stripeToken')->getData();
 
+            //On procède au payement
             if ($this->processStripePayment($stripeToken, $fullPrice)) {
 
+                //On créer un identifiant unique pour la commande qui commence toujours
+                //Par 'ref-'
                 $uniqueReference = uniqid('ref-');
+
+                //On set l'identifiant dans l'entité Commande
                 $order->setReference($uniqueReference);
+
+                //On créer une nouvelle identité Invoice
                 $invoice = new Invoice();
+
+                //On set la commande avec l'entité Commande
                 $invoice->setCommande($order);
 
                 $em->persist($invoice);
 
-                // Récupérer les produits du panier en session et leur quantité
+                // On récupére les produits du panier en session et leur quantité
                 $panierData = $panierService->getPanier();
+
+                //Pour chaque produit...
                 foreach ($panierData as $productId => $quantity) {
+
+                    //On récupère le produit par son id
                     $product = $productRepository->find($productId);
+
+                    //Si l'on trouve le produit
                     if ($product) {
+
+                        //On prépare le changement de quantité (quantité du produit dans la BDD - quantité du produit séléctionné par l'utilisateur)
                         $product->setProductQuantity($product->getProductQuantity() - $quantity);
                         $em->persist($product);
 
+                        //On créer une nouvelle entité Reference
                         $reference = new Reference();
+
+                        //Et on set ses propriétés
                         $reference->setProductName($product->getName())
                             ->setFullPrice($product->getPrice())
                             ->setProductId($product->getId())
@@ -126,6 +153,7 @@ class OrderController extends AbstractController
                     }
                 }
 
+                //On set les propriétés de la nouvelle entité Commande
                 $order->setUserid($user)
                     ->setIsPending(false)
                     ->setIsServed(false)
@@ -137,17 +165,21 @@ class OrderController extends AbstractController
                     ->setInvoice($invoice);
 
                 $em->persist($order);
+
+                //Et on envoi les données
                 $em->flush();
 
+                //On génère la facture
                 $this->generateInvoicePDF($order);
 
-                // Vider le panier en session après la création de la commande
+                //On Vide le panier en session après la création de la commande
                 $panierService->viderPanier();
 
+
+                //Et on renvoi vers la page de succés de payement
                 return $this->redirectToRoute('app_order_success', ['orderID' => $order->getId()]);
             } else {
 
-                dd($stripeToken);
                 $this->addFlash('error', 'Le paiement n\'a pas pu être complété. Veuillez réessayer ou utiliser un autre mode de paiement.');
             }
         }

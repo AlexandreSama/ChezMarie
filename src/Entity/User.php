@@ -197,7 +197,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             'ROLE_USER' => 1
         ];
 
-        $highestRole = 'ROLE_USER'; // Définir une valeur par défaut
+        $highestRole = 'ROLE_USER';
         foreach ($this->getRoles() as $role) {
             if ($roleHierarchy[$role] > $roleHierarchy[$highestRole]) {
                 $highestRole = $role;
@@ -209,8 +209,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function anonymize(): void
     {
+        //On formate l'email de l'utilisateur
         $this->email = 'anonymous' . $this->id . '@example.com';
+        //Le mot de passe est désormais vide
         $this->password = '';
+        //Et on enlève ses rôles
         $this->roles = [];
     }
 }

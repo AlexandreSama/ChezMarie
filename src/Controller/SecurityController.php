@@ -49,11 +49,12 @@ class SecurityController extends AbstractController
     {
         // Extraire les données de la requête
         $data = json_decode($request->getContent(), true);
-        $username = $data['username'] ?? null;  // Utilisez 'username' au lieu de 'email'
+        // Utilisez 'username' au lieu de 'email'
+        $username = $data['username'] ?? null;  
         $password = $data['password'] ?? null;
 
-        // Ajoutez ici votre logique pour charger l'utilisateur
-        $user = $userRepository->findOneBy(['email' => $username]);  // Recherchez par email
+        // Recherchez par email
+        $user = $userRepository->findOneBy(['email' => $username]);  
 
         // Vérifiez le mot de passe
         if (!$user || !$passwordHasher->isPasswordValid($user, $password)) {
@@ -73,9 +74,13 @@ class SecurityController extends AbstractController
     #[Route(path: '/user/delete', name: 'anonymize_account')]
     public function anonymizeUser(UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
+        //On récupère l'email de l'utilisateur connecté
         $userEmail = $this->getUser()->getUserIdentifier();
+        //On récupère l'utilisateur par son email
         $user = $userRepository->findOneBy(['email' => $userEmail]);
+        //On appelle la fonction qui anonymise l'entrée
         $user->anonymize();
+        //Et on l'envoi dans la base de donnée
         $entityManager->flush();
 
         return $this->redirectToRoute('app_home');

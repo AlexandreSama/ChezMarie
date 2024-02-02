@@ -32,7 +32,9 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 
         $request->getSession()->set(Security::LAST_USERNAME, $email);
 
+        //On récupère la value du champ honeypot
         $honeypot = $request->request->get('honeypot', '');
+        
         if (!empty($honeypot)) {
             // Si le champ honeypot est rempli, rejetez la soumission.
             throw new CustomUserMessageAuthenticationException("Erreur d'authentification.");

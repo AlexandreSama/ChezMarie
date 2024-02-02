@@ -490,6 +490,10 @@
 .add-to-basket-form .btn {
     width: 100%;
     margin-top: 1rem;
+
+    &#decreaseValue{
+        margin-bottom: 1rem;
+    }
 }
 
 .product-image-selector {
