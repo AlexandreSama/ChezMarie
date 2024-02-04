@@ -252,6 +252,101 @@
     .text-content {
         width: 55%;
     }
+    
+    /* Petit appareil (smartphones, 600px et moins) */
+    @media (max-width: 600px) {
+        .search {
+            height: auto;
+            .mainBox {
+                height: auto;
+                width: 85vw;
+                .titleHome {
+                    font-size: 3rem;
+                }
+                .subtitleHome {
+                    font-size: 1.5rem;
+                }
+                .formSearch {
+                    width: 80%;
+                    .searchButton {
+                        width: 30vw;
+                        bottom: 5vh;
+                        left: 60%;
+                        font-size: 1.2rem;
+                    }
+                }
+            }
+        }
+    }
+
+    /* Tablette (entre 601px et 768px) */
+    @media (min-width: 601px) and (max-width: 768px) {
+        .search .mainBox {
+            height: 50vh; /* Hauteur ajustée */
+            width: 60vw; /* Ajustez la largeur */
+            .titleHome {
+                font-size: 4rem; /* Taille de police ajustée */
+            }
+            .subtitleHome {
+                font-size: 2rem; /* Taille de police ajustée */
+            }
+            .formSearch {
+                width: 70%; /* Ajustement de la largeur */
+                .searchButton {
+                    width: 20vw; /* Ajustement de la largeur */
+                    bottom: 6vh; /* Ajustement de la position */
+                    left: 68%; /* Ajustement de la position */
+                    font-size: 1.4rem; /* Taille de police ajustée */
+                }
+            }
+        }
+    }
+
+    /* Ordinateur de bureau (entre 769px et 1024px) */
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .search .mainBox {
+            height: 55vh; /* Hauteur ajustée */
+            width: 50vw; /* Ajustez la largeur */
+            .titleHome {
+                font-size: 4.5rem; /* Taille de police ajustée */
+            }
+            .subtitleHome {
+                font-size: 2.2rem; /* Taille de police ajustée */
+            }
+            .formSearch {
+                width: 65%; /* Ajustement de la largeur */
+                .searchButton {
+                    width: 15vw; /* Ajustement de la largeur */
+                    bottom: 7vh; /* Ajustement de la position */
+                    left: 70%; /* Ajustement de la position */
+                    font-size: 1.5rem; /* Taille de police ajustée */
+                }
+            }
+        }
+    }
+
+    /* Grand écran (1025px et plus) */
+    @media (min-width: 1025px) {
+        .search .mainBox {
+            height: 45vh; /* Retour à la taille d'origine */
+            width: 40vw; /* Retour à la taille d'origine */
+            .titleHome {
+                font-size: 5rem; /* Retour à la taille d'origine */
+            }
+            .subtitleHome {
+                font-size: 2rem; /* Retour à la taille d'origine */
+            }
+            .formSearch {
+                width: 65%; /* Retour à la taille d'origine */
+                .searchButton {
+                    width: 10vw; /* Retour à la taille d'origine */
+                    bottom: 48px; /* Retour à la position d'origine */
+                    left: 73%; /* Retour à la position d'origine */
+                    font-size: 1.5rem; /* Retour à la taille d'origine */
+                }
+            }
+        }
+    }
 }
 
 /* Show Product */

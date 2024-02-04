@@ -6,7 +6,11 @@
 <main class="loginMain">
     <div class="login-box">
         <form method="post" class="d-flex flex-column align-items-center w-100">
-
+            {% if error %}
+            <div class="alert alert-danger">
+                {{ error }}
+            </div>
+            {% endif %}
             <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
             <label for="inputEmail">Email</label>
             <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control"

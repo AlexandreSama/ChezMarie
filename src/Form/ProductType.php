@@ -58,23 +58,20 @@ class ProductType extends AbstractType
                 'label' => 'Photos du produit',
                 'multiple' => true,
 
-                // unmapped means that this field is not associated to any entity property
                 'mapped' => true,
 
-                // make it optional so you don't have to re-upload the PDF file
-                // every time you edit the Product details
                 'required' => false,
 
-                // unmapped fields can't define their validation using annotations
-                // in the associated entity, so you can use the PHP constraint classes
                 'constraints' => [
                     new File([
+                        //Taille de fichier maximum
                         'maxSize' => '2M',
                         'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
+                            //Type d'extension valide de fichier (ici webp)
+                            'image/webp',
                         ],
-                        'mimeTypesMessage' => 'Veuillez envoyer une image de type JPG ou PNG',
+                        //Message pour bien expliqué qu'il faut un fichier webp
+                        'mimeTypesMessage' => 'Veuillez envoyer une image de type WebP',
                     ])
                 ],
             ])

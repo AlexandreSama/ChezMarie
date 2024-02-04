@@ -17,14 +17,6 @@
                     {% endif %}
                     <div class="product-info">
                         <h3 class="product-name">{{ product.name }}</h3>
-                        {# <div class="product-rating">
-                            {% for i in 1..5 %}
-                            {% if i <= avgNote %} <span class="star">&#9733;</span>
-                            {% else %}
-                            <span class="star">&#9734;</span>
-                            {% endif %}
-                            {% endfor %}
-                        </div> #}
                         {% if product.productQuantity < 1 %}
                         <button class="product-button"><i class="fa-solid fa-x"></i>Produit épuisé</button>
                         {% else %}

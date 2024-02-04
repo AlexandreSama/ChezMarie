@@ -21,6 +21,15 @@ services:
     App\Service\Basket:
         arguments:
             $requestStack: '@request_stack'
+    Symfony\Contracts\Cache\CacheInterface: '@cache.app'
+    
+    cache.app:
+        class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+        arguments:
+            - 'my_cache_namespace' # Utilisez un nom de namespace approprié
+            - 0 # Durée par défaut, 0 signifie que l'élément ne sera pas automatiquement supprimé
+        calls:
+            - ['setLogger', ['@logger']]
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

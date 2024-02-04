@@ -11,70 +11,92 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource(
-    operations: [
-        new Patch(),
-        new Get(),
-        new GetCollection()
-    ]
-)]
+#[ApiResource]
+// #[ApiResource(
+//     operations: [
+//         new Patch(
+//             denormalizationContext: ['groups' => ['write']]
+//         ),
+//         new Get(),
+//         new GetCollection()
+//     ],
+//     normalizationContext: ['groups' => ['read'], 'datetime_format' => 'Y-m-d\TH:i:sP']
+// )]
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
 class Order
 {
+    // #[Groups(['read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    // #[Groups(['read', 'write'])]
     #[ORM\Column]
     private ?bool $is_pending = null;
 
+    // #[Groups(['read', 'write'])]
     #[ORM\Column]
     private ?bool $is_served = null;
 
+    // #[Groups(['read', 'write'])]
     #[ORM\Column]
     private ?bool $is_notServer = null;
 
+    // #[Groups(['read'])]
     #[ORM\Column(length: 50)]
     private ?string $customerName = null;
 
+    // #[Groups(['read'])]
     #[ORM\Column(length: 50)]
     private ?string $customerFirstName = null;
 
+    // #[Groups(['read'])]
     #[ORM\Column(length: 50)]
     private ?string $customerAdress = null;
 
+    // #[Groups(['read'])]
     #[ORM\Column(length: 50)]
     private ?string $customerTown = null;
 
+    // #[Groups(['read'])]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
     private ?string $fullPrice = null;
 
+    // #[Groups(['read'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateOrder = null;
 
+    // #[Groups(['read'])]
     #[ORM\OneToOne(inversedBy: 'commande')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Invoice $invoice = null;
 
+    // #[Groups(['read'])]
     #[ORM\OneToMany(mappedBy: 'commande', targetEntity: Reference::class)]
     private Collection $archives;
 
+    // #[Groups(['read'])]
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $userid = null;
 
+    // #[Groups(['read'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $desiredPickupDateTime = null;
 
+    // #[Groups(['read', 'write'])]
     #[ORM\Column]
     private ?bool $is_preparing = null;
 
+    // #[Groups(['read'])]
     #[ORM\Column(type: "string", nullable: true)]
     private $stripeToken;
 
+    // #[Groups(['read'])]
     #[ORM\Column(length: 25)]
     private ?string $reference = null;
 

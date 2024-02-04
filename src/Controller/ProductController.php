@@ -48,6 +48,7 @@ class ProductController extends AbstractController
     public function disable_product($productid, PaginatorInterface $paginator, Request $request, ProductRepository $productRepository, EntityManagerInterface $em): Response
     {
 
+        //Je récupère le produit par son id
         $product = $productRepository->findOneBy(['id' => $productid]);
 
         $products = $paginator->paginate(
@@ -56,8 +57,10 @@ class ProductController extends AbstractController
             10
         );
 
+        //Je change la propriété IsActive par false pour désactiver le produit
         $product->setIsActive(false);
 
+        //Je met en attente et j'envoi la modification
         $em->persist($product);
         $em->flush();
 

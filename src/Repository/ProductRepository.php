@@ -45,6 +45,7 @@ class ProductRepository extends ServiceEntityRepository
         $results = $query->getResult();
 
         $topProducts = [];
+        //Pour chaque produit, je rajoute la note pour l'afficher sur la vue
         foreach ($results as $result) {
             $themeId = $result['themeId'];
 

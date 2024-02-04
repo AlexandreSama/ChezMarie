@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
@@ -66,7 +65,7 @@ class ApiAuthenticator extends AbstractAuthenticator
         
                 // Vérifier si l'utilisateur a le rôle [ROLE_EMPLOYE]
                 $roles = $user->getRoles();
-                if (!in_array('[ROLE_EMPLOYE]', $roles)) {
+                if (!in_array('ROLE_EMPLOYE', $roles)) {
                     throw new CustomUserMessageAuthenticationException('Access Denied: You do not have the employee role.');
                 }
         
