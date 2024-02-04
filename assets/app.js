@@ -122,4 +122,22 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+
+    var lockoutTimerDiv = document.getElementById("lockoutTimer");
+    var lockoutTimeRemaining = lockoutTimerDiv.dataset.lockoutTimeRemaining
+
+
+    if(lockoutTimeRemaining !== 0){
+        var x = setInterval(function() {
+
+            lockoutTimerDiv.textContent = lockoutTimeRemaining + " secondes restantes";
+            
+            lockoutTimeRemaining = lockoutTimeRemaining - 1
+            if (lockoutTimeRemaining < 0) {
+                clearInterval(x);
+                lockoutTimerDiv.textContent = "Vous pouvez maintenant essayer de vous connecter à nouveau.";
+                document.querySelector("button[type='submit']").disabled = false;
+            }
+        }, 1000);
+    }
 });

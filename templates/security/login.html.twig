@@ -6,8 +6,10 @@
 <main class="loginMain">
     <div class="login-box">
         <form method="post" class="d-flex flex-column align-items-center w-100">
-            {% if error %}
-            <div class="alert alert-danger">
+            {% if isLocked %}
+            <div id="lockoutTimer" class="text-danger" data-lockout-time-remaining="{{ lockoutTimeRemaining }}"></div>
+            {% elseif error %}
+            <div class="text-danger">
                 {{ error }}
             </div>
             {% endif %}
@@ -25,7 +27,7 @@
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <button class="btn btn-lg btn-success mt-4" type="submit">
+            <button class="btn btn-lg btn-success mt-4" type="submit" {% if isLocked %}disabled="disabled"{% endif %}>
                 Se connecter
             </button>
         </form>
@@ -35,4 +37,5 @@
         </div>
     </div>
 </main>
+
 {% endblock %}

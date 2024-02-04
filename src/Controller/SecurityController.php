@@ -29,26 +29,36 @@ class SecurityController extends AbstractController
         }
     
         $categories = $categoryRepository->findAll();
+
+        $isLocked = 0;
+        $lockoutTimeRemaining = 0;
     
         // Obtenez l'erreur de connexion s'il y en a une
         $error = $authenticationUtils->getLastAuthenticationError();
         // Dernier nom d'utilisateur saisi par l'utilisateur
         $lastUsername = $authenticationUtils->getLastUsername();
-    
+
+        $loginAttemptService->addLoginAttempt($lastUsername);
+
         try {
             $loginAttemptService->checkLoginAttempt($lastUsername);
         } catch (LockedException $exception) {
-            // Traitez ici l'exception LockedException si nécessaire
-            // Vous pouvez rediriger l'utilisateur, afficher un message personnalisé, etc.
-            // Par exemple, pour obtenir le message d'erreur :
-            $error = $exception->getMessage();
+            $lockoutTimeRemaining = $loginAttemptService->getBlockTimeRemaining($lastUsername);
+            $isLocked = $lockoutTimeRemaining > 0;
         }
+
+        if(!is_string($error) && $error !== null){
+            $error = $error->getMessage();
+        }
+
     
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
             'controller_name' => 'SecurityController',
-            'categories' => $categories
+            'categories' => $categories,
+            'isLocked' => $isLocked,
+            'lockoutTimeRemaining' => $lockoutTimeRemaining
         ]);
     }
     
