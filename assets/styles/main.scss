@@ -256,7 +256,6 @@
     /* Petit appareil (smartphones, 600px et moins) */
     @media (max-width: 600px) {
         .search {
-            height: auto;
             .mainBox {
                 height: auto;
                 width: 85vw;
@@ -265,13 +264,15 @@
                 }
                 .subtitleHome {
                     font-size: 1.5rem;
+                    text-align: center;
                 }
                 .formSearch {
                     width: 80%;
+                    
                     .searchButton {
-                        width: 30vw;
+                        width: 15vw;
                         bottom: 5vh;
-                        left: 60%;
+                        left: 78%;
                         font-size: 1.2rem;
                     }
                 }
@@ -590,7 +591,7 @@
     width: 100%;
     margin-top: 1rem;
 
-    &#decreaseValue{
+    &#increaseValue{
         margin-bottom: 1rem;
     }
 }

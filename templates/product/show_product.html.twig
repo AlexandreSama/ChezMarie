@@ -27,10 +27,10 @@
                     <div class="quantity-selector mb-3">
                         <label for="quantity" class="form-label"><strong>Quantité :</strong></label>
                         <div class="input-group">
-                            <button type="button" class="btn btn-outline-secondary" id="decreaseValue">-</button>
-                            <input type="text" id="quantity" name="quantity" class="form-control text-center" value="1"
-                                readonly data-max="{{ product.productQuantity }}">
                             <button type="button" class="btn btn-outline-secondary" id="increaseValue">+</button>
+                            <input type="text" id="quantity" name="quantity" class="form-control text-center" value="1"
+                                data-max="{{ product.productQuantity }}">
+                            <button type="button" class="btn btn-outline-secondary" id="decreaseValue">-</button>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success">Ajouter au panier</button>

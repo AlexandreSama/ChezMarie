@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if(lockoutTimeRemaining !== 0){
         var x = setInterval(function() {
 
-            lockoutTimerDiv.textContent = lockoutTimeRemaining + " secondes restantes";
+            lockoutTimerDiv.textContent = lockoutTimeRemaining + " secondes restantes avant de pouvoir réessayer";
             
             lockoutTimeRemaining = lockoutTimeRemaining - 1
             if (lockoutTimeRemaining < 0) {
