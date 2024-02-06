@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,9 +22,12 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
+    private $jwtManager;
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+
+    public function __construct(private UrlGeneratorInterface $urlGenerator, JWTTokenManagerInterface $jwtManager)
     {
+        $this->jwtManager = $jwtManager;
     }
 
     public function authenticate(Request $request): Passport
@@ -34,7 +38,7 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
 
         //On récupère la value du champ honeypot
         $honeypot = $request->request->get('honeypot', '');
-        
+
         if (!empty($honeypot)) {
             // Si le champ honeypot est rempli, rejetez la soumission.
             throw new CustomUserMessageAuthenticationException("Erreur d'authentification.");
@@ -44,7 +48,8 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
             new UserBadge($email),
             new PasswordCredentials($request->request->get('password', '')),
             [
-                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),            ]
+                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
+            ]
         );
     }
 
@@ -54,10 +59,17 @@ class AppAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
+        $user = $token->getUser();
+        if (in_array('ROLE_EMPLOYE', $user->getRoles()) || in_array('ROLE_GERANT', $user->getRoles())) {
+            // Générez le token JWT seulement pour les utilisateurs avec les rôles spécifiques
+            $jwt = $this->jwtManager->create($user);
+            $request->getSession()->set('jwt', $jwt); // Stocker le token JWT dans la session
+        }
+        
         // For example:
         // return new RedirectResponse($this->urlGenerator->generate('some_route'));
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
-        throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
     }
 
     protected function getLoginUrl(Request $request): string

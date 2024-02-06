@@ -65,9 +65,9 @@ class ApiAuthenticator extends AbstractAuthenticator
         
                 // Vérifier si l'utilisateur a le rôle [ROLE_EMPLOYE]
                 $roles = $user->getRoles();
-                if (!in_array('ROLE_EMPLOYE', $roles)) {
-                    throw new CustomUserMessageAuthenticationException('Access Denied: You do not have the employee role.');
-                }
+                if (!in_array('ROLE_EMPLOYE', $roles) && !in_array('ROLE_GERANT', $roles)) {
+                    throw new CustomUserMessageAuthenticationException('Access Denied: You do not have the required role.');
+                }                
         
                 return $user;
             }),

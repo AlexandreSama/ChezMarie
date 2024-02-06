@@ -16,6 +16,7 @@ import { Modal } from 'bootstrap';
 document.querySelectorAll('.showProductRating').forEach(element => {
     element.addEventListener('click', function (e) {
         e.preventDefault();
+        console.log(this)
         const productUrl = this.getAttribute('href');
 
         fetch(productUrl)
@@ -123,21 +124,24 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    var lockoutTimerDiv = document.getElementById("lockoutTimer");
-    var lockoutTimeRemaining = lockoutTimerDiv.dataset.lockoutTimeRemaining
 
-
-    if(lockoutTimeRemaining !== 0){
-        var x = setInterval(function() {
-
-            lockoutTimerDiv.textContent = lockoutTimeRemaining + " secondes restantes avant de pouvoir réessayer";
-            
-            lockoutTimeRemaining = lockoutTimeRemaining - 1
-            if (lockoutTimeRemaining < 0) {
-                clearInterval(x);
-                lockoutTimerDiv.textContent = "Vous pouvez maintenant essayer de vous connecter à nouveau.";
-                document.querySelector("button[type='submit']").disabled = false;
-            }
-        }, 1000);
+    if(document.querySelector('#lockoutTimer')){
+        var lockoutTimerDiv = document.getElementById("lockoutTimer");
+        var lockoutTimeRemaining = lockoutTimerDiv.dataset.lockoutTimeRemaining
+    
+    
+        if(lockoutTimeRemaining !== 0){
+            var x = setInterval(function() {
+    
+                lockoutTimerDiv.textContent = lockoutTimeRemaining + " secondes restantes avant de pouvoir réessayer";
+                
+                lockoutTimeRemaining = lockoutTimeRemaining - 1
+                if (lockoutTimeRemaining < 0) {
+                    clearInterval(x);
+                    lockoutTimerDiv.textContent = "Vous pouvez maintenant essayer de vous connecter à nouveau.";
+                    document.querySelector("button[type='submit']").disabled = false;
+                }
+            }, 1000);
+        }
     }
 });
