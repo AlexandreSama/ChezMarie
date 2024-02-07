@@ -55,6 +55,7 @@ class ApiAuthenticator extends AbstractAuthenticator
         $data = json_decode($request->getContent(), true);
         $username = $data['username'] ?? '';
         $password = $data['password'] ?? '';
+        error_log($request);
 
         return new Passport(
             new UserBadge($username, function($username) {
