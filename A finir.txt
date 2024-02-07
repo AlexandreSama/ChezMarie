@@ -1,2 +1,3 @@
 https://localhost:8000/api/login
 https://localhost:8000/api/orders
+symfony serve -d && npm run watch
