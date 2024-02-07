@@ -55,8 +55,7 @@ class ApiAuthenticator extends AbstractAuthenticator
         $data = json_decode($request->getContent(), true);
         $username = $data['username'] ?? '';
         $password = $data['password'] ?? '';
-        dd($request);
-
+        
         return new Passport(
             new UserBadge($username, function($username) {
                 $user = $this->userRepository->findOneBy(['email' => $username]);
@@ -103,8 +102,6 @@ class ApiAuthenticator extends AbstractAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-
-        dd($request);
         $data = ['message' => strtr($exception->getMessageKey(), $exception->getMessageData())];
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
     }
