@@ -14,13 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource]
-#[ApiResource(
-    operations: [
-        new Patch(),
-        new Get(),
-        new GetCollection()
-    ],
-)]
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
 class Order
