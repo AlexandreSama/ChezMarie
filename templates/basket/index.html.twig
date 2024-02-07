@@ -31,7 +31,7 @@
                                 <button class="btn btn-primary">Mettre à jour</button>
                             </form>
                         </td>
-                        <td>{{ product.price }} $</td>
+                        <td>{{ product.price }} €</td>
                         <td>{{ product.price * productQuantities[product.id] }}</td>
                         <td>
                             <form action="{{ path('remove_product_from_basket', {'productId': product.id}) }}"
@@ -43,7 +43,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <p class="text-end fw-bold">Total: {{ totalBasketPrice }} $</p>
+            <p class="text-end fw-bold">Total: {{ totalBasketPrice }} €</p>
         </div>
 
         <div class="col-lg-3 border border-dark rounded p-3">
@@ -51,7 +51,7 @@
             <ul class="list-unstyled">
                 <li>Nombre de produits: {{ products|length }}</li>
                 <li>Quantité totale: {{ totalQuantity }}</li>
-                <li>Prix total: {{ totalBasketPrice }} $</li>
+                <li>Prix total: {{ totalBasketPrice }} €</li>
             </ul>
             {% if app.user %}
             <a href="{{ path('app_order', {'userId': user.id, 'fullPrice': totalBasketPrice}) }}"

@@ -11,6 +11,8 @@
         <thead class="table-light">
             <tr>
                 <th>Produit</th>
+                <th>Prix a l'unité</th>
+                <th>Quantité</th>
                 <th>Prix Total</th>
                 <th>Note</th>
             </tr>
@@ -19,7 +21,9 @@
             {% for reference in references %}
             <tr>
                 <td>{{ reference.productName }}</td>
-                <td>{{ reference.fullPrice }}</td>
+                <td>{{ reference.price }}</td>
+                <td>{{ reference.productQuantity }}</td>
+                <td>{{ reference.price * reference.productQuantity}} €</td>
                 <td>
                     <div class="rating" data-product="{{ reference.productId }}">
                         {% for i in 1..5 %}

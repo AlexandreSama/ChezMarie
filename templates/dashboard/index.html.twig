@@ -66,8 +66,8 @@
                                             {{ order.archives|length }}
                                         </a>
                                     </td>
-                                    <td>{{ order.dateOrder|date('Y-m-d') }}</td>
-                                    <td>{{ order.fullPrice }}</td>
+                                    <td>{{ order.dateOrder|date('d-m-Y') }}</td>
+                                    <td>{{ order.fullPrice }} €</td>
                                     <td>
                                         {% if order.invoice %}
                                         <a href="{{ path('path_to_invoice', {'id': order.id}) }}">Télécharger</a>
@@ -117,8 +117,8 @@
                                             {{ order.archives|length }}
                                         </a>
                                     </td>
-                                    <td>{{ order.dateOrder|date('Y-m-d') }}</td>
-                                    <td>{{ order.fullPrice }}</td>
+                                    <td>{{ order.dateOrder|date('d-m-Y') }}</td>
+                                    <td>{{ order.fullPrice }} €</td>
                                     <td>{{ order.invoice ? 'Oui' : 'Non' }}</td>
                                 </tr>
                                 {% endfor %}
@@ -140,7 +140,7 @@
                         <div class="modal-body">
                             <ul>
                                 {% for reference in order.archives %}
-                                <li>{{ reference.productName }} - Prix unitaire: {{ reference.fullPrice }}</li>
+                                <li>{{ reference.productName }} - Prix unitaire: {{ reference.price }} - Quantité: {{ reference.productQuantity }}</li>
                                 {% endfor %}
                             </ul>
                         </div>
@@ -161,7 +161,7 @@
                         <div class="modal-body">
                             <ul>
                                 {% for reference in order.archives %}
-                                <li>{{ reference.productName }} - Prix unitaire: {{ reference.fullPrice }}</li>
+                                <li>{{ reference.productName }} - Prix unitaire: {{ reference.price }} - Quantité: {{ reference.productQuantity }}</li>
                                 {% endfor %}
                             </ul>
                         </div>

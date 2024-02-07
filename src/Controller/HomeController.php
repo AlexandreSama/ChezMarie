@@ -25,11 +25,33 @@ class HomeController extends AbstractController
     }
 
     #[Route('/mentions', name: 'mentions_legales')]
-    public function category(CategoryRepository $categoryRepository): Response
+    public function mentions(CategoryRepository $categoryRepository): Response
     {
         $categories = $categoryRepository->findAll();
         
         return $this->render('mentions.html.twig', [
+            'controller_name' => 'HomeController',
+            'categories' => $categories,
+        ]);
+    }
+
+    #[Route('/cgv', name: 'cgv')]
+    public function cgv(CategoryRepository $categoryRepository): Response
+    {
+        $categories = $categoryRepository->findAll();
+        
+        return $this->render('cgv.html.twig', [
+            'controller_name' => 'HomeController',
+            'categories' => $categories,
+        ]);
+    }
+
+    #[Route('/cgu', name: 'cgu')]
+    public function cgu(CategoryRepository $categoryRepository): Response
+    {
+        $categories = $categoryRepository->findAll();
+        
+        return $this->render('cgu.html.twig', [
             'controller_name' => 'HomeController',
             'categories' => $categories,
         ]);

@@ -18,7 +18,7 @@ class Reference
     private ?string $productName = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
-    private ?string $fullPrice = null;
+    private ?string $price = null;
 
     #[ORM\Column]
     private ?int $productId = null;
@@ -30,6 +30,9 @@ class Reference
     #[ORM\ManyToOne(inversedBy: 'archives')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Invoice $invoice = null;
+
+    #[ORM\Column]
+    private ?int $productQuantity = null;
 
     public function getId(): ?int
     {
@@ -48,14 +51,14 @@ class Reference
         return $this;
     }
 
-    public function getFullPrice(): ?string
+    public function getPrice(): ?string
     {
-        return $this->fullPrice;
+        return $this->price;
     }
 
-    public function setFullPrice(string $fullPrice): static
+    public function setPrice(string $fullPrice): static
     {
-        $this->fullPrice = $fullPrice;
+        $this->price = $fullPrice;
 
         return $this;
     }
@@ -92,6 +95,18 @@ class Reference
     public function setInvoice(?Invoice $invoice): static
     {
         $this->invoice = $invoice;
+
+        return $this;
+    }
+
+    public function getProductQuantity(): ?int
+    {
+        return $this->productQuantity;
+    }
+
+    public function setProductQuantity(int $productQuantity): static
+    {
+        $this->productQuantity = $productQuantity;
 
         return $this;
     }

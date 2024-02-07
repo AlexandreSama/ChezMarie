@@ -11,6 +11,7 @@ use App\Form\OrderType;
 use App\Repository\CategoryRepository;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
+use App\Repository\ReferenceRepository;
 use App\Repository\UserRepository;
 use App\Service\Basket;
 use Doctrine\ORM\EntityManagerInterface;
@@ -78,7 +79,7 @@ class OrderController extends AbstractController
      * @return Response a Response object.
      */
     #[Route('/order/{userId}/{fullPrice}', name: 'app_order')]
-    public function index($userId, $fullPrice, Request $request, ProductRepository $productRepository, Basket $panierService, UserRepository $userRepository, EntityManagerInterface $em, CategoryRepository $categoryRepository): Response
+    public function index($userId, $fullPrice, Request $request, ProductRepository $productRepository, ReferenceRepository $referenceRepository, Basket $panierService, UserRepository $userRepository, EntityManagerInterface $em, CategoryRepository $categoryRepository): Response
     {
 
         //On récupère le client id de paypal
@@ -144,7 +145,8 @@ class OrderController extends AbstractController
 
                         //Et on set ses propriétés
                         $reference->setProductName($product->getName())
-                            ->setFullPrice($product->getPrice())
+                            ->setProductQuantity($quantity)
+                            ->setPrice($product->getPrice())
                             ->setProductId($product->getId())
                             ->setCommande($order)
                             ->setInvoice($invoice);
@@ -170,7 +172,7 @@ class OrderController extends AbstractController
                 $em->flush();
 
                 //On génère la facture
-                $this->generateInvoicePDF($order);
+                $this->generateInvoicePDF($order, $referenceRepository);
 
                 //On Vide le panier en session après la création de la commande
                 $panierService->viderPanier();
@@ -336,15 +338,18 @@ class OrderController extends AbstractController
      * relevant information related to the order. This information is used to generate an invoice in
      * PDF format.
      */
-    private function generateInvoicePDF($order)
+    private function generateInvoicePDF($order, $referenceRepository)
     {
         $pdfOptions = new \Dompdf\Options();
         $pdfOptions->set('defaultFont', 'Arial');
 
         $dompdf = new \Dompdf\Dompdf($pdfOptions);
 
+        $references = $referenceRepository->findBy(['commande' => $order->getId()]);
+
         $html = $this->renderView('invoice.html.twig', [
             'order' => $order,
+            'references' => $references
         ]);
 
         $dompdf->loadHtml($html);

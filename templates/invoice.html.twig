@@ -1,47 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facture</title>
     <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: #666;
+        }
+
+        p {
+            font-size: 16px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
+
         th, td {
-            border: 1px solid black;
-            padding: 5px;
+            border: 1px solid #ddd;
+            padding: 10px;
             text-align: left;
         }
+
         th {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            background-color: #f0f0f0;
+        }
+
+        tbody tr:nth-child(even) {
             background-color: #f2f2f2;
+        }
+
+        .total-price {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <h1>Facture</h1>
     <p>Date de Commande: {{ order.dateOrder | date('Y-m-d') }}</p>
+    <p>Date de récupération souhaité : {{order.desiredPickupDateTime | date('Y-m-d hh-ss') }}</p>
     <h2>Information du client</h2>
     <p>{{ order.customerName }} {{ order.customerFirstName }}</p>
+    <p>{{ order.customAdress }}, {{ order.customerTown}} </p>
     <h2>Produits achetés</h2>
     <table>
         <thead>
             <tr>
                 <th>Produit</th>
+                <th>Quantité</th>
                 <th>Prix unitaire</th>
+                <th>Prix total</th>
             </tr>
         </thead>
         <tbody>
-            {% for reference in order.archives %}
+            {% for reference in references %}
             <tr>
                 <td>{{ reference.productName }}</td>
-                <td>{{ reference.quantity }}</td>
-                <td>{{ reference.fullPrice }}</td>
+                <td>{{ reference.productQuantity }}</td>
+                <td>{{ reference.price }} €</td>
+                <td>{{ reference.price * reference.productQuantity }} €</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    <p>Prix total : {{ order.fullPrice }}</p>
+    <p class="total-price">Prix total : {{ order.fullPrice }} €</p>
 </body>
 </html>
