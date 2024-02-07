@@ -1,7 +1,3 @@
 controllers:
     resource: ../src/Controller/
     type: attribute
-api_doc:
-    path: /api_documentation
-    controller: api_platform.swagger_ui.action
-    type: attribute
