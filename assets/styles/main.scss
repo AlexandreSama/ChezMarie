@@ -551,6 +551,8 @@
 
 .modal-content {
     height: 100%;
+    overflow: scroll;
+
 }
 
 /* Admin Dashboard */
@@ -610,6 +612,18 @@
     .homeMain .bakery-image, .homeMain .text-content {
         width: 90%; /* Utilisation de la majorité de l'espace disponible */
     }
+
+}
+
+@media(max-width: 1900px) {
+    .modal-dialog{
+        max-width: 90%!important;
+        overflow: scroll;
+    }
+    .showProductMain{
+        overflow: scroll;
+
+    }
 }
 
 /* Home Page mobiles */
@@ -637,5 +651,9 @@
 
     .homeMain .bakery-image, .homeMain .text-content {
         width: 100%; /* Pleine largeur pour une meilleure lisibilité */
+    }
+
+    .modal{
+        margin: 1.75rem;
     }
 }

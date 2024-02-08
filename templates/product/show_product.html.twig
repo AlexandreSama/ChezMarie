@@ -2,7 +2,7 @@
 <div class="container-fluid h-100">
     <div class="row h-100">
         <!-- Section Gauche: Détails du Produit -->
-        <div class="col-md-5 border-end product-details">
+        <div class="col-12 col-md-5 border-end product-details">
             <h1 class="product-title">{{ product.name }}</h1>
             <p class="product-description"><strong>Description :</strong> {{ product.description }}</p>
             <div class="product-info">
@@ -37,7 +37,7 @@
             </div>
         </div>
         <!-- Section Droite: Sélecteur d'Images -->
-        <div class="col-md-7 product-image-selector">
+        <div class="col-12 col-md-7 product-image-selector">
             <figure id="mainImage" class="main-image-container">
                 <img src="{{ asset('img/' ~ picture.fileName) }}" class="d-block" alt="{{ picture.slug }}">
             </figure>
