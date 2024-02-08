@@ -32,7 +32,7 @@
                             </form>
                         </td>
                         <td>{{ product.price }} €</td>
-                        <td>{{ product.price * productQuantities[product.id] }}</td>
+                        <td>{{ product.price * productQuantities[product.id] }} €</td>
                         <td>
                             <form action="{{ path('remove_product_from_basket', {'productId': product.id}) }}"
                                 method="post">

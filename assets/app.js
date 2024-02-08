@@ -144,4 +144,18 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 1000);
         }
     }
+
+    const countryCodeSelector = document.querySelector('#countryCode');
+    const phoneNumberInput = document.querySelector('#phoneNumber');
+
+    function updateFullPhoneNumber() {
+        // Combine countryCode et phoneNumber
+        phoneNumberInput.value = countryCodeSelector.value + phoneNumberInput.value;
+    }
+
+    // Écoute les changements sur les champs countryCode et phoneNumber
+    countryCodeSelector.addEventListener('change', updateFullPhoneNumber);
+
+    // Met à jour le numéro de téléphone complet initial
+    updateFullPhoneNumber();
 });

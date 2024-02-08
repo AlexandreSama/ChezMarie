@@ -87,7 +87,7 @@ class OrderController extends AbstractController
 
         //On récupère l'utilisateur par son id
         $user = $userRepository->find($userId);
-
+        
         //On récupère les catégories (pour la navbar)
         $categories = $categoryRepository->findAll();
 
@@ -105,6 +105,7 @@ class OrderController extends AbstractController
 
             //On récupère le stripeToken qui se trouve dans le form
             $stripeToken = $form->get('stripeToken')->getData();
+            // $phoneNumber = $form->get('fullPhoneNumber')->getData();
 
             //On procède au payement
             if ($this->processStripePayment($stripeToken, $fullPrice)) {
@@ -115,6 +116,7 @@ class OrderController extends AbstractController
 
                 //On set l'identifiant dans l'entité Commande
                 $order->setReference($uniqueReference);
+                // $order->setPhone($phoneNumber);
 
                 //On créer une nouvelle identité Invoice
                 $invoice = new Invoice();

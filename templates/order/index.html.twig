@@ -11,8 +11,10 @@
             <div class="mb-3">
                 {{ form_row(form.customerName) }}
                 {{ form_row(form.customerFirstName) }}
-                {{ form_row(form.customerAdress) }}
-                {{ form_row(form.customerTown) }}
+                <div class="mb-3 d-flex">
+                    {{ form_widget(form.countryCode, {'id': 'countryCode'}) }}
+                    {{ form_widget(form.phone, {'id': 'phoneNumber'}) }}
+                </div>
                 {{ form_row(form.desiredPickupDateTime, {'id': 'desiredPickupDate'}) }}
                 {{ form_widget(form.stripeToken, {'id': 'stripe-token-id'}) }}
             </div>

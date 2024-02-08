@@ -63,8 +63,8 @@
     <p>Date de Commande: {{ order.dateOrder | date('Y-m-d') }}</p>
     <p>Date de récupération souhaité : {{order.desiredPickupDateTime | date('Y-m-d hh-ss') }}</p>
     <h2>Information du client</h2>
-    <p>{{ order.customerName }} {{ order.customerFirstName }}</p>
-    <p>{{ order.customAdress }}, {{ order.customerTown}} </p>
+    <p>Nom et Prénom : {{ order.customerName }} {{ order.customerFirstName }}</p>
+    <p>Numéro de téléphone : {{ order.phone }} </p>
     <h2>Produits achetés</h2>
     <table>
         <thead>

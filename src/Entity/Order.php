@@ -45,14 +45,6 @@ class Order
     private ?string $customerFirstName = null;
 
     // #[Groups(['read'])]
-    #[ORM\Column(length: 50)]
-    private ?string $customerAdress = null;
-
-    // #[Groups(['read'])]
-    #[ORM\Column(length: 50)]
-    private ?string $customerTown = null;
-
-    // #[Groups(['read'])]
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '0')]
     private ?string $fullPrice = null;
 
@@ -89,6 +81,9 @@ class Order
     // #[Groups(['read'])]
     #[ORM\Column(length: 25)]
     private ?string $reference = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $phone = null;
 
     public function __construct()
     {
@@ -168,30 +163,6 @@ class Order
     public function setCustomerFirstName(string $customerFirstName): static
     {
         $this->customerFirstName = $customerFirstName;
-
-        return $this;
-    }
-
-    public function getCustomerAdress(): ?string
-    {
-        return $this->customerAdress;
-    }
-
-    public function setCustomerAdress(string $customerAdress): static
-    {
-        $this->customerAdress = $customerAdress;
-
-        return $this;
-    }
-
-    public function getCustomerTown(): ?string
-    {
-        return $this->customerTown;
-    }
-
-    public function setCustomerTown(string $customerTown): static
-    {
-        $this->customerTown = $customerTown;
 
         return $this;
     }
@@ -306,6 +277,18 @@ class Order
     public function setReference(string $reference): static
     {
         $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): static
+    {
+        $this->phone = $phone;
 
         return $this;
     }

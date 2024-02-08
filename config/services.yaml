@@ -21,6 +21,12 @@ services:
     App\Service\Basket:
         arguments:
             $requestStack: '@request_stack'
+    App\EventSubscriber\OrderEntitySubscriber:
+        arguments:
+            $SMSState: '@App\Service\SMSState'
+            $logger: '@logger'
+        tags:
+            - { name: 'doctrine.event_subscriber' }
     Symfony\Contracts\Cache\CacheInterface: '@cache.app'
     
     cache.app:
