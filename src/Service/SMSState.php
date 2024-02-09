@@ -6,13 +6,19 @@ use Twilio\Rest\Client;
 
 class SMSState
 {
+
+    //Propriété privé de la class
     private $client;
 
+    //Constructeur indiquant que la propriété client est
+    //Le client de la dépendance Twilio
     public function __construct()
     {
         $this->client = new Client('AC8730b5d0c520f4a516c35f1b5e51b914', '91bd384b72f7a672053b7be56b9f7de5');
     }
 
+    //Fonction envoyant un message et demandant un numéro de téléphone
+    //Et un message. Le from est récupéré depuis le .env
     public function sendMessage(string $to, string $message)
     {
         $this->client->messages->create(
