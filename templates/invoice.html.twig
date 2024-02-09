@@ -60,6 +60,7 @@
 </head>
 <body>
     <h1>Facture</h1>
+    <p>Référence de commande : {{ order.reference }}</p>
     <p>Date de Commande: {{ order.dateOrder | date('Y-m-d') }}</p>
     <p>Date de récupération souhaité : {{order.desiredPickupDateTime | date('Y-m-d hh-ss') }}</p>
     <h2>Information du client</h2>

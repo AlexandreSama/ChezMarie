@@ -14,7 +14,7 @@ class SMSState
     //Le client de la dépendance Twilio
     public function __construct()
     {
-        $this->client = new Client('AC8730b5d0c520f4a516c35f1b5e51b914', '91bd384b72f7a672053b7be56b9f7de5');
+        $this->client = new Client($_ENV['TWILIO_SIO'], $_ENV['TWILIO_AUTH']);
     }
 
     //Fonction envoyant un message et demandant un numéro de téléphone
