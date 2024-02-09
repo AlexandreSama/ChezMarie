@@ -3,6 +3,14 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
+
+{% if screenWidth > 440 %}
+{% set divide = 3 %}
+{% else %}
+{% set divide = 1 %}
+{% endif %}
+
+{% dump(divide) %}
 <main class="homeMain">
     <section class="search">
         <div class="mainBox">
@@ -44,7 +52,7 @@
                                     le produit</a>
                             </div>
                         </div>
-                        {% if loop.index is divisible by(3) and not loop.last %}
+                        {% if loop.index is divisible by(divide) and not loop.last %}
                     </div>
                     <div class="carousel-group">
                         {% endif %}
@@ -126,7 +134,15 @@
     </section>
 
     <script>
+
         document.addEventListener('DOMContentLoaded', function () {
+
+            var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+            // Envoi de la largeur de l'écran au serveur via une requête AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/?screenWidth=' + screenWidth, true);
+            xhr.send();
             var carousels = document.querySelectorAll('.carousel');
 
             carousels.forEach(function (carousel) {

@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\Repository\OrderRepository;
+use App\Repository\ReferenceRepository;
 use App\Repository\ThemeRepository;
+use App\Repository\UserRepository;
 use App\Service\Basket;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,12 +19,21 @@ class BasketController extends AbstractController
 {
 
     #[Route('/basket', name: 'app_basket')]
-    public function index(ThemeRepository $themeRepository, Basket $Basket, ProductRepository $productRepository, CategoryRepository $categoryRepository): Response
+    public function index(ThemeRepository $themeRepository, Basket $Basket, ReferenceRepository $referenceRepository, UserRepository $userRepository, ProductRepository $productRepository, OrderRepository $orderRepository, CategoryRepository $categoryRepository): Response
     {
         $themes = $themeRepository->findAll();
         $categories = $categoryRepository->findAll();
         // Récupération des données du panier
         $panierData = $Basket->getPanier();
+        //Récupérer les produits d'anciennes commandes
+        // $oldProducts = [];
+        // if($this->getUser()){
+        //     $oldOrders = $orderRepository->findBy(['userid' => $userRepository->findOneBy(['email' => $this->getUser()->getUserIdentifier()])]);
+        //     foreach ($oldOrders as $oldOrder) {
+        //         $reference = $referenceRepository->findOneBy(['commande' => $oldOrder->getId()]);
+        //         array_push($oldProducts, $productRepository->findOneBy(['id' => $reference->getProductId()]));
+        //     }
+        // }
 
         // Récupérer les détails des produits et les quantités
         $products = [];
@@ -42,7 +54,8 @@ class BasketController extends AbstractController
             'totalQuantity' => array_sum($productQuantities),
             'themes' => $themes,
             'user' => $this->getUser(),
-            'categories' => $categories
+            'categories' => $categories,
+            // 'oldProducts' => $oldProducts
         ]);
     }
 

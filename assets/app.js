@@ -146,16 +146,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const countryCodeSelector = document.querySelector('#countryCode');
-    const phoneNumberInput = document.querySelector('#phoneNumber');
 
-    function updateFullPhoneNumber() {
-        // Combine countryCode et phoneNumber
-        phoneNumberInput.value = countryCodeSelector.value + phoneNumberInput.value;
+    if(countryCodeSelector){
+        const phoneNumberInput = document.querySelector('#phoneNumber');
+
+        function updateFullPhoneNumber() {
+            // Combine countryCode et phoneNumber
+            phoneNumberInput.value = countryCodeSelector.value + phoneNumberInput.value;
+        }
+    
+        // Écoute les changements sur les champs countryCode et phoneNumber
+        countryCodeSelector.addEventListener('change', updateFullPhoneNumber);
+    
+        // Met à jour le numéro de téléphone complet initial
+        updateFullPhoneNumber();
     }
-
-    // Écoute les changements sur les champs countryCode et phoneNumber
-    countryCodeSelector.addEventListener('change', updateFullPhoneNumber);
-
-    // Met à jour le numéro de téléphone complet initial
-    updateFullPhoneNumber();
+    
 });

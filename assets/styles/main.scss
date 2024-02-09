@@ -571,6 +571,14 @@
 .basketMain {
     min-height: 100vh !important;
 
+    .card{
+        height: 100%;
+
+        .card-img-top{
+            width: 100%;
+            height: 65%;
+        }
+    }
 }
 
 /* Home Page tablettes */
@@ -655,5 +663,9 @@
 
     .modal{
         margin: 1.75rem;
+    }
+
+    :root {
+        --is-desktop: true;
     }
 }

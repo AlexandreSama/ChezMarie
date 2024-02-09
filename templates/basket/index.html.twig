@@ -65,8 +65,45 @@
             {% endif %}
         </div>
     </div>
+
+    {# <hr> #}
+
+    {# <h2>Produits déjà commandés</h2>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-deck">
+                {% for orderedProduct in orderedProducts %}
+                <div class="card mb-4">
+                    <img src="{{ asset('images/' ~ orderedProduct.image) }}" class="card-img-top" alt="{{ orderedProduct.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ orderedProduct.name }}</h5>
+                        <p class="card-text">Quantité : {{ orderedProduct.quantity }}</p>
+                        <p class="card-text">Prix : {{ orderedProduct.price }} €</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div> #}
     {% else %}
     <p>Votre panier est vide.</p>
+    {# {% if app.user %}
+    <h2>Produits déjà commandés</h2>
+<div class="row">
+    {% for oldProduct in oldProducts %}
+    <div class="col-lg-4 mb-4"> <!-- Utilisez col-lg-4 pour diviser la grille en 3 colonnes sur les écrans larges -->
+        <div class="card">
+            <img src="{{ asset('img/' ~ oldProduct.pictures[0].fileName) }}" class="card-img-top" alt="{{ oldProduct.name }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ oldProduct.name }}</h5>
+                <p class="card-text">Prix : {{ oldProduct.price }} €</p>
+                <button type="button" class="btn btn-outline-secondary"><a href="{{path('add_product', {productid: oldProduct.id})}}">Ajouter au panier</a></button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+    {% endif %} #}
     {% endif %}
 </main>
 {% endblock %}

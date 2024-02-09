@@ -21,6 +21,16 @@ class ReferenceRepository extends ServiceEntityRepository
         parent::__construct($registry, Reference::class);
     }
 
+    public function getOneOldProductBought($orderId){
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.commande_id = :commandeId')
+            ->setParameter('commandeId', $orderId)
+            ->orderBy('r.id', 'ASC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Reference[] Returns an array of Reference objects
     //     */
